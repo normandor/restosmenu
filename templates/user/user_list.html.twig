@@ -1,0 +1,294 @@
+{% extends 'base.html.twig' %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('./build/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('./build/js/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ asset('./build/js/moment.js') }}"></script>
+    <script src="{{ asset('./build/js/datetime-moment.js') }}"></script>
+    <script>
+        var theTable;
+        var yes = '{{ 'yes' | trans }}';
+        var no = '{{ 'no' | trans }}';
+        var imgSrc = '{{ asset('images/imagen_icono.png') }}';
+
+        $(document).ready(function () {
+            $.fn.dataTable.moment('DD/MM/YYYY');
+            theTable = $('#tableFormularios').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "../tabledata-users/"
+                },
+                "language": {
+                    "sEmptyTable": "Ningún dato",
+                    "sInfo": "_START_ a _END_ de _TOTAL_ líneas",
+                    "sInfoEmpty": "0 a 0 de 0 líneas",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ líneas)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLengthMenu": "Mostrar _MENU_ entradas",
+                    "sLoadingRecords": "Cargando...",
+                    "sProcessing": "Cargando...",
+                    "sSearch": "Buscar",
+                    "sZeroRecords": "No se encontraron resultados.",
+                    "decimal": ",",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sPrevious": "Anterior",
+                        "sNext": "Próximo",
+                        "sLast": "Último"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": ordernar en forma ascendente",
+                        "sSortDescending": ": ordernar en forma descendente"
+                    }
+                },
+                stateSave: true,
+                "columns": [
+                    {className: "dt-center"},
+                    {className: "dt-center"},
+                    {className: "dt-center"},
+                    {className: "dt-center"},
+                    {className: "dt-center"},
+                    {className: "dt-center",
+                        render: function (data, type, row) {
+                            if ("1" === data) {
+                                return yes;
+                            }
+                            return no;
+                        }},
+                    {className: "dt-center",
+                        render: function (data, type, row) {
+                            if ("1" === data) {
+                                return yes;
+                            }
+                            return no;
+                        }},
+                    {className: "dt-center"}
+                ]
+            }
+            );
+        });
+
+        function showEditUser(theId) {
+            $('.modal-body-edit-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
+            $('.modal-body-edit-user').load('../modal/user/edit/' + theId, function () {});
+            $("#editUserModal").modal('show');
+        }
+
+        function showDeleteUser(theId, theName) {
+            $(".modal-header #userIdDelete").val(theId);
+            $(".modal-header #userNameDelete").html(theName);
+            $('#myModalLabelMessage').html('¿Confirma la eliminación del usuario ' + theName + '?');
+            $("#confirmModal").modal('show');
+        }
+
+        function showAddUser() {
+            $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
+            $('.modal-body-new-user').load('../modal/user/add/', function () {});
+            $("#newItemModal").modal('show');
+        }
+
+        function submitUpdateUserForm(userid) {
+
+            var lastname = $("#lastname").val();
+            var firstname = $("#firstname").val();
+            var username = $("#username").val();
+            var email = $("#email").val();
+
+            var acceso_tablero = $("#acceso_tablero").find(":selected").val();
+            var usuario_activo = $("#usuario_activo").find(":selected").val();
+
+
+            var seleccionRoles = "";
+            $("#role option:selected").each(function () {
+                seleccionRoles += this.value + "|";
+            });
+            seleccionRoles = seleccionRoles.substr(0, seleccionRoles.length - 1);	// borro el ultimo |
+
+            var seleccionZonas = "";
+            $("#zonas_asignadas option:selected").each(function () {
+                seleccionZonas += this.value + "|";
+            });
+            seleccionZonas = seleccionZonas.substr(0, seleccionZonas.length - 1);	// borro el ultimo |
+
+            $.ajax({
+                type: "POST",
+                url: '{{ (path('user_update_user')) }}',
+                data: {
+                    'lastname': lastname,
+                    'firstname': firstname,
+                    'email': email,
+                    'role': seleccionRoles,
+                    'zonas': seleccionZonas,
+                    'acceso_tablero': acceso_tablero,
+                    'usuario_activo': usuario_activo,
+                    'userid': userid
+                },
+
+                success: function (text) {
+                    text = JSON.parse(text);
+                    if ("success" === text['message']) {
+                        location.reload();
+                    } else {
+                        alert("{{ 'alert.error.processing' | trans }}");
+                        enableButton();
+                    }
+                },
+                error: function (jqXHR, status, err) {
+                    alert("{{ 'alert.error.processing' | trans }}");
+                    enableButton();
+                }
+            });
+        }
+
+        function disableButton(theButton) {
+            setTimeout(function () {
+                $(theButton).prop('disabled', true);
+                $(theButton).text('Guardando cambios...');
+            }, 100);
+        }
+
+        function enableButton() {
+            setTimeout(function () {
+                $('#data-submit-button').prop('disabled', false);
+                $('#data-submit-button').text('Guardar');
+            }, 10);
+        }
+
+        var modalConfirmDelete = function (callback) {
+            $("#modal-del-btn-si").on("click", function () {
+                callback(true);
+                $("#confirmModal").modal('hide');
+            });
+
+            $("#modal-del-btn-no").on("click", function () {
+                callback(false);
+                $("#confirmModal").modal('hide');
+            });
+        };
+
+        modalConfirmDelete(function (confirm) {
+            if (confirm) {
+                var theVal = $("#userIdDelete").val();
+
+                $.ajax({
+                    url: '{{ (path('user_delete_user')) }}',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {'user_id': theVal},
+                    success: function (data) {
+                        location.reload();
+                    },
+                    error: function (xhr, status) {
+                        alert("{{ 'alert.error.processing' | trans }}");
+                    }
+                });
+            } else {
+
+            }
+        });
+
+    </script>
+{% endblock %}
+
+{% block body %}
+    <link rel="stylesheet" href="{{ asset('./build/css/dataTables.bootstrap.min.css') }}">
+    <style>
+        #editUserModal {overflow-y: auto !important;  padding:0 !important;}
+        #newItemModal {overflow-y: auto !important;  padding:0 !important;}
+        .modal-open {margin:0 !important;}
+        .pics_list {
+            margin-left: 2px;
+            margin-right: 2px;
+            height: 20px;
+        }
+        .table-corte {
+            width: 100%;
+            border: 1px solid black;
+            font-size: 1.2em;
+        }
+        th {
+            height: 50px;
+            border: 1px solid black;
+        }
+        td {
+            border: 1px solid black;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+        .filters	{
+            border: 0px solid black;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+        select {
+            height: 26px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+
+        }
+        .with-border {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 2px;
+            margin-left: 2px;
+            margin-right: 2px;
+            margin-bottom: 20px;
+        }
+        .dt-center {
+            text-align: center;
+        }
+
+    </style>
+
+    <div id="main" class="container-fluid">
+        <div class="row">
+            <div id="sidebar-left" class="col-xs-2 col-sm-2">
+                {{ render(controller(
+                    'App\\Controller\\MenuController::index', { 'route': route}, {}
+                )) }}
+            </div>
+
+            <div id="content" class="col-xs-12 col-sm-10">
+                <div class="row">
+                    <div id="breadcrumb" class="col-xs-12">
+                        <a href="#" class="show-sidebar">
+                            <i class="fa fa-bars"></i>
+                        </a>
+                        <ol class="breadcrumbpanel pull-left"><a href="#">Usuarios</a>
+                        </ol>
+                    </div>
+                </div>
+
+                <h1>{{ label }}</h1>
+                <br>
+
+                <div class="table-responsive" style="overflow:auto; font-size:11px;">
+                    <table id="tableFormularios" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Apellido</th>
+                                <th>Nombre</th>
+                                <th>Usuario</th>
+                                <th>Email</th>
+                                <th>Roles</th>
+                                <th>Activo</th>
+                                <th>Acceso al panel</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <button type="button" class="btn btn-success btn-lg" onClick="showAddUser();">{{ 'button.new_user' | trans }}</button>
+            </div>
+        </div>
+
+        {{ include('user/modals/modal_user_edit.twig') }}
+        {{ include('user/modals/modal_confirm.twig') }}
+        {{ include('user/modals/modal_general.twig') }}
+
+
+    {% endblock %}

@@ -1,0 +1,71 @@
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('build/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('./build/js/bootstrap.min.js') }}"></script>
+{% endblock %}
+
+<div class="row" style="margin-right:10px; margin-top:10px" >
+    <div class="col-md-12 container">
+        {% if form is defined %}
+            {{ form_start(form, {'action': '#'}) }}
+            {{ form_errors(form) }}
+                <div class="col-sm-12 col-xs-12">
+                    {% if subtitle is defined %}
+                        <h4>{{ subtitle }}</h4><br />
+                    {% endif %}
+                    {{ form_widget(form) }}
+                    <div class="error" id="errorMessage">
+                    </div>
+                </div>
+            <div class="col-sm-offset-2 col-sm-10">
+                <div class="pull-right">
+                    <button id="data-dismiss-button" type="button" class="btn btn-default" data-dismiss="modal">{{ 'button.cancel' | trans }}</button>
+                    <button id="data-submit-button" type="submit" class="btn btn-primary">{{ 'button.save' | trans }}</button>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        {% endif %}
+    </div>
+</div>
+<script>
+    $('form[name="{{ form.vars.name }}"]').on('submit', function(e)
+    {
+        submitThisForm();
+        return false;
+    });
+
+    function submitThisForm() {
+        let form = $('form[name="{{ form.vars.name }}"]')[0];
+        let formData = new FormData(form);
+        $.ajax({
+            type: 'POST',
+            data: formData,
+            url: '{{ submitUrl }}',
+            contentType: false,
+            processData: false,
+            success: function (text) {
+                if (text.status === "success") {
+                    location.reload();
+                } else {
+                    $("#errorMessage").html("<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>" + text.message + "</div>");
+                    enableButton();
+                }
+            },
+            error: function (jqXHR, status, err) {
+                alert("Hubo un error al procesar los datos.\nIntente nuevamente más tarde.");
+                enableButton();
+            }
+        });
+    }
+    function disableButton(theButton) {
+        setTimeout(function () {
+            $(theButton).prop('disabled', true);
+            $(theButton).text('Guardando...');
+        }, 100);
+    }
+    function enableButton() {
+        setTimeout(function () {
+            $('#data-submit-button').prop('disabled', false);
+            $('#data-submit-button').text('Guardar');
+        }, 10);
+    }
+</script>

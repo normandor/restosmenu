@@ -1,0 +1,249 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <style>
+      p {
+          font-size: 18px;
+      }
+      img.icon {
+          height: 25px;
+      }
+      .buttons {
+          margin-bottom: 15px;
+      }
+      button.addItem {
+          padding: 5px 10px;
+      }
+      .pagename {
+          margin-bottom: 15px;
+      }
+    td {
+        border: none;
+    }
+
+      a { text-decoration: none !important; }
+
+    .modal-open {margin:0 !important;}
+
+      th { text-align: center; }
+
+    .section-title {
+      color: #413E3E;
+      font-size: 24px;
+      font-weight: bold;
+      border-bottom: 1px solid #CCCCCC;
+      margin-bottom: 15px;
+    }
+
+      .title-page {
+          color: #413E3E;
+          text-align: left;
+          font-weight: bolder;
+          font-size: 20px;
+          margin-bottom: 5px;
+      }
+
+    .description {
+      font-size: 20px;
+      margin: 0px 15px 25px 15px;
+      color: #525252;
+      /*padding-left: 50px;*/
+        padding: 5px;
+    }
+
+      .description-border {
+          border: 1px solid #cccccc;
+          border-radius: 2px;
+      }
+
+      @media (min-width: 767px) {
+          .description-border {
+              width: 98%;
+          }
+      }
+    .pad-lt-15 {padding-left: 15px;} .pad-bt-15 {padding-bottom: 15px;}
+
+    .font-20 { font-size: 20px; }
+
+    .border {
+        border: 1px solid #cccccc;
+        border-radius: 5px;
+        margin: 0px;
+        padding: 5px;
+    }
+
+    .mb-10 { margin-bottom: 10px; }
+
+    .inactive .ql-editor { padding:0; line-height:inherit; }
+
+    .inactive .ql-editor p { padding:inherit; margin-bottom:10px; }
+
+    .inactive .ql-toolbar { display:none; }
+
+    .inactive .ql-container.ql-snow { border:none; font-family:inherit;
+    font-size:inherit; }
+
+    .elements table, .elements td, .elements th {
+      padding: 2px;
+      border: 1px solid #cccccc;
+      border-radius: 5px;
+      text-align: left;
+    }
+      .elements td.actions {
+          text-align: center;
+      }
+  </style>
+{% endblock %}
+
+{% block body %}
+  <div id="main" class="container">
+    <div class="row">
+      <div id="sidebar-left" class="col-xs-2 col-sm-2">
+        {{
+          render(
+            controller(
+              'App\\Controller\\MenuController::index',
+              {
+                keep_open: 0,
+                route: route
+              },
+              {
+                username: user,
+                avatar: true
+              }
+            )
+          )
+        }}
+      </div>
+
+      <div id="content" class="col-xs-12 col-sm-10">
+        <div class="row">
+          <div id="breadcrumb" class="col-xs-12">
+            <a href="#" class="show-sidebar"><i class="fa fa-bars"></i></a>
+            <ol class="breadcrumbpanel pull-left">
+              <a href="#">Páginas</a>
+            </ol>
+          </div>
+        </div>
+
+        <div class="pagename row pad-lt-15 pad-bt-15">
+          <div class="col-sm">
+            <h1>
+              {{ pageName }}
+              <br />
+            </h1>
+          </div>
+        </div>
+
+          <div class="row font-20" style="margin-bottom:15px">
+              <div class="col-sm-10 mb-10">
+                  <table class="elements" style="width: 100%; table-layout:fixed; margin-bottom: 5px;">
+                      <tr>
+                          <th style="width: 45%;">
+                              Categoria
+                          </th>
+                          <th style="width: 10%;"></th>
+                      </tr>
+                      {% for category in categories %}
+                          <tr>
+                              <td>
+                                  {{ category.name|raw }}
+                              </td>
+                              <td class="actions">
+                                  <div class="col-sm-1 buttons" style="display: inline-block; white-space: nowrap; margin: auto;">
+                                      <img class="icon" src="../images/icono_edit.png"
+                                           onclick="showEditCategory({{ category.id }});"
+                                           style="cursor: pointer;" />
+
+                                      <img class="icon"
+                                           src="../images/icono_delete.png"
+                                           onclick="showDeleteItem('{{ category.id }}', '{{ category.name|raw }}');"
+                                           style="cursor: pointer;" />
+                                  </div>
+                              </td>
+                          </tr>
+
+                      {% endfor %}
+                  </table>
+                  <button type="button" title="Agregar item"
+                          class="btn btn-success btn-lg addItem"
+                          onClick="showAddCategory();">
+                      +
+                  </button>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+    {{ include('user/modals/modal_confirm.twig') }}
+    {{ include('user/modals/modal_general.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script type="text/javascript" src="{{ asset('build/js/quill.min.js') }}"></script>
+  <script>
+    function showAddCategory() {
+        $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
+        $('.modal-body-new-user').load('../page/element/addCategory/', function () {});
+        $('.modal-title').html('Nueva categoria');
+        $("#newItemModal").modal('show');
+    }
+
+    function showDeleteItem(id, name) {
+        $(".modal-header #sectionId").val(id);
+        $('#myModalLabelMessage').html(`¿Confirma la eliminacion de la categoria ${name}?`);
+
+        $("#confirmModal").modal('show');
+    }
+
+    function showEditCategory(id) {
+        $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
+        $('.modal-body-new-user').load('../page/element/editCategory/'+id, function () {});
+        $('.modal-title').html('Editar categoria');
+        $("#newItemModal").modal('show');
+    }
+
+    var modalConfirmDelete = function (callback) {
+        $("#modal-del-btn-si").on("click", function () {
+            callback(true);
+            $("#confirmModal").modal('hide');
+        });
+
+        $("#modal-del-btn-no").on("click", function () {
+            callback(false);
+            $("#confirmModal").modal('hide');
+        });
+    };
+
+    modalConfirmDelete(function (confirm) {
+        if (confirm) {
+            let sectionId = $("#sectionId").val();
+            let path = '{{ path('remove_category', {'id': 'sectionId'}) }}';
+            let finalPath = path.replace("sectionId", sectionId);
+
+            $.ajax({
+                url: finalPath,
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status === 'nok') {
+                        alert(data.message);
+                        return false;
+                    }
+                    //console.log(data);
+                    location.reload();
+                },
+                error: function (xhr, status) {
+                    console.log(xhr);
+                    console.log(status);
+                    alert("{{ 'alert.error.processing' | trans }}");
+                }
+            });
+        } else {
+
+        }
+    });
+  </script>
+{% endblock %}

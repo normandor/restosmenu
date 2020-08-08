@@ -1,0 +1,20 @@
+actor: ApiTester
+modules:
+    enabled:
+        - \App\Tests\Helper\Api
+        - REST:
+              url: https://localhost:8000/api/
+              depends: Symfony
+              part: Json
+        - Doctrine2:
+              depends: Symfony
+        #    enabled:
+        - Symfony:
+              app_path: 'src'
+              environment: 'test'
+#        - REST:
+#              url: http://localhost/tablero/api/
+#              depends: Symfony
+#        - Doctrine2:
+#              depends: Symfony
+#        - \Helper\Api

@@ -1,0 +1,37 @@
+{
+    "name": "panel_wichisoft",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build-css-sheets": "uglifycss src\\css\\sheets.css > css\\sheets.css",
+        "build-css-main": "uglifycss assets\\css\\main.css > public\\build\\css\\main.css",
+        "build-js-login": "mkdirp login\\js && uglifyjs src\\login\\js\\*.js -m -o login\\js\\login.js",
+        "build-js-dashboard": "uglifyjs assets\\js\\dashboard.js -m -o public\\build\\js\\dashboard.js",
+        "lint": "jshint src\\login\\js\\"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@fortawesome/fontawesome-free": "^5.5.0",
+        "@symfony/webpack-encore": "^0.28.3",
+        "babel-preset-react": "^6.24.1",
+        "bootstrap": "^4.4.1",
+        "grunt-contrib-concat": "^1.0.1",
+        "grunt-contrib-imagemin": "^3.0.0",
+        "grunt-contrib-uglify": "^4.0.0",
+        "jquery": "^3.3.1",
+        "npm-run-all": "^4.1.5",
+        "popper.js": "^1.14.4",
+        "webpack-notifier": "^1.7.0"
+    },
+    "dependencies": {
+        "node-sass": "^4.13.1",
+        "prop-types": "^15.6.2",
+        "react": "^16.6.0",
+        "react-dom": "^16.6.0",
+        "sass-loader": "^7.1.0"
+    }
+}

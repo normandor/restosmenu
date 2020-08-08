@@ -1,0 +1,82 @@
+{% block stylesheets %} {% endblock %}
+
+{% block body %}
+    <ul class="nav main-menu">
+        <li class="dropdown">
+            {% for level0 in menu %}
+                {% if level0.values|default(null) is iterable %}
+                    <a href="#" class="dropdown-toggle {{ (level0.id in selectedId)  ? ' active-parent' : '' }} ">
+                        <i class="{{ level0.iconclass }}"></i>
+                        <span class="hidden-xs">{{ level0.name }} </span>
+                    </a>
+                {% else %}
+                    <a href="{{ path( level0.path, {'p': level0.id} )}}" class="dropdown-toggle">
+                        <i class="{{ level0.iconclass }}"></i>
+                        <span class="hidden-xs">{{ level0.name }}</span>
+                    </a>
+                {% endif %}
+
+                {% if level0.values|default(null) is iterable %}
+                    {% set toBeDisplayed = 'none' %}
+                    {% for level1 in level0.values %}
+                        {% if level1.path == route %}
+                            {% set toBeDisplayed =  'block' %}
+                        {% endif %}
+                    {% endfor %}
+
+                    <ul class="dropdown-menu" style="display: {{ toBeDisplayed }};" >
+                        {% for level1 in level0.values %}
+                            <li class="dropdown">
+                                {% if level1.values|default(null) is iterable %}
+                                    <a href="#" class="dropdown-toggle">
+                                        <span class="">{{level1.name}}
+                                    </a>
+                                    <ul class="dropdown-menu" >
+                                        {% for level2 in level1.values %}
+                                            <li class="dropdown ">
+                                                <a href="{{ path( level2.path ) }}" class="dropdown-toggle">
+                                                    <span style="margin-left:10px">{{level2.name}}
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    {% if level1.noid is defined %}
+                                        <a href="{% if level1.path is defined %} {{ path( level1.path )}} {% endif %}" class="dropdown-toggle">
+                                            <span class="">{{level1.name}}
+                                        </a>
+                                    {% else %}
+                                        <a href="{% if level1.path is defined %} {{ path( level1.path )}} {% endif %}" class="dropdown-toggle">
+                                            <span class="">{{level1.name}}
+                                        </a>
+                                    {% endif %}
+
+                                {% endif %}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endfor %}
+        </li>
+    </ul>
+    <script>
+
+        {#   var dropdown = document.getElementsByClassName("dropdown-toggle");
+
+           var i;
+
+           for (i = 0; i < dropdown.length; i++) {
+               dropdown[i].addEventListener("click", function () {
+                   this.classList.toggle("active");
+                   var dropdownContent = this.nextElementSibling;
+                   if (dropdownContent.style.display === "block") {
+                       dropdownContent.style.display = "none";
+                   } else {
+                       dropdownContent.style.display = "block";
+                   }
+               });
+           }#}
+    </script>
+{% endblock %}

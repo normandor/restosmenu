@@ -1,0 +1,125 @@
+<div class="row" style="margin-right:10px; margin-top:10px" >
+    <div class="col-md-12 container">
+        <form id="eventForm" class="form-horizontal" role="form">
+            <fieldset>
+
+                <div class="form-group">
+                    <label class="col-sm-4 col-xs-4 control-label" for="textinput">{{ 'user.lastname' | trans }}</label>
+                    <div class="col-sm-6 col-xs-6">
+                        <input type="text" class="form-control" id="lastname">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 col-xs-4 control-label" for="textinput">{{ 'user.firstname' | trans }}</label>
+                    <div class="col-sm-6 col-xs-6">
+                        <input type="text" class="form-control" id="firstname">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 col-xs-4 control-label" for="textinput">{{ 'user.user' | trans }}</label>
+                    <div class="col-sm-6 col-xs-6">
+                        <input type="text" class="form-control" id="username">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 col-xs-4 control-label" for="textinput">{{ 'user.email' | trans }}</label>
+                    <div class="col-sm-6 col-xs-6">
+                        <input type="text" class="form-control" id="email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 col-xs-4 control-label" for="textinput">{{ 'user.password' | trans }}</label>
+                    <div class="col-sm-6 col-xs-6">
+                        <input type="password" class="form-control" id="password1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 col-xs-4 control-label" for="textinput">{{ 'user.repeat_password' | trans }}</label>
+                    <div class="col-sm-6 col-xs-6">
+                        <input type="password" class="form-control" id="password2">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12 col-xs-12" style="margin-left:10px;">
+                        <div id="message"></div>
+                    </div>
+                </div>
+
+                <div class="col sm-10 col-xs-10 text-right" style="margin-left:10px;">
+                    <button name="Submit" id="submit" class="btn btn-primary" type="submit">{{ 'button.create_user' | trans }}</button>
+                </div>
+            </fieldset>
+        </form>
+    </div><!-- /.col-lg-12 -->
+</div><!-- /.row -->
+<script>
+    $("#eventForm").submit(function (event) {
+        if (event.isDefaultPrevented()) {
+            // handle the invalid form...
+            submitMSG(false, "Lleno todos los campos?");
+        } else {
+            // cancels the form submission
+            event.preventDefault();
+            submitThisForm();
+        }
+    });
+
+    function submitThisForm() {
+
+        var lastname = $("#lastname").val();
+        var firstname = $("#firstname").val();
+        var username = $("#username").val();
+        var email = $("#email").val();
+        var password1 = $("#password1").val();
+        var password2 = $("#password2").val();
+
+
+        if ((username === "") || (password1 === "") || (email === "")) {
+            $("#message").html("<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Por favor ingrese un usuario, email y contrase&ntilde;a</div>");
+        } else if (password1 !== password2) {
+            $("#message").html("<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Las contrase&ntilde;as no coinciden</div>");
+        } else {
+            $("#message").html("");
+            $.ajax({
+                type: "POST",
+                url: '{{ (path('user_add_user')) }}',
+                data: {
+                    'lastname': lastname,
+                    'firstname': firstname,
+                    'username': username,
+                    'email': email,
+                    'password1': password1
+                },
+                success: function (text) {
+                    text = JSON.parse(text);
+                    if (text['message'] === "success") {
+                        location.reload();
+                    } else {
+                        $("#message").html("<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>" + text['message'] + "</div>");
+                        enableButton();
+                    }
+                },
+                error: function (jqXHR, status, err) {
+                    alert("Hubo un error al procesar los datos.\nIntente nuevamente más tarde.");
+                    enableButton();
+                    //$('#data-dismiss-button').click();
+                }
+            });
+        }
+    }
+
+    function disableButton(theButton) {
+        setTimeout(function () {
+            $(theButton).prop('disabled', true);
+            $(theButton).text('Agregando usuario...');
+        }, 100);
+    }
+
+    function enableButton() {
+        setTimeout(function () {
+            $('#data-submit-button').prop('disabled', false);
+            $('#data-submit-button').text('Guardar');
+        }, 10);
+    }
+
+</script>

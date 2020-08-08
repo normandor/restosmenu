@@ -1,0 +1,17 @@
+{% block body %}
+    <div class="modal fade" id="editUserModal" data-backdrop="static" data-keyboard="false" style="overflow-y: auto;" role="dialog">
+        <div class="modal-dialog modal-lg" style="margin-top: 60px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="modify-incident-close" type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modificar usuario</h4>
+                </div>
+                <div class="modal-body-edit-user">
+                    <div style="margin-top: 20px; margin-bottom: 20px;">
+                        <div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

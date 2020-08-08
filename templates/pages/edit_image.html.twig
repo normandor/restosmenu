@@ -1,0 +1,69 @@
+{% block body %}
+    <style>
+        .img-thumbnail {
+            height: 150px;
+        }
+    </style>
+    <div class="row pad-lt-15">
+        {{ form_start(form) }}
+        <div class="container">
+            <div class="my-custom-class-for-errors">
+                {{ form_errors(form) }}
+            </div>
+            {{ form_row(form.name) }}
+            <h4>{{ form_label(form.imageUrl) | striptags }}</h4>
+            {% if form.vars.data.imageUrl %}
+                <img class="img-thumbnail" src="{{ asset(target_directory ~ form.vars.data.imageUrl) }}" alt="Imagen"><br>
+            {% endif %}
+            {{ form_widget(form.imageUrl) }}
+            <div class="pull-right">
+                <button id="data-submit-button" type="submit" class="btn btn-primary">{{ 'button.save' | trans }}</button>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+<script>
+    $('form[name="{{ form.vars.name }}"]').on('submit', function(e)
+    {
+        submitThisForm();
+        return false;
+    });
+
+    function submitThisForm() {
+        let form = $('form[name="{{ form.vars.name }}"]')[0];
+        let formData = new FormData(form);
+        $.ajax({
+            type: 'POST',
+            data: formData,
+            url: '{{ submitUrl }}',
+            contentType: false,
+            processData: false,
+            success: function (text) {
+                if (text.status === "success") {
+                    location.reload();
+                } else {
+                    $("#errorMessage").html("<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>" + text.message + "</div>");
+                    enableButton();
+                }
+                location.reload();
+            },
+            error: function (jqXHR, status, err) {
+                alert("Hubo un error al procesar los datos.\nIntente nuevamente más tarde.");
+                enableButton();
+            }
+        });
+    }
+    function disableButton(theButton) {
+        setTimeout(function () {
+            $(theButton).prop('disabled', true);
+            $(theButton).text('Guardando...');
+        }, 100);
+    }
+    function enableButton() {
+        setTimeout(function () {
+            $('#data-submit-button').prop('disabled', false);
+            $('#data-submit-button').text('Guardar');
+        }, 10);
+    }
+</script>

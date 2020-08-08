@@ -1,0 +1,48 @@
+{% block body %}
+    <nav class="navbar navbar-default navbar-fixed-top" style="background-color: #505559">
+        <div class="container top-panel" style="margin-left:0; margin-right:0;">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" onclick="toggleCollapseHeader();">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <img src="{{ asset('images/logo_header.png') }}" height="44px" alt="Wichisoft" />
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+                </ul>
+                <ul class="nav navbar-nav pull-right panel-menu">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle account menutop" data-toggle="dropdown" >
+                            <div class="avatar">
+                                <img src="{{ asset(app.user.avatarpath) }}" class='img-circle' alt='avatar' />
+                            </div>
+                            <i class="fa fa-angle-down pull-right"></i>
+                            <div class="user-mini pull-right">
+                                <span class="welcome">Hola, {{ app.user.firstname }} </span>
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{{ path('profile') }}">
+                                    <i class="fa fa-user"></i>
+                                    <span>Mi perfil</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('app_logout') }}">
+                                    <i class="fa fa-power-off"></i>
+                                    <span>Salir</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+
+{% endblock %}

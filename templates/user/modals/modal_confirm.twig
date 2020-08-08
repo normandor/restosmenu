@@ -1,0 +1,20 @@
+{% block body %}
+    <div class="modal fade" id="confirmModal" data-backdrop="static" data-keyboard="false" style="overflow-y: auto;" role="dialog">">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="closeDelete hidden" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabelMessage"></h4>
+                    <h4 class="modal-subtitle" id="myModalSubLabelMessage"></h4>
+                    <input type="text" id="userIdDelete" value="" class="hidden"/>
+                    <input type="text" id="sectionId" value="" class="hidden"/>
+                    <input type="text" id="elementId" value="" class="hidden"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="modal-del-btn-no">{{ 'button.cancel' | trans}}</button>
+                    <button type="button" class="btn btn-danger" id="modal-del-btn-si">{{ 'button.delete' | trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

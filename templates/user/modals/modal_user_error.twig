@@ -1,0 +1,14 @@
+{% block body %}
+    <div class="modal fade" id="errorModal" data-backdrop="static" data-keyboard="false" style="z-index: 1080 !important;" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div style="margin-top: 20px; padding-bottom: 10px;" class="alert alert-danger" role="alert">
+                        Hubo algún problema al guardar el usuario.
+                        <span id="problemaIncidente">&nbsp</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

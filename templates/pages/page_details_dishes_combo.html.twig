@@ -1,0 +1,249 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <style>
+      p {
+          font-size: 18px;
+      }
+      img.icon {
+          height: 25px;
+      }
+      .buttons {
+          margin-bottom: 15px;
+      }
+      button.addItem {
+          padding: 5px 10px;
+      }
+      .pagename {
+          margin-bottom: 15px;
+      }
+    td {
+        border: none;
+    }
+
+      a { text-decoration: none !important; }
+
+    .modal-open {margin:0 !important;}
+
+      th { text-align: center; }
+
+    .section-title {
+      color: #413E3E;
+      font-size: 24px;
+      font-weight: bold;
+      border-bottom: 1px solid #CCCCCC;
+      margin-bottom: 15px;
+    }
+
+      .title-page {
+          color: #413E3E;
+          text-align: left;
+          font-weight: bolder;
+          font-size: 20px;
+          margin-bottom: 5px;
+      }
+
+    .description {
+      font-size: 20px;
+      margin: 0px 15px 25px 15px;
+      color: #525252;
+      /*padding-left: 50px;*/
+        padding: 5px;
+    }
+
+      .description-border {
+          border: 1px solid #cccccc;
+          border-radius: 2px;
+      }
+
+      @media (min-width: 767px) {
+          .description-border {
+              width: 98%;
+          }
+      }
+    .pad-lt-15 {padding-left: 15px;} .pad-bt-15 {padding-bottom: 15px;}
+
+    .font-20 { font-size: 20px; }
+
+    .border {
+        border: 1px solid #cccccc;
+        border-radius: 5px;
+        margin: 0px;
+        padding 5px;
+    }
+
+    .mb-10 { margin-bottom: 10px; }
+
+    .inactive .ql-editor { padding:0; line-height:inherit; }
+
+    .inactive .ql-editor p { padding:inherit; margin-bottom:10px; }
+
+    .inactive .ql-toolbar { display:none; }
+
+    .inactive .ql-container.ql-snow { border:none; font-family:inherit;
+    font-size:inherit; }
+
+    .elements table, .elements td, .elements th {
+      padding: 2px;
+      border: 1px solid #cccccc;
+      border-radius: 5px;
+      text-align: left;
+    }
+      .elements td.actions {
+          text-align: center;
+      }
+  </style>
+{% endblock %}
+
+{% block body %}
+  <div id="main" class="container">
+    <div class="row">
+      <div id="sidebar-left" class="col-xs-2 col-sm-2">
+        {{
+          render(
+            controller(
+              'App\\Controller\\MenuController::index',
+              {
+                keep_open: 0,
+                route: route
+              },
+              {
+                username: user,
+                avatar: true
+              }
+            )
+          )
+        }}
+      </div>
+
+      <div id="content" class="col-xs-12 col-sm-10">
+        <div class="row">
+          <div id="breadcrumb" class="col-xs-12">
+            <a href="#" class="show-sidebar"><i class="fa fa-bars"></i></a>
+            <ol class="breadcrumbpanel pull-left">
+              <a href="#">Páginas</a>
+            </ol>
+          </div>
+        </div>
+
+        <div class="pagename row pad-lt-15 pad-bt-15">
+          <div class="col-sm">
+            <h1>
+              {{ pageName }}
+              <br />
+            </h1>
+          </div>
+        </div>
+
+          <div class="row font-20" style="margin-bottom:15px">
+              <div class="col-sm-10 mb-10">
+                  {% for category in categories %}
+
+                      <h2 style="margin-bottom: 5px;"> {{ category.name }}</h2>
+                          <h3 style="margin-bottom: 15px; font-style: italic"> {{ category.description }} ({{ category.currency }}{{ category.price }})</h3>
+
+                          <table class="elements" style="width: 100%; table-layout:fixed; margin-bottom: 30px;">
+                              <tr>
+                                  <th style="width: 45%;">
+                                      Plato
+                                  </th>
+                                  <th style="width: 45%;">
+                                      Descripcion
+                                  </th>
+                                  <th style="width: 10%;"></th>
+                              </tr>
+                              {% for dish in category.dishes %}
+                                  <tr>
+                                      <td>
+                                          {{ dish.name|raw }}
+                                      </td>
+                                      <td>
+                                          {{ dish.description|raw }}
+                                      </td>
+                                      <td class="actions">
+                                          <div class="col-sm-1 buttons" style="display: inline-block; white-space: nowrap; margin: auto;">
+                                              <img class="icon"
+                                                   src="../images/icono_less.png"
+                                                   onclick="showDeleteItem('{{ dish.id }}', '{{ category.id }}', '{{ dish.name|raw }}');"
+                                                   style="cursor: pointer;" />
+                                          </div>
+                                      </td>
+                                  </tr>
+                             {% endfor %}
+                           </table>
+                          <button type="button" title="Agregar item"
+                                  class="btn btn-success btn-lg addItem"
+                                  onClick="showAddDishToCombo({{ category.id }});">
+                              +
+                          </button>
+                      <hr>
+                  {% endfor %}
+
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+    {{ include('user/modals/modal_confirm.twig') }}
+    {{ include('user/modals/modal_general.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script type="text/javascript" src="{{ asset('build/js/quill.min.js') }}"></script>
+  <script>
+      function showAddDishToCombo(comboId) {
+          $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
+          $('.modal-body-new-user').load('../page/element/addDishToCombo/'+comboId, function () {});
+          $('.modal-title').html('Agregar plato a combo');
+          $("#newItemModal").modal('show');
+      }
+
+    function showDeleteItem(id, comboId, name) {
+        $(".modal-header #elementId").val(id);
+        $(".modal-header #sectionId").val(comboId);
+        $('#myModalLabelMessage').html(`¿Desea quitar el plato ${name} de este combo?`);
+
+        $("#confirmModal").modal('show');
+    }
+
+    var modalConfirmDelete = function (callback) {
+        $("#modal-del-btn-si").on("click", function () {
+            callback(true);
+            $("#confirmModal").modal('hide');
+        });
+
+        $("#modal-del-btn-no").on("click", function () {
+            callback(false);
+            $("#confirmModal").modal('hide');
+        });
+    };
+
+    modalConfirmDelete(function (confirm) {
+        if (confirm) {
+            let sectionId = $("#sectionId").val();
+            let elementId = $("#elementId").val();
+            let path = '{{ path('remove_dish_from_combo', {'dishId': 'elementId', 'comboId': 'sectionId'}) }}';
+            var finalPath = path.replace("sectionId", sectionId);
+            finalPath = finalPath.replace("elementId", elementId);
+
+            $.ajax({
+                url: finalPath,
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (xhr, status) {
+                    console.log(xhr);
+                    console.log(status);
+                    alert("{{ 'alert.error.processing' | trans }}");
+                }
+            });
+        } else {
+
+        }
+    });
+  </script>
+{% endblock %}

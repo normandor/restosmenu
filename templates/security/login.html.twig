@@ -1,0 +1,33 @@
+{#{% extends 'base.html.twig' %}#}
+
+{% block title %} {% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('./build/css/login.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('./build/css/bootstrap.min.css') }}"/>
+{% endblock %}
+
+{% block body %}
+    <div class="form-signin text-center">
+        <form method="post">
+            <img src="{{ asset('images/logo.jpg') }}" height="300px;" alt="Login" />
+
+            <h1 class="h3 mb-3 font-weight-normal">{{ 'login.message.connexion' | trans }}</h1>
+            <label for="inputUsername" class="sr-only">{{ 'login.message.username' | trans }}</label>
+            <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" placeholder="{{ 'login.message.username' | trans }}" required autofocus>
+            <label for="inputPassword" class="sr-only">{{ 'login.message.password' | trans }}</label>
+            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="{{ 'login.message.password' | trans }}" required>
+
+            <input type="hidden" name="_csrf_token"
+                   value="{{ csrf_token('authenticate') }}"
+                   >
+
+            <button class="btn btn-lg btn-primary btn-block" id="login" type="submit">
+                {{ 'login.message.signin' | trans }}
+            </button>
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey | trans }}</div>
+            {% endif %}
+
+        </form>
+    </div>
+{% endblock %}

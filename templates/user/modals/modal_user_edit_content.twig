@@ -1,0 +1,144 @@
+{% block head %}
+    <link rel="stylesheet" href="{{ asset('./build/css/bootstrap-multiselect.css') }}" type="text/css"/>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('./build/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('./build/js/bootstrap-multiselect.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    <style>
+        .img-thumbnail {
+            height: 90px;
+        }
+        select::-ms-expand {
+            border:none;
+            background:#fff;
+            display: none;
+        }
+        .multiselect-container {
+            position: relative !important;
+        }
+    </style>
+    <div class="row" style="margin-right:10px; margin-top:10px" >
+        <div class="col-md-12 container-fluid">
+
+            <form id="eventForm" class="form-horizontal" role="form">
+                <fieldset>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="textinput">{{ 'user.user_active' | trans }}</label>
+                        <div class="col-sm-4">
+                            <select id="usuario_activo" class="selectpicker form-control verdeoscuro" name="incident-type">
+                                {% for active_option in options.yes_no %}
+                                    <option value='{{ active_option.value }}' class='verdeoscuro'
+                                            {% if active_option.value == verified %}
+                                                selected
+                                            {% endif %}
+                                            >{{ active_option.name | trans }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <label class="col-sm-2 control-label" for="textinput">{{ 'user.access_dashboard' | trans }}</label>
+                        <div class="col-sm-4">
+                            <select id="acceso_tablero" class="selectpicker form-control verdeoscuro" name="incident-type">
+                                {% for dashboard_option in options.yes_no %}
+                                    <option value='{{ dashboard_option.value }}' class='verdeoscuro'
+                                            {% if dashboard_option.value == access_panel %}
+                                                selected
+                                            {% endif %}
+                                            >{{ dashboard_option.name | trans }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 col-xs-2 control-label" for="textinput">{{ 'user.lastname' | trans }}</label>
+                        <div class="col-sm-4 col-xs-4">
+                            <input type="text" class="form-control" id="lastname" value="{{ lastname }}">
+                        </div>
+
+                        <label class="col-sm-2 col-xs-2 control-label" for="textinput">{{ 'user.firstname' | trans }}</label>
+                        <div class="col-sm-4 col-xs-4">
+                            <input type="text" class="form-control" id="firstname" value="{{ firstname }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 col-xs-2 control-label" for="textinput">{{ 'user.user' | trans }}</label>
+                        <div class="col-sm-4 col-xs-4">
+                            <input type="text" class="form-control" id="username" disabled value="{{ username }}">
+                        </div>
+
+                        <label class="col-sm-2 col-xs-2 control-label" for="textinput">{{ 'user.email' | trans }}</label>
+                        <div class="col-sm-4 col-xs-4">
+                            <input type="text" class="form-control" id="email" value="{{ email }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="pull-right">
+                                <button id="data-dismiss-button" type="button" class="btn btn-default" data-dismiss="modal">{{ 'button.cancel' | trans }}</button>
+                                <button id="data-submit-button" type="button" onclick="submitUpdateUserForm({{ id }});
+                                        disableButton(this);" class="btn btn-primary">{{ 'button.save' | trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#role').multiselect();
+            $('#zonas_asignadas').multiselect();
+        });
+
+        $('#role').multiselect({
+            onChange: function (option, checked, select) {
+                $("#role option:selected").each(function () {
+                    // si la opcion de admin esta seleccionada y selecciono otra, la deselecciono
+                    if (this.value == "readwriteapprove") {
+                        $('#role').multiselect('deselect', "readwriteapprove");
+                    }
+                });
+                if ($(option).val() == "") {
+                    $('#role').multiselect('deselectAll', false);
+                    $('#role').multiselect('select', "");
+                } else {
+                    $('#role').multiselect('deselect', "");
+                    if ($(option).val() == "readwriteapprove") {
+                        $('#role').multiselect('deselectAll', false);
+                        $('#role').multiselect('select', "readwriteapprove");
+                    }
+                    if ($(option).val() == "readanomalies") {
+                        $('#role').multiselect('deselect', "");
+                        $('#role').multiselect('deselect', "readwriteapprove");
+                        $('#role').multiselect('deselect', "readwrite");
+                    }
+                    if ($(option).val() == "readwrite") {
+                        $('#role').multiselect('deselect', "");
+                        $('#role').multiselect('deselect', "readwriteapprove");
+                        $('#role').multiselect('deselect', "readanomalies");
+                    }
+                }
+            }
+        });
+        $('#zonas_asignadas').multiselect({
+            onChange: function (option, checked, select) {
+
+                if ($(option).val() == "0") {
+                    $('#zonas_asignadas').multiselect('deselectAll', false);
+                    $('#zonas_asignadas').multiselect('select', "0");
+                } else {
+                    $('#zonas_asignadas').multiselect('deselect', "0");
+                }
+            }
+        });
+
+    </script>
+{% endblock %}
