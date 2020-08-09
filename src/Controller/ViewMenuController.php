@@ -4,11 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Combo;
-use App\Entity\Currency;
 use App\Entity\Restaurant;
-use App\Service\CategoryService;
-use App\Service\ComboService;
+use App\Entity\SettingsPage;
 use App\Service\DishService;
+use App\Service\SettingsPageService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

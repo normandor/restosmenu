@@ -30,7 +30,7 @@
           <div id="breadcrumb" class="col-xs-12">
             <a href="#" class="show-sidebar"><i class="fa fa-bars"></i></a>
             <ol class="breadcrumbpanel pull-left">
-              <a href="#">Páginas</a>
+              <a href="#">Restaurant</a>
             </ol>
           </div>
         </div>
@@ -46,58 +46,56 @@
 
           <div class="row font-20" style="margin-bottom:15px">
               <div class="col-sm-10 mb-10">
+                  <h2>Orden de las categorias e imagenes</h2>
+              </div>
+              <div class="col-sm-10 mb-10">
                   <table>
                       <tr>
                           <th>
-                              Combo
+                              Item
                           </th>
                           <th>
-                              Descripcion
+                              Posicion
                           </th>
                           <th>
-                              Imagen
+                              Visible
                           </th>
-                          <th>
-                              Precio
-                          </th>
-                          <th style="width: 10%;"></th>
+                          <th></th>
                       </tr>
-                      {% for combo in combos %}
+                      {% for setting in settings %}
                           <tr>
-                              <td>
-                                  {{ combo.name|raw }}
+                              <td class="left">
+                                  {{ setting.name }}
                               </td>
-                              <td>
-                                  {{ combo.description|raw }}
+                              <td class="left">
+                                  <span style="font-family: {{ setting.font_family }};">{{ setting.font_family }}</span>
                               </td>
-                              <td>
-                                  {{ combo.imageUrl|raw }}
-                              </td>
-                              <td>
-                                  {{ combo.price|raw }}
+                              <td class="left">
+                                  {{ setting.font_size }}
                               </td>
                               <td class="actions">
-                                  <div class="col-sm-1 buttons" style="display: inline-block; white-space: nowrap; margin: auto;">
+                                  <div class="buttons action-buttons">
                                       <img class="icon" src="../images/icono_edit.png"
-                                           onclick="showEditCombo({{ combo.id }});"
+                                           onclick="showEditStyle(1);"
                                            style="cursor: pointer;" />
 
-                                      <img class="icon"
-                                           src="../images/icono_delete.png"
-                                           onclick="showDeleteItem('{{ combo.id }}', '{{ combo.name|raw }}');"
-                                           style="cursor: pointer;" />
-                                  </div>
-                              </td>
+{#                                      #}{#                                      <img class="icon"#}
+{#                                      #}{#                                           src="../images/icono_delete.png"#}
+{#                                      #}{#                                           onclick="showDeleteItem('{{ restaurant.id }}', '{{ restaurant.name|raw }}');"#}
+{#                                      #}{#                                           style="cursor: pointer;" />#}
+{#                                  </div>#}
+{#                              </td>#}
                           </tr>
 
                       {% endfor %}
                   </table>
-                  <button type="button" title="Agregar item"
-                          class="btn btn-success btn-lg addItem"
-                          onClick="showAddCategory();">
-                      +
-                  </button>
+                  {#                  <button type="button" title="Agregar item"#}
+                  {#                          class="btn btn-success btn-lg addItem"#}
+                  {#                          onClick="showAddRestaurant();">#}
+                  {#                      +#}
+                  {#                  </button>#}
               </div>
+              {#                  Restaurant seleccionado: <b>{{ selectedRestaurant }}</b>#}
           </div>
       </div>
     </div>
@@ -108,26 +106,25 @@
 
 {% block javascripts %}
   {{ parent() }}
-  <script type="text/javascript" src="{{ asset('build/js/quill.min.js') }}"></script>
   <script>
-    function showAddCategory() {
+    function showAddRestaurant() {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-        $('.modal-body-new-user').load('../page/element/addCombo/', function () {});
-        $('.modal-title').html('Nuevo combo');
+        $('.modal-body-new-user').load('../page/element/addRestaurant/', function () {});
+        $('.modal-title').html('Nuevo restaurant');
         $("#newItemModal").modal('show');
     }
 
     function showDeleteItem(id, name) {
         $(".modal-header #sectionId").val(id);
-        $('#myModalLabelMessage').html(`¿Confirma la eliminacion del combo ${name}?`);
+        $('#myModalLabelMessage').html(`¿Confirma la eliminacion de ${name}?`);
 
         $("#confirmModal").modal('show');
     }
 
-    function showEditCombo(id) {
+    function showEditRestaurant(id) {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-        $('.modal-body-new-user').load('../page/element/editCombo/'+id, function () {});
-        $('.modal-title').html('Editar combo');
+        $('.modal-body-new-user').load('../page/element/editRestaurant/'+id, function () {});
+        $('.modal-title').html('Editar restaurant');
         $("#newItemModal").modal('show');
     }
 
@@ -146,7 +143,7 @@
     modalConfirmDelete(function (confirm) {
         if (confirm) {
             let sectionId = $("#sectionId").val();
-            let path = '{{ path('remove_combo', {'id': 'sectionId'}) }}';
+            let path = '{{ path('remove_restaurant', {'id': 'sectionId'}) }}';
             let finalPath = path.replace("sectionId", sectionId);
 
             $.ajax({
@@ -154,16 +151,9 @@
                 type: 'POST',
                 dataType: 'json',
                 success: function (data) {
-                    if (data.status === 'nok') {
-                        alert(data.message);
-                        return false;
-                    }
-                    //console.log(data);
                     location.reload();
                 },
                 error: function (xhr, status) {
-                    console.log(xhr);
-                    console.log(status);
                     alert("{{ 'alert.error.processing' | trans }}");
                 }
             });

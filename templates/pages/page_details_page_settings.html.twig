@@ -1,0 +1,245 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+  {{ parent() }}
+{% endblock %}
+
+{% block body %}
+  <div id="main" class="container">
+    <div class="row">
+      <div id="sidebar-left" class="col-xs-2 col-sm-2">
+        {{
+          render(
+            controller(
+              'App\\Controller\\MenuController::index',
+              {
+                keep_open: 0,
+                route: route
+              },
+              {
+                username: user,
+                avatar: true
+              }
+            )
+          )
+        }}
+      </div>
+
+      <div id="content" class="col-xs-12 col-sm-10">
+        <div class="row">
+          <div id="breadcrumb" class="col-xs-12">
+            <a href="#" class="show-sidebar"><i class="fa fa-bars"></i></a>
+            <ol class="breadcrumbpanel pull-left">
+              <a href="#">Restaurant</a>
+            </ol>
+          </div>
+        </div>
+
+        <div class="pagename row pad-lt-15 pad-bt-15">
+          <div class="col-sm">
+            <h1>
+              {{ pageName }}
+              <br />
+            </h1>
+          </div>
+        </div>
+
+          <div class="row font-20" style="margin-bottom:15px">
+              <div class="col-sm-10 mb-10">
+                  <h2>Apariencia de la carta</h2>
+              </div>
+              <div class="col-sm-10 mb-10">
+                  <table>
+                      <tr>
+                          <th>
+                              Item
+                          </th>
+                          <th>
+                              Fuente
+                          </th>
+                          <th>
+                              Tamano de letra
+                          </th>
+                          <th>
+                              Color de letra
+                          </th>
+                          <th>
+                              Color de fondo
+                          </th>
+                      </tr>
+                      {% for key, setting in settings %}
+                          <tr>
+                              <td class="left">
+                                  {{ setting.name }}
+                              </td>
+                              <td class="left">
+                                  <span href="#" style="cursor: pointer; font-family: {{ setting.properties["font-family"] }};"
+                                        onClick="showFontSelector('{{ key }}', 'font-family');"
+                                  >
+                                      {{ setting.properties["font-family"] }}
+                                  </span>
+                              </td>
+                              <td class="center">
+                                  <select id="fontsize_{{ key }}" data-itemid="{{ key }}" data-property="font-size">
+                                      {% for font_option in select.font_options %}
+                                        <option value="{{ font_option }}"
+                                            {{  (setting.properties["font-size"] == font_option) ? 'selected' : '' }}
+                                        >
+                                            {{ font_option }}
+                                        </option>
+                                      {% endfor %}
+                                  </select>
+                              </td>
+                              <td class="center">
+                                  {% if setting.properties.color != '' %}
+                                      <label for="color"></label>
+                                      <input type="color" value="{{ setting.properties.color }}" id="color_{{ key }}" data-itemid="{{ key }}" data-property="color">
+                                  {% endif %}
+                              </td>
+                              <td class="center">
+                                  {% if setting.properties["background-color"] != '' %}
+                                    <label for="backgroundColor-{{ key }}"></label>
+                                      <input type="color" value="{{ setting.properties["background-color"] }}" id="backgroundColor_{{ key }}" data-itemid="{{ key }}"  data-property="background-color">
+                                  {% endif %}
+                              </td>
+                          </tr>
+
+                      {% endfor %}
+                  </table>
+                  {#                  <button type="button" title="Agregar item"#}
+                  {#                          class="btn btn-success btn-lg addItem"#}
+                  {#                          onClick="showAddRestaurant();">#}
+                  {#                      +#}
+                  {#                  </button>#}
+              </div>
+              {#                  Restaurant seleccionado: <b>{{ selectedRestaurant }}</b>#}
+          </div>
+      </div>
+    </div>
+  </div>
+    {{ include('user/modals/modal_confirm_large.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script type="text/javascript" src="{{ asset('build/js/nativeColorPicker.js') }}"></script>
+  <script>
+      {% for key, setting in settings %}
+          window.nativeColorPicker.init('color-{{ key }}');
+          window.nativeColorPicker.init('backgroundColor-{{ key }}');
+      {% endfor %}
+      window.addEventListener("load", startup, false);
+
+      function startup() {
+          {% for key, setting in settings %}
+                color_{{ key }} = document.querySelector("#color_{{ key }}");
+                if (typeof(color_{{ key }}) != "undefined" && color_{{ key }} != null) {
+                    // fontColor.addEventListener("input", updateFirst, false);
+                    color_{{ key }}.addEventListener("change", updateAll, false);
+                    color_{{ key }}.select();
+                }
+
+                backgroundColor_{{ key }} = document.querySelector("#backgroundColor_{{ key }}");
+                if (typeof(backgroundColor_{{ key }}) != "undefined" && backgroundColor_{{ key }} != null) {
+                    backgroundColor_{{ key }}.addEventListener("change", updateAll, false);
+                    backgroundColor_{{ key }}.select();
+                }
+
+              fontsize_{{ key }} = document.querySelector("#fontsize_{{ key }}");
+              if (typeof(fontsize_{{ key }}) != "undefined" && fontsize_{{ key }} != null) {
+                  fontsize_{{ key }}.addEventListener("change", updateAll, false);
+              }
+          {% endfor %}
+      }
+
+      function updateFirst(event) {
+          var p = document.querySelector("td");
+
+          if (p) {
+              p.style.color = event.target.value;
+          }
+      }
+
+      function updateAll(event) {
+          var value;
+          if (typeof(event.target.selectedIndex) != "undefined") {
+              value = event.target.value;
+          } else {
+              value = event.target.value.replace("#", "");
+          }
+
+          let itemId = event.target.getAttribute('data-itemid');
+          let property = event.target.getAttribute('data-property');
+
+          let path = '{{ path('update_setting', {'id': 'itemId', 'property': 'property', 'value': 'value'}) }}';
+
+          var finalPath = path.replace("itemId", itemId);
+          finalPath = finalPath.replace("property", property);
+          finalPath = finalPath.replace("value", value);
+
+          $.ajax({
+              url: finalPath,
+              type: 'POST',
+              dataType: 'json',
+              success: function (data) {
+                  location.reload();
+              },
+              error: function (xhr, status) {
+                  alert("{{ 'alert.error.processing' | trans }}");
+              }
+          });
+      }
+
+    function showFontSelector(id, name) {
+        $(".modal-header #key").val(id);
+        $(".modal-header #property").val(name);
+        console.log($(".modal-header #key").val());
+
+        $('#myModalLabelMessage').load("/page/element/select-font/" + id );
+        $('#modal-del-btn-si').html('Aceptar');
+
+        $("#confirmModal").modal('show');
+    }
+
+    var modalConfirmFontChange = function (callback) {
+        $("#modal-del-btn-si").on("click", function () {
+            callback(true);
+            $("#confirmModal").modal('hide');
+        });
+
+        $("#modal-del-btn-no").on("click", function () {
+            callback(false);
+            $("#confirmModal").modal('hide');
+        });
+    };
+
+    modalConfirmFontChange(function (confirm) {
+        if (confirm) {
+            let key = $("#key").val();
+            let property = $("#property").val();
+            let value = $("#value").val();
+
+            let path = '{{ path('update_setting', {'id': 'key', 'property': 'property', 'value': 'value'}) }}';
+
+            var finalPath = path.replace("key", key);
+            finalPath = finalPath.replace("property", property);
+            finalPath = finalPath.replace("value", value);
+
+            $.ajax({
+                url: finalPath,
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (xhr, status) {
+                    alert("{{ 'alert.error.processing' | trans }}");
+                }
+            });
+
+        } else {
+
+        }
+    });
+  </script>
+{% endblock %}

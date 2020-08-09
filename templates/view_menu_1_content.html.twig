@@ -1,27 +1,30 @@
 <style>
     body {
-        background-color: #ebe3cc;
-        color: #664434;
+        background-color: {{ properties.menu_body.properties["background-color"] }};
+        color: {{ properties.menu_body.properties.color }};
     }
 
     .underline {
         border-bottom: 1px solid currentColor;
         border-top: 1px solid currentColor;
         padding: 15px 0px 15px 0px;
-        /*width: 50%;*/
-        /*margin-left: 25%;*/
     }
 
-    .combo-description {
-        font-size: 20px;
+    {% for class in properties|keys %}
+    .{{ class }} {
+    {% for property in properties[class].properties|keys %}
+    {% if properties[class].properties[property] != '' %}
+    {{ property }}: {{ properties[class].properties[property]|raw }};
+    {% endif %}
+    {% endfor %}
     }
-    .combo-price {
-        font-size: 20px;
-    }
+    {% endfor %}
+
 </style>
 <div class="row-fluid" style="padding-top: 30px">
+
     <div class="col-xs-12 col-sm-12 text-center">
-        <h1>{{ titulo }}</h1>
+        <h1 class="menu_restaurant_title">{{ titulo }}</h1>
         {% if logo is not null %}
             <img src="{{ asset(logo) }}">
         {% endif %}
@@ -29,29 +32,31 @@
         <div class="row" style="visibility: visible; position: relative;">
             <br>
             {% for entrada in restoMenu %}
-                <div style="margin-top: 20px;" class="col-sm-12 col-md-12">
-                    <h2 class="underline">
-                        {{ entrada.categoria | nl2br }}
-                        {% if entrada.description is defined %}
-                            <div class="combo-description">{{ entrada.description | nl2br }}</div>
-                        {% endif %}
-                        {% if entrada.price is defined %}
-                            <div class="combo-price">{{ entrada.currency }}&nbsp;{{ entrada.price | nl2br }}</div>
-                        {% endif %}
-                    </h2>
-                </div>
-
-                {% for item in entrada.items %}
+                {% if entrada.items | length > 0 %}
                     <div style="margin-top: 20px;" class="col-sm-12 col-md-12">
-                        <h4><b>
-                                {%  if item.count is defined %}{{ item.count}} x {% endif %}
-                                {{ item.label | nl2br }}</b></h4>
-                        <h4><i>{{ item.descripcion | nl2br }}</i></h4>
-                        {% if item.price is defined %}
-                            <h4>{{ item.currency }}&nbsp;{{ item.price | nl2br }}</h4>
-                        {% endif %}
+                        <h2 class="underline">
+                            <span class="{{ entrada.class }}">{{ entrada.categoria | nl2br }}</span>
+                            {% if entrada.description is defined %}
+                                <div class="categoria-description">{{ entrada.description | nl2br }}</div>
+                            {% endif %}
+                            {% if entrada.price is defined %}
+                                <div class="promo-price">{{ entrada.currency }}&nbsp;{{ entrada.price | nl2br }}</div>
+                            {% endif %}
+                        </h2>
                     </div>
-                {% endfor %}
+
+                    {% for item in entrada.items %}
+                        <div style="margin-top: 20px;" class="col-sm-12 col-md-12">
+                            <h4><b>
+                                    {%  if item.count is defined %}{{ item.count}} x {% endif %}
+                                    {{ item.label | nl2br }}</b></h4>
+                            <h4><i>{{ item.descripcion | nl2br }}</i></h4>
+                            {% if item.price is defined %}
+                                <h4>{{ item.currency }}&nbsp;{{ item.price | nl2br }}</h4>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% endif %}
                 <div style="margin-bottom: 20px;">&nbsp;</div>
             {% endfor %}
         </div>

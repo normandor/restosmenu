@@ -1,0 +1,39 @@
+{% block scripts %}
+    <script>
+        selectedFont = "";
+        selectedIndex = "";
+
+        function setSelectedFont(f)
+        {
+            document.getElementById('sel_'+selectedIndex).innerHTML = '';
+            selectedIndex = f.getAttribute('data-index');
+            document.getElementById('sel_'+selectedIndex).innerHTML = '-->';
+            selectedFont = f.style.fontFamily;
+            $(".modal-header #value").val(selectedFont);
+        }
+    </script>
+{% endblock %}
+
+<div class="row" style="margin-right:10px; margin-top:10px" >
+    <div class="col-md-12 container">
+        <h2>{{ title | trans}}</h2>
+        <h3 style="margin: 30px 0px 30px 0px">{{ present | trans}} <span style="font-family: {{ selected }}"> {{ selected }} </span></h3>
+        <h4 style="margin: 30px 0px 15px 0px"><u>{{ subtitle | trans}}</u></h4>
+        <div>
+        {% for font in fonts %}
+            <div class="col-md-1 text-right" id="sel_{{ loop.index }}">
+                {% if selected == font %}
+                    <script>
+                        selectedFont = "{{ font }}";
+                        selectedIndex = {{ loop.index }};
+                    </script>
+                    -->
+                {% endif %}
+            </div>
+            <div class="col-md-11">
+                <div data-index="{{ loop.index }}" onClick="setSelectedFont(this)" style="cursor: pointer; padding: 5px 0px 5px 0px; font-family: {{ font }}">{{ font }}</div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+</div>

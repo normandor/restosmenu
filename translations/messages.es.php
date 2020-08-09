@@ -2,16 +2,17 @@
 
 return array(
     'alert.error.processing' => 'Error al procesar datos',
-    'breadcrumbs.index' => 'Indice',
+    'breadcrumbs.index' => 'Inicio',
     'button.cancel' => 'Cancelar',
     'button.create_user' => 'Crear usuario',
     'button.delete' => 'Borrar',
     'button.new_user' => 'Nuevo usuario',
     'button.save' => 'Guardar',
     'description' => 'Descripción',
+    'category' => 'Categoría',
     'element.label' => 'Nombre',
     'element.link' => 'Link',
-    'index.welcomemessage' => 'Bienvenidos al tablero de mando',
+    'index.welcomemessage' => 'Bienvenidos',
     'login.error.loginerror' => 'Error en usuario o contraseña',
     'login.message.connexion' => 'Conexión',
     'login.message.password' => 'Contraseña',
@@ -39,6 +40,9 @@ return array(
     'Contraseña' => 'Contraseña',
     'Repetir contraseña' => 'Repetir contraseña',
     'notfound.title' => 'Página no encontrada',
-    'notfound.message' => ''
+    'notfound.message' => '',
+    'select_font.title' => 'Tipo de letra',
+    'select_font.select_font' => 'Seleccione el tipo de letra:',
+    'select_font.present' => 'Letra actual: ',
 );
 

@@ -14,7 +14,7 @@
             <div class="col-lg-3" id="logo-image">
                 <h4>{{ form_label(form.logoUrl) | striptags }}</h4>
                 {% if form.vars.data.logoUrl %}
-                    <img class="img-thumbnail" src="{{ asset(form.vars.data.logoUrl) }}" alt="Imagen"><br>
+                    <img class="img-thumbnail-logo" src="{{ asset(form.vars.data.logoUrl) }}" alt="Imagen"><br>
                 {% endif %}
                 {{ form_widget(form.logoUrl) }}
             </div>

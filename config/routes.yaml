@@ -7,6 +7,10 @@ index:
         path: /dishes
         permanent: true
 
+homepage:
+    path:       /dishes
+    controller: App\Controller\PageController::showDishes
+
 dashboard:
     path: /dashboard
     controller: App\Controller\DashboardController::index
@@ -43,6 +47,12 @@ view_menu_2:
 show_restaurant:
     path:       /restaurants
     controller: App\Controller\PageController::showRestaurants
+show_page_settings:
+    path:       /page-settings
+    controller: App\Controller\PageController::showPageSettings
+show_page_order:
+    path:       /page-order
+    controller: App\Controller\PageController::showPageOrder
 show_categories:
     path:       /categorias
     controller: App\Controller\PageController::showCategories
@@ -91,12 +101,9 @@ modal_data_add_user:
 user_add_user:
     path:       /user/add-user/
     controller: App\Controller\UserController::addUser
-show_modal_add_indicacion:
-    path:       /page/element/addIndicacion/{pageId}
-    controller: App\Controller\IndicacionController::modalShowAddElement
-submit_add_indicacion:
-    path:       /page/element/submitIndicacion/{pageId}
-    controller: App\Controller\IndicacionController::submitForm
+show_modal_select_font:
+    path:       /page/element/select-font/{key}
+    controller: App\Controller\PageController::showSelectFont
 show_modal_edit_image:
     path:       /page/element/editImage/{imageId}
     controller: App\Controller\ImageController::editImage
@@ -187,3 +194,7 @@ api_login:
 api_logout:
     path:       /api/logout
     controller: App\Controller\Api\SecurityController::logout
+
+update_setting:
+    path:       /page/updateSetting/{id}/{property}/{value}
+    controller: App\Controller\SettingsPageController::editSetting
