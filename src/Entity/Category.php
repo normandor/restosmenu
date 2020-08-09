@@ -79,6 +79,13 @@ class Category
      */
     private $restaurantId;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="order", type="integer", nullable=false)
+     */
+    private $order;
+
     public function getName(): string
     {
         return $this->name;
@@ -162,5 +169,15 @@ class Category
     public function setCategoryType(string $categoryType): void
     {
         $this->categoryType = $categoryType;
+    }
+
+    public function getOrder(): int
+    {
+        return $this->order;
+    }
+
+    public function setOrder($order): void
+    {
+        $this->order = $order;
     }
 }
