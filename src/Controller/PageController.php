@@ -20,6 +20,9 @@ class PageController extends AbstractController
     const ALLOWED_DOMS = '<p><b><strong><a><i><br><u>';
     const KEY_FOR_LIST = 'elements';
     const baseUrl = '/restaurant/';
+
+    const CATEGORY_BASICO = 'basico';
+    const CATEGORY_COMBO = 'combo';
 //    const baseUrl = 'https://restos.wichisoft.com.ar/restaurant/';
 
     public function __construct()
@@ -45,7 +48,10 @@ class PageController extends AbstractController
     public function showCategories(PagesService $pagesService, Request $request)
     {
         $categories = $this->getDoctrine()->getRepository(Category::class)
-            ->getEnabledCategoriesForRestaurant($this->getUser()->getRestaurantId());
+            ->findBy([
+                'restaurantId' => $this->getUser()->getRestaurantId(),
+                'categoryType' => self::CATEGORY_BASICO,
+            ]);
 
         $categoriesArray = [];
         /** @var Category $category */
@@ -56,7 +62,7 @@ class PageController extends AbstractController
             ];
         }
 
-        return $this->render('pages/page_details.html.twig', [
+        return $this->render('pages/page_details_categories.html.twig', [
             'pageName' => 'Categorias',
             'itemTitle' => 'Categoria',
             'route' => $request->get('_route'),
@@ -73,8 +79,11 @@ class PageController extends AbstractController
      */
     public function showCombos(PagesService $pagesService, Request $request)
     {
-        $combos = $this->getDoctrine()->getRepository(Combo::class)
-            ->getEnabledCombosForRestaurant($this->getUser()->getRestaurantId());
+        $combos = $this->getDoctrine()->getRepository(Category::class)
+            ->findBy([
+                'restaurantId' => $this->getUser()->getRestaurantId(),
+                'categoryType' => self::CATEGORY_COMBO,
+            ]);
 
         $combosArray = [];
         /** @var Combo $combo */
@@ -277,11 +286,11 @@ class PageController extends AbstractController
      */
     public function showDishesCombos(PagesService $pagesService, Request $request)
     {
-        $combos = $this->getDoctrine()->getRepository(Combo::class)
-            ->findBy(
-                ['enabled' => 1, 'restaurantId' => $this->getUser()->getRestaurantId()],
-                ['id' => 'ASC']
-            );
+        $combos = $this->getDoctrine()->getRepository(Category::class)
+            ->findBy([
+                'restaurantId' => $this->getUser()->getRestaurantId(),
+                'categoryType' => PageController::CATEGORY_COMBO,
+            ]);
 
         $returnArray = [];
         /** @var Combo $combo */

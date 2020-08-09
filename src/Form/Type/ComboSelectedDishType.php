@@ -2,9 +2,10 @@
 
 namespace App\Form\Type;
 
-use App\Entity\Combo;
+use App\Controller\PageController;
+use App\Entity\Category;
 use App\Entity\ComboDish;
-use App\Repository\ComboRepository;
+use App\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -15,12 +16,12 @@ use Symfony\Component\Security\Core\Security;
 
 class ComboSelectedDishType extends AbstractType
 {
-    private $comboRepository;
+    private $categoryRepository;
     private $user;
 
-    public function __construct(ComboRepository $comboRepository, Security $security)
+    public function __construct(CategoryRepository $categoryRepository, Security $security)
     {
-        $this->comboRepository = $comboRepository;
+        $this->categoryRepository = $categoryRepository;
         $this->user = $security->getUser();
     }
 
@@ -30,13 +31,15 @@ class ComboSelectedDishType extends AbstractType
             ->add('comboId',
                 EntityType::class,
                 [
-                    'class' => Combo::class,
-                    'query_builder' => function (ComboRepository $cr) {
+                    'class' => Category::class,
+                    'query_builder' => function (CategoryRepository $cr) {
                         return $cr->createQueryBuilder('u')
                             ->where('u.enabled = :enabled')
                             ->andWhere('u.restaurantId = :restaurantId')
+                            ->andWhere('u.categoryType = :categoryType')
                             ->setParameter('enabled',1)
                             ->setParameter('restaurantId', $this->user->getRestaurantId())
+                            ->setParameter('categoryType', PageController::CATEGORY_COMBO)
                             ->orderBy('u.name', 'ASC');
                     },
                     'choice_label' => 'name',
@@ -51,7 +54,7 @@ class ComboSelectedDishType extends AbstractType
         $builder->get('comboId')
             ->addModelTransformer(new CallbackTransformer(
                 function ($comboIdAsInt) {
-                    return $this->comboRepository->findOneBy(['id' => $comboIdAsInt]);
+                    return $this->categoryRepository->findOneBy(['id' => $comboIdAsInt]);
                 },
                 function ($comboIdAsObject) {
                     return $comboIdAsObject->getId();

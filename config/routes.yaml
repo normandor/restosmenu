@@ -112,7 +112,7 @@ show_modal_edit_category:
     controller: App\Controller\CategoryController::editCategory
 show_modal_edit_combo:
     path:       /page/element/editCombo/{comboId}
-    controller: App\Controller\ComboController::editCombo
+    controller: App\Controller\CategoryController::editCombo
 show_modal_edit_restaurant:
     path:       /page/element/editRestaurant/{restaurantId}
     controller: App\Controller\RestaurantController::edit
@@ -130,7 +130,7 @@ show_modal_add_category:
     controller: App\Controller\CategoryController::modalShowAddCategory
 show_modal_add_combo:
     path:       /page/element/addCombo/
-    controller: App\Controller\ComboController::modalShowAddCombo
+    controller: App\Controller\CategoryController::modalShowAddCombo
 show_modal_add_dish:
     path:       /page/element/addDish/
     controller: App\Controller\DishController::modalShowAddDish
@@ -157,10 +157,10 @@ submit_add_category:
     controller: App\Controller\CategoryController::submitForm
 submit_add_combo:
     path:       /page/element/submitCombo/
-    controller: App\Controller\ComboController::submitForm
+    controller: App\Controller\CategoryController::submitFormAddCombo
 submit_add_dish:
     path:       /page/element/submitDish/
-    controller: App\Controller\DishController::submitForm
+    controller: App\Controller\DishController::submitFormAddDish
 submit_add_dish_to_combo:
     path:       /page/element/submitDishToCombo/
     controller: App\Controller\DishController::submitFormDishToCombo
@@ -172,10 +172,10 @@ remove_restaurant:
     controller: App\Controller\RestaurantController::remove
 remove_category:
     path:       /page/element/removeCategory/{id}
-    controller: App\Controller\CategoryController::removeCategory
+    controller: App\Controller\CategoryController::remove
 remove_combo:
     path:       /page/element/removeCombo/{id}
-    controller: App\Controller\ComboController::removeCombo
+    controller: App\Controller\CategoryController::remove
 remove_dish:
     path:       /page/element/removeDish/{id}
     controller: App\Controller\DishController::remove

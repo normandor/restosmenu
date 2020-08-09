@@ -18,15 +18,4 @@ class CategoryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Category::class);
     }
-
-    /**
-     * @param int $restaurantId
-     */
-    public function getEnabledCategoriesForRestaurant(int $restaurantId)
-    {
-        return $this->findBy(
-            ['enabled' => 1, 'restaurantId' => $restaurantId],
-            ['id' => 'ASC']
-        );
-    }
 }

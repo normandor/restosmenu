@@ -4,15 +4,13 @@ namespace App\Service;
 
 use App\Entity\ComboDish;
 use App\Entity\Dish;
-use App\Entity\Image;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DishService
 {
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager, TranslatorInterface $translator)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\ComboDish;
+use App\Entity\Currency;
 use App\Entity\Dish;
 use App\Form\Type\ComboDishType;
 use App\Form\Type\ComboSelectedDishType;
@@ -25,6 +26,47 @@ class DishController extends AbstractController
         return $this->render('user/modals/modal_new_element.twig', [
             'form' => $form->createView(),
             'submitUrl' => $this->generateUrl('submit_add_dish'),
+        ]);
+    }
+
+    public function submitFormAddDish(Request $request)
+    {
+        /** @var Dish $dish */
+        $dish = new Dish();
+
+        $form = $this->createForm(DishType::class, $dish, ['csrf_protection' => false]);
+        $form->handleRequest($request);
+        $status = 'error';
+        $message = '';
+
+        if ($request->isMethod('POST')) {
+            if ($form->isValid()) {
+
+                $dish = $form->getData();
+
+                $entityManager = $this->getDoctrine()->getManager();
+                $dish->setEnabled(1);
+                $dish->setRestaurantId($this->getUser()->getRestaurantId());
+
+                /** @var Currency $currency */
+                $currency = $this->getDoctrine()->getRepository(Currency::class)->findOneBy(['id' => 1]);
+                $dish->setCurrency($currency);
+
+                $entityManager->persist($dish);
+                $entityManager->flush();
+
+                $status = 'success';
+                $message = 'guardado';
+            } else {
+                foreach ($form->getErrors(true, false) as $error) {
+                    $message .= $error->current()->getMessage();
+                }
+            }
+        }
+
+        return $this->json([
+            'status' => $status,
+            'message' => $message
         ]);
     }
 
@@ -64,7 +106,7 @@ class DishController extends AbstractController
 
         return $this->render('user/modals/modal_new_element.twig', [
             'form' => $form->createView(),
-            'subtitle' => 'Agregar "'.$dish->getName().'"" a:',
+            'subtitle' => 'Agregar "'.$dish->getName().'" a:',
             'submitUrl' => $this->generateUrl('submit_add_selected_dish_to_combo'),
         ]);
     }
@@ -172,40 +214,6 @@ class DishController extends AbstractController
             'route' => $request->get('_route'),
             'form' => $form->createView(),
             'submitUrl' => $this->generateUrl('show_modal_edit_dish', ['dishId' => $dishId]),
-        ]);
-    }
-
-    public function submitForm(Request $request, PagesService $pagesService, FileUploader $fileUploader)
-    {
-        $dish = new Dish();
-
-        $form = $this->createForm(DishType::class, $dish, ['csrf_protection' => false]);
-        $form->handleRequest($request);
-        $status = 'error';
-        $message = '';
-
-        if ($request->isMethod('POST')) {
-            if ($form->isValid()) {
-
-                $dish = $form->getData();
-
-                $entityManager = $this->getDoctrine()->getManager();
-                $dish->setEnabled(1);
-                $entityManager->persist($dish);
-                $entityManager->flush();
-
-                $status = 'success';
-                $message = 'guardado';
-            } else {
-                foreach ($form->getErrors(true, false) as $error) {
-                    $message .= $error->current()->getMessage();
-                }
-            }
-        }
-
-        return $this->json([
-            'status' => $status,
-            'message' => $message
         ]);
     }
 

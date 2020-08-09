@@ -16,13 +16,16 @@ class ViewMenuController extends AbstractController
 {
     public function showPreview(
         Request $request,
-        CategoryService $categoryService,
-        ComboService $comboService,
         DishService $dishService,
+        SettingsPageService $settingsPageService,
         $page
     ) {
         $restoMenu = [];
-        $categories = $categoryService->getEnabledCategoriesByRestaurantId($this->getUser()->getRestaurantId());
+        $categories = $this->getDoctrine()->getRepository(Category::class)
+            ->findBy([
+                'restaurantId' => $this->getUser()->getRestaurantId(),
+                'categoryType' => PageController::CATEGORY_BASICO,
+            ]);
 
         $restaurant = $this->getDoctrine()->getRepository(Restaurant::class)
             ->findOneBy(['selected' => 1, 'id' => $this->getUser()->getRestaurantId()]);
@@ -31,35 +34,41 @@ class ViewMenuController extends AbstractController
         foreach ($categories as $category) {
             $restoMenu[] = [
                 'categoria' => $category->getName(),
+                'class' => 'menu_category',
                 'items' => $dishService->getDishesByCategoryId($category->getId()),
             ];
         }
 
-        $combos = $comboService->getEnabledCombosByRestaurantId($restaurant->getId());
+        $combos = $this->getDoctrine()->getRepository(Category::class)
+            ->findBy([
+                'restaurantId' => $this->getUser()->getRestaurantId(),
+                'categoryType' => PageController::CATEGORY_COMBO,
+            ]);
 
         /** @var Combo $combo */
         foreach ($combos as $combo) {
             $restoMenu[] = [
                 'categoria' => $combo->getName(),
                 'description' => $combo->getDescription(),
+                'class' => 'menu_promo_title',
                 'price' => $combo->getPrice(),
                 'currency' => $combo->getCurrency()->getSymbol(),
                 'items' => $dishService->getDishesByComboId($combo->getId()),
             ];
         }
 
+        $properties = $settingsPageService->getPropertiesByRestaurantId($this->getUser()->getRestaurantId());
+
         return $this->render('view_menu_'.$page.'.html.twig', [
             'route' => $request->get('_route'),
             'titulo' => ((null !== $restaurant) ? $restaurant->getName() : ''),
             'logo' => $restaurant->getLogoUrl(),
+            'properties' => $properties,
             'restoMenu' => $restoMenu,
         ]);
     }
 
     public function showMenu(
-        Request $request,
-        CategoryService $categoryService,
-        ComboService $comboService,
         DishService $dishService,
         $restaurantSlug
     ) {
@@ -76,7 +85,11 @@ class ViewMenuController extends AbstractController
         }
 
         $restoMenu = [];
-        $categories = $categoryService->getEnabledCategoriesByRestaurantId($restaurant->getId());
+        $categories = $this->getDoctrine()->getRepository(Category::class)
+            ->findBy([
+                'restaurantId' => $this->getUser()->getRestaurantId(),
+                'categoryType' => PageController::CATEGORY_BASICO,
+            ]);
 
         /** @var Category $category */
         foreach ($categories as $category) {
@@ -86,7 +99,11 @@ class ViewMenuController extends AbstractController
             ];
         }
 
-        $combos = $comboService->getEnabledCombosByRestaurantId($restaurant->getId());
+        $combos = $this->getDoctrine()->getRepository(Category::class)
+            ->findBy([
+                'restaurantId' => $this->getUser()->getRestaurantId(),
+                'categoryType' => PageController::CATEGORY_COMBO,
+            ]);
 
         /** @var Combo $combo */
         foreach ($combos as $combo) {
