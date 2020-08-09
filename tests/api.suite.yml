@@ -3,7 +3,7 @@ modules:
     enabled:
         - \App\Tests\Helper\Api
         - REST:
-              url: https://localhost:8000/api/
+              url: https://localhost:8000/
               depends: Symfony
               part: Json
         - Doctrine2:
