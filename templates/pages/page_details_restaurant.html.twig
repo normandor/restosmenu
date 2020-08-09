@@ -2,98 +2,6 @@
 
 {% block stylesheets %}
   {{ parent() }}
-  <style>
-      p {
-          font-size: 18px;
-      }
-      img.icon {
-          height: 25px;
-      }
-      .buttons {
-          margin-bottom: 15px;
-      }
-      button.addItem {
-          padding: 5px 10px;
-      }
-      .pagename {
-          margin-bottom: 15px;
-      }
-    td {
-        border: none;
-    }
-
-      a { text-decoration: none !important; }
-
-    .modal-open {margin:0 !important;}
-
-      th { text-align: center; }
-
-    .section-title {
-      color: #413E3E;
-      font-size: 24px;
-      font-weight: bold;
-      border-bottom: 1px solid #CCCCCC;
-      margin-bottom: 15px;
-    }
-
-      .title-page {
-          color: #413E3E;
-          text-align: left;
-          font-weight: bolder;
-          font-size: 20px;
-          margin-bottom: 5px;
-      }
-
-    .description {
-      font-size: 20px;
-      margin: 0px 15px 25px 15px;
-      color: #525252;
-      /*padding-left: 50px;*/
-        padding: 5px;
-    }
-
-      .description-border {
-          border: 1px solid #cccccc;
-          border-radius: 2px;
-      }
-
-      @media (min-width: 767px) {
-          .description-border {
-              width: 98%;
-          }
-      }
-    .pad-lt-15 {padding-left: 15px;} .pad-bt-15 {padding-bottom: 15px;}
-
-    .font-20 { font-size: 20px; }
-
-    .border {
-        border: 1px solid #cccccc;
-        border-radius: 5px;
-        margin: 0px;
-        padding 5px;
-    }
-
-    .mb-10 { margin-bottom: 10px; }
-
-    .inactive .ql-editor { padding:0; line-height:inherit; }
-
-    .inactive .ql-editor p { padding:inherit; margin-bottom:10px; }
-
-    .inactive .ql-toolbar { display:none; }
-
-    .inactive .ql-container.ql-snow { border:none; font-family:inherit;
-    font-size:inherit; }
-
-    .elements table, .elements td, .elements th {
-      padding: 2px;
-      border: 1px solid #cccccc;
-      border-radius: 5px;
-      text-align: left;
-    }
-      .elements td.actions {
-          text-align: center;
-      }
-  </style>
 {% endblock %}
 
 {% block body %}
@@ -122,7 +30,7 @@
           <div id="breadcrumb" class="col-xs-12">
             <a href="#" class="show-sidebar"><i class="fa fa-bars"></i></a>
             <ol class="breadcrumbpanel pull-left">
-              <a href="#">Páginas</a>
+              <a href="#">Restaurant</a>
             </ol>
           </div>
         </div>
@@ -138,8 +46,8 @@
 
           <div class="row font-20" style="margin-bottom:15px">
               <div class="col-sm-10 mb-10">
-{#                  Restaurant seleccionado: <b>{{ selectedRestaurant }}</b>#}
-                  <table class="elements" style="width: 100%; table-layout:fixed; margin: 0px 0px 5px 0px;">
+                  {#                  Restaurant seleccionado: <b>{{ selectedRestaurant }}</b>#}
+                  <table>
                       <tr>
                           <th>
                               Restaurant
@@ -153,27 +61,27 @@
                           <th>
                               Link al menu
                           </th>
-                          <th style="width: 10%;"></th>
+                          <th></th>
                       </tr>
                       {% for restaurant in restaurants %}
                           <tr>
-                              <td>
+                              <td class="left">
                                   {{ restaurant.name|raw }}
                               </td>
-                              <td>
+                              <td class="center">
                                   <a download="codigo-qr.png" href="{{ asset(restaurant.qrUrl) }}" title="Codigo QR">
-                                      <img alt="Codigo QR" src="{{ asset(restaurant.qrUrl) }}" width="80%" style="margin: 15px 0px 0px 0px"><br />
+                                      <img class="qr-code" alt="Codigo QR" src="{{ asset(restaurant.qrUrl) }}"><br />
                                       <p>Descargar</p>
                                   </a>
                               </td>
-                              <td>
-                                  <img alt="Logo" src="{{ asset(restaurant.logo) }}" width="80%" style="margin: 15px 0px 0px 0px"><br />
+                              <td class="center">
+                                  <img alt="Logo" src="{{ asset(restaurant.logo) }}" class="restaurant-logo"><br />
                               </td>
-                              <td style="word-wrap: break-word">
+                              <td class="center restaurant-link">
                                   <a href="{{ restaurant.link }}" target="_blank">{{ restaurant.link }}</a>
                               </td>
                               <td class="actions">
-                                  <div class="col-sm-1 buttons" style="display: inline-block; white-space: nowrap; margin: auto;">
+                                  <div class="buttons action-buttons">
                                       <img class="icon" src="../images/icono_edit.png"
                                            onclick="showEditRestaurant({{ restaurant.id }});"
                                            style="cursor: pointer;" />
@@ -204,7 +112,6 @@
 
 {% block javascripts %}
   {{ parent() }}
-  <script type="text/javascript" src="{{ asset('build/js/quill.min.js') }}"></script>
   <script>
     function showAddRestaurant() {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
