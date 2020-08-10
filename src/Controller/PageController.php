@@ -248,7 +248,7 @@ class PageController extends AbstractController
     {
         $categories = $this->getDoctrine()->getRepository(Category::class)
             ->findBy(
-                ['restaurantId' => $this->getUser()->getRestaurantId()],
+                ['restaurantId' => $this->getUser()->getRestaurantId(), 'categoryType' => self::CATEGORY_BASICO],
                 ['id' => 'ASC']
             );
 

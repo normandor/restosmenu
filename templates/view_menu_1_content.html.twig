@@ -53,7 +53,7 @@
                     {% for item in entrada.items %}
                         <div style="margin-top: 20px;" class="col-sm-12 col-md-12">
                             <h4><b>
-                                    {%  if item.count is defined %}{{ item.count}} x {% endif %}
+                                    {%  if (item.count is defined) and (item.count != 1) %}{{ item.count}} x {% endif %}
                                     {{ item.label | nl2br }}</b></h4>
                             <h4><i>{{ item.descripcion | nl2br }}</i></h4>
                             {% if item.price is defined %}
