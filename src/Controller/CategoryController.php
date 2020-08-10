@@ -103,6 +103,11 @@ class CategoryController extends AbstractController
 
                 $category = $form->getData();
 
+                $lastComboPosition = $this->getDoctrine()->getRepository(Category::class)
+                    ->getLastPosition();
+
+                $category->setOrderShow((int) $lastComboPosition['max'] + 1);
+
                 $category->setEnabled(1);
                 $category->setCategoryType(PageController::CATEGORY_BASICO);
                 $category->setRestaurantId($this->getUser()->getRestaurantId());
