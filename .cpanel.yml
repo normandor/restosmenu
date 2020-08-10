@@ -1,0 +1,10 @@
+    - export DEPLOYPATH=/home/my/path/
+    - /bin/cp index.html $DEPLOYPATH
+    - /bin/cp package.json $DEPLOYPATH
+    - /bin/cp composer.json $DEPLOYPATH
+    - /bin/cp -R public $DEPLOYPATH
+    - /bin/cp -R templates $DEPLOYPATH
+    - /bin/cp -R src $DEPLOYPATH
+    - /bin/cp -R config $DEPLOYPATH
+    - /bin/rm -rf $DEPLOYPATH/var/cache/prod/
+
