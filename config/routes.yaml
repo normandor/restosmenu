@@ -1,14 +1,22 @@
 index:
     path: /
+#    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+    controller: App\Controller\DefaultController::index
+    schemes: [https]
+#    defaults:
+#        path: /dishes
+#        permanent: true
+
+admin:
+    path: /admin
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
-#    controller: App\Controller\DashboardController::index
     schemes: [https]
     defaults:
-        path: /dishes
+        path: /admin/dishes
         permanent: true
 
 dashboard:
-    path: /dashboard
+    path: /admin/dashboard
     controller: App\Controller\DashboardController::index
     schemes: [https]
 
@@ -27,159 +35,160 @@ app_login:
 app_logout:
     path: /logout
     methods: GET
+
 profile:
-    path: /user/profile
+    path: /admin/user/profile
     controller: App\Controller\UserController::profileAction
 view_menu_1:
-    path:       /show-menu-preview-1
+    path:       /admin/show-menu-preview-1
     controller: App\Controller\ViewMenuController::showPreview
     defaults:
         page:        1
 view_menu_2:
-    path:       /show-menu-preview-2
+    path:       /admin/show-menu-preview-2
     controller: App\Controller\ViewMenuController::showPreview
     defaults:
         page:        2
 show_restaurant:
-    path:       /restaurants
+    path:       /admin/restaurants
     controller: App\Controller\PageController::showRestaurants
 show_page_settings:
-    path:       /page-settings
+    path:       /admin/page-settings
     controller: App\Controller\PageController::showPageSettings
 show_page_order:
-    path:       /page-order
+    path:       /admin/page-order
     controller: App\Controller\PageController::showPageOrder
 show_categories:
-    path:       /categorias
+    path:       /admin/categorias
     controller: App\Controller\PageController::showCategories
 show_dishes:
-    path:       /dishes
+    path:       /admin/dishes
     controller: App\Controller\PageController::showDishes
 
 show_combos:
-    path:       /combos
+    path:       /admin/combos
     controller: App\Controller\PageController::showCombos
 show_dishes_combos:
-    path:       /dishes-combos
+    path:       /admin/dishes-combos
     controller: App\Controller\PageController::showDishesCombos
 
 page_update:
-    path:       /page/update/
+    path:       /admin/page/update/
     controller: App\Controller\PageController::updatePage
 list_in_page_update:
-    path:       /page/update-list/
+    path:       /admin/page/update-list/
     controller: App\Controller\PageController::updateListInPage
 user_list:
-    path:       /users/
+    path:       /admin/users/
     controller: App\Controller\UserController::show
 charts_linetot:
-    path:       /chartdata/linetotchart
+    path:       /admin/chartdata/linetotchart
     controller: App\Controller\ChartDataController::getLineTotalData
 charts_line:
-    path:       /chartdata/linechart
+    path:       /admin/chartdata/linechart
     controller: App\Controller\ChartDataController::getLineData
 table_users:
-    path:       /tabledata-users/
+    path:       /admin/tabledata-users/
     defaults:   { _controller: App\Controller\UserController::getTableData, dbuser: '%dbuser%', dbpw: '%dbpw%', dbhost: '%dbhost%', dbname: '%dbname%' }
     methods:    GET
 user_update_user:
-    path:       /user/update-user/
+    path:       /admin/user/update-user/
     controller: App\Controller\UserController::updateUser
 user_delete_user:
-    path:       /user/delete-user/
+    path:       /admin/user/delete-user/
     controller: App\Controller\UserController::deleteUser
 modal_data_edit_user:
-    path:       /modal/user/edit/{id}
+    path:       /admin/modal/user/edit/{id}
     controller: App\Controller\UserController::modalShowEditUser
 modal_data_add_user:
-    path:       /modal/user/add/
+    path:       /admin/modal/user/add/
     controller: App\Controller\UserController::modalShowAddUser
 user_add_user:
-    path:       /user/add-user/
+    path:       /admin/user/add-user/
     controller: App\Controller\UserController::addUser
 show_modal_select_font:
-    path:       /page/element/select-font/{key}
+    path:       /admin/page/element/select-font/{key}
     controller: App\Controller\PageController::showSelectFont
 show_modal_edit_image:
-    path:       /page/element/editImage/{imageId}
+    path:       /admin/page/element/editImage/{imageId}
     controller: App\Controller\ImageController::editImage
 show_modal_edit_category:
-    path:       /page/element/editCategory/{categoryId}
+    path:       /admin/page/element/editCategory/{categoryId}
     controller: App\Controller\CategoryController::editCategory
 show_modal_edit_combo:
-    path:       /page/element/editCombo/{comboId}
+    path:       /admin/page/element/editCombo/{comboId}
     controller: App\Controller\CategoryController::editCombo
 show_modal_edit_restaurant:
-    path:       /page/element/editRestaurant/{restaurantId}
+    path:       /admin/page/element/editRestaurant/{restaurantId}
     controller: App\Controller\RestaurantController::edit
 show_modal_edit_dish:
-    path:       /page/element/editDish/{dishId}
+    path:       /admin/page/element/editDish/{dishId}
     controller: App\Controller\DishController::editDish
 show_modal_add_image:
-    path:       /page/element/addImage/{sectionId}
+    path:       /admin/page/element/addImage/{sectionId}
     controller: App\Controller\ImageController::modalShowAddImage
 show_modal_add_restaurant:
-    path:       /page/element/addRestaurant/
+    path:       /admin/page/element/addRestaurant/
     controller: App\Controller\RestaurantController::modalShowAdd
 show_modal_add_category:
-    path:       /page/element/addCategory/
+    path:       /admin/page/element/addCategory/
     controller: App\Controller\CategoryController::modalShowAddCategory
 show_modal_add_combo:
-    path:       /page/element/addCombo/
+    path:       /admin/page/element/addCombo/
     controller: App\Controller\CategoryController::modalShowAddCombo
 show_modal_add_dish:
-    path:       /page/element/addDish/
+    path:       /admin/page/element/addDish/
     controller: App\Controller\DishController::modalShowAddDish
 show_modal_add_dish_to_combo:
-    path:       /page/element/addDishToCombo/{comboId}
+    path:       /admin/page/element/addDishToCombo/{comboId}
     controller: App\Controller\DishController::modalShowAddDishToCombo
 show_modal_add_selected_dish_to_combo:
-    path:       /page/element/addSelectedDishToCombo/{dishId}
+    path:       /admin/page/element/addSelectedDishToCombo/{dishId}
     controller: App\Controller\DishController::modalShowAddSelectedDishToCombo
 submit_add_image:
-    path:       /page/element/submitImage/{sectionId}
+    path:       /admin/page/element/submitImage/{sectionId}
     controller: App\Controller\ImageController::submitForm
 show_modal_add_equipamiento:
-    path:       /page/element/addEquipment/{pageId}
+    path:       /admin/page/element/addEquipment/{pageId}
     controller: App\Controller\LaboratorioController::modalShowAddElement
 submit_add_equipamiento:
-    path:       /page/element/submitEquipment/{pageId}
+    path:       /admin/page/element/submitEquipment/{pageId}
     controller: App\Controller\LaboratorioController::submitForm
 submit_add_restaurant:
-    path:       /page/element/submitRestaurant/
+    path:       /admin/page/element/submitRestaurant/
     controller: App\Controller\RestaurantController::submitForm
 submit_add_category:
-    path:       /page/element/submitCategory/
+    path:       /admin/page/element/submitCategory/
     controller: App\Controller\CategoryController::submitForm
 submit_add_combo:
-    path:       /page/element/submitCombo/
+    path:       /admin/page/element/submitCombo/
     controller: App\Controller\CategoryController::submitFormAddCombo
 submit_add_dish:
-    path:       /page/element/submitDish/
+    path:       /admin/page/element/submitDish/
     controller: App\Controller\DishController::submitFormAddDish
 submit_add_dish_to_combo:
-    path:       /page/element/submitDishToCombo/
+    path:       /admin/page/element/submitDishToCombo/
     controller: App\Controller\DishController::submitFormDishToCombo
 submit_add_selected_dish_to_combo:
-    path:       /page/element/submitSelectedDishToCombo/
+    path:       /admin/page/element/submitSelectedDishToCombo/
     controller: App\Controller\DishController::submitFormSelectedDishToCombo
 remove_restaurant:
-    path:       /page/element/removeRestaurant/{id}
+    path:       /admin/page/element/removeRestaurant/{id}
     controller: App\Controller\RestaurantController::remove
 remove_category:
-    path:       /page/element/removeCategory/{id}
+    path:       /admin/page/element/removeCategory/{id}
     controller: App\Controller\CategoryController::remove
 remove_combo:
-    path:       /page/element/removeCombo/{id}
+    path:       /admin/page/element/removeCombo/{id}
     controller: App\Controller\CategoryController::remove
 remove_dish:
-    path:       /page/element/removeDish/{id}
+    path:       /admin/page/element/removeDish/{id}
     controller: App\Controller\DishController::remove
 remove_dish_from_combo:
-    path:       /page/element/removeDishFromCombo/{comboId}/{dishId}
+    path:       /admin/page/element/removeDishFromCombo/{comboId}/{dishId}
     controller: App\Controller\DishController::removeDishFromCombo
 menu:
-    path:       /menu/
+    path:       /admin/menu/
     controller: App\Controller\MenuController::index
 api_get_config:
     path:       /api/config
@@ -192,21 +201,21 @@ api_logout:
     controller: App\Controller\Api\SecurityController::logout
 
 update_setting:
-    path:       /page/updateSetting/{id}/{property}/{value}
+    path:       /admin/page/updateSetting/{id}/{property}/{value}
     controller: App\Controller\SettingsPageController::editSetting
 update_order:
-    path:       /page/updateOrder/{id}/{newPosition}
+    path:       /admin/page/updateOrder/{id}/{newPosition}
     controller: App\Controller\SettingsPageController::editOrder
 category_toggle_visible:
-    path:       /category/toggleVisibility/{categoryId}
+    path:       /admin/category/toggleVisibility/{categoryId}
     controller: App\Controller\CategoryController::toggleVisibility
 category_get_combo_count:
-    path:       /category/getComboCount/
+    path:       /admin/category/getComboCount/
     controller: App\Controller\CategoryController::getComboCount
 dish_toggle_visible:
-    path:       /dish/toggleVisibility/{dishId}
+    path:       /admin/dish/toggleVisibility/{dishId}
     controller: App\Controller\DishController::toggleVisibility
 
 homepage:
-    path:       /dishes
-    controller: App\Controller\PageController::showDishes
+    path:       /
+    controller: App\Controller\DefaultController::index
