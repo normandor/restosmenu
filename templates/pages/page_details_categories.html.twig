@@ -93,7 +93,7 @@
   <script>
     function showAddCategory() {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-        $('.modal-body-new-user').load('../page/element/addCategory/', function () {});
+        $('.modal-body-new-user').load('../admin/page/element/addCategory/', function () {});
         $('.modal-title').html('Nueva categoria');
         $("#newItemModal").modal('show');
     }
@@ -107,7 +107,7 @@
 
     function showEditCategory(id) {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-        $('.modal-body-new-user').load('../page/element/editCategory/'+id, function () {});
+        $('.modal-body-new-user').load('../admin/page/element/editCategory/'+id, function () {});
         $('.modal-title').html('Editar categoria');
         $("#newItemModal").modal('show');
     }

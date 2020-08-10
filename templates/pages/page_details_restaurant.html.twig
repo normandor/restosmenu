@@ -110,7 +110,7 @@
   <script>
     function showAddRestaurant() {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-        $('.modal-body-new-user').load('../page/element/addRestaurant/', function () {});
+        $('.modal-body-new-user').load('../admin/page/element/addRestaurant/', function () {});
         $('.modal-title').html('Nuevo restaurant');
         $("#newItemModal").modal('show');
     }
@@ -124,7 +124,7 @@
 
     function showEditRestaurant(id) {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-        $('.modal-body-new-user').load('../page/element/editRestaurant/'+id, function () {});
+        $('.modal-body-new-user').load('../admin/page/element/editRestaurant/'+id, function () {});
         $('.modal-title').html('Editar restaurant');
         $("#newItemModal").modal('show');
     }

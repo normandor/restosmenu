@@ -131,7 +131,7 @@
   <script>
     function showAddDish() {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-        $('.modal-body-new-user').load('../page/element/addDish/', function () {});
+        $('.modal-body-new-user').load('../admin/page/element/addDish/', function () {});
         $('.modal-title').html('Nuevo plato');
         $("#newItemModal").modal('show');
     }
@@ -156,7 +156,7 @@
                 }
 
                 $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-                $('.modal-body-new-user').load('../page/element/addSelectedDishToCombo/' + dishId, function () {
+                $('.modal-body-new-user').load('../admin/page/element/addSelectedDishToCombo/' + dishId, function () {
                 });
                 $('.modal-title').html('Agregar plato a combo');
                 $('.modal-subtitle').html('Agregar plato a combo');
@@ -172,7 +172,7 @@
 
     function showEditDish(id) {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-        $('.modal-body-new-user').load('../page/element/editDish/'+id, function () {});
+        $('.modal-body-new-user').load('../admin/page/element/editDish/'+id, function () {});
         $('.modal-title').html('Editar item');
         $("#newItemModal").modal('show');
     }

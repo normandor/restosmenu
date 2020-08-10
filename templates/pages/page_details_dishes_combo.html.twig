@@ -60,11 +60,14 @@
 
                           <table>
                               <tr>
-                                  <th style="width: 45%;">
+                                  <th>
                                       Plato
                                   </th>
-                                  <th style="width: 45%;">
+                                  <th>
                                       Descripcion
+                                  </th>
+                                  <th>
+                                      Posición
                                   </th>
                                   <th style="width: 10%;"></th>
                               </tr>
@@ -75,6 +78,14 @@
                                       </td>
                                       <td class="left">
                                           {{ dish.description|raw }}
+                                      </td>
+                                      <td class="center">
+                                          <a href="#" onClick="moveUp({{ dish.id }}, {{ dish.order }});">
+                                              <img src="{{ asset('images/arrow_up.png') }}" height="40px" style="margin-right: 10px">
+                                          </a>
+                                          <a href="#" onClick="moveDown({{ dish.id }}, {{ dish.order }});">
+                                              <img src="{{ asset('images/arrow_down.png') }}" height="40px">
+                                          </a>
                                       </td>
                                       <td class="actions">
                                           <div class="col-sm-1 buttons action-buttons">
@@ -109,7 +120,7 @@
   <script>
       function showAddDishToCombo(comboId) {
           $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-          $('.modal-body-new-user').load('../page/element/addDishToCombo/'+comboId, function () {});
+          $('.modal-body-new-user').load('../admin/page/element/addDishToCombo/'+comboId, function () {});
           $('.modal-title').html('Agregar plato a combo');
           $("#newItemModal").modal('show');
       }

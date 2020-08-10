@@ -111,7 +111,7 @@
   <script>
     function showAddCategory() {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-        $('.modal-body-new-user').load('../page/element/addCombo/', function () {});
+        $('.modal-body-new-user').load('../admin/page/element/addCombo/', function () {});
         $('.modal-title').html('Nuevo combo');
         $("#newItemModal").modal('show');
     }
@@ -125,7 +125,7 @@
 
     function showEditCombo(id) {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-        $('.modal-body-new-user').load('../page/element/editCombo/'+id, function () {});
+        $('.modal-body-new-user').load('../admin/page/element/editCombo/'+id, function () {});
         $('.modal-title').html('Editar combo');
         $("#newItemModal").modal('show');
     }
