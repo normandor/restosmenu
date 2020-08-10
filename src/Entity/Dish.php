@@ -33,7 +33,7 @@ class Dish
      *
      * @ORM\Column(name="description", type="string", length=250, nullable=true)
      */
-    private $description;
+    private $description = null;
 
     /**
      * @var string|null

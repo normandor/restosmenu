@@ -29,7 +29,7 @@ class DishType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, ['label' => 'name'])
-            ->add('description', TextType::class, ['label' => 'description'])
+            ->add('description', TextType::class, ['label' => 'description', 'required' => false])
             ->add('categoryId',
                 EntityType::class,
                 [
