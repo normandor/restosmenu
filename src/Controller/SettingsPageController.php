@@ -11,6 +11,7 @@ use App\Form\Type\ComboType;
 use App\Service\FileUploader;
 use App\Service\PagesService;
 use App\Service\SettingsPageService;
+use mysql_xdevapi\Exception;
 use PHPUnit\Util\Json;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -59,6 +60,10 @@ class SettingsPageController extends AbstractController
             ->findBy([
                 'restaurantId' => $this->getUser()->getRestaurantId(),
             ],['orderShow' => 'ASC']);
+
+        if ($newPosition > count($categories)) {
+            $newPosition = count($categories);
+        }
 
         $pos = 0;
         /** @var Category $category */
