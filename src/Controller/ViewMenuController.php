@@ -70,6 +70,7 @@ class ViewMenuController extends AbstractController
 
     public function showMenu(
         DishService $dishService,
+        SettingsPageService $settingsPageService,
         $restaurantSlug
     ) {
         if (0 === $restaurantSlug) {
@@ -88,13 +89,18 @@ class ViewMenuController extends AbstractController
         $categories = $this->getDoctrine()->getRepository(Category::class)
             ->findBy([
                 'restaurantId' => $this->getUser()->getRestaurantId(),
+                'enabled' => 1,
                 'categoryType' => PageController::CATEGORY_BASICO,
             ]);
+
+        $restaurant = $this->getDoctrine()->getRepository(Restaurant::class)
+            ->findOneBy(['selected' => 1, 'id' => $this->getUser()->getRestaurantId()]);
 
         /** @var Category $category */
         foreach ($categories as $category) {
             $restoMenu[] = [
                 'categoria' => $category->getName(),
+                'class' => 'menu_category',
                 'items' => $dishService->getDishesByCategoryId($category->getId()),
             ];
         }
@@ -102,6 +108,7 @@ class ViewMenuController extends AbstractController
         $combos = $this->getDoctrine()->getRepository(Category::class)
             ->findBy([
                 'restaurantId' => $this->getUser()->getRestaurantId(),
+                'enabled' => 1,
                 'categoryType' => PageController::CATEGORY_COMBO,
             ]);
 
@@ -110,14 +117,19 @@ class ViewMenuController extends AbstractController
             $restoMenu[] = [
                 'categoria' => $combo->getName(),
                 'description' => $combo->getDescription(),
+                'class' => 'menu_promo_title',
                 'price' => $combo->getPrice(),
                 'currency' => $combo->getCurrency()->getSymbol(),
                 'items' => $dishService->getDishesByComboId($combo->getId()),
             ];
         }
+
+        $properties = $settingsPageService->getPropertiesByRestaurantId($this->getUser()->getRestaurantId());
+
         return $this->render('view_menu_1_public.html.twig', [
             'titulo' => ((null !== $restaurant) ? $restaurant->getName() : ''),
             'logo' => $restaurant->getLogoUrl(),
+            'properties' => $properties,
             'restoMenu' => $restoMenu,
         ]);
     }
