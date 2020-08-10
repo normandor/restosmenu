@@ -7,10 +7,6 @@ index:
         path: /dishes
         permanent: true
 
-homepage:
-    path:       /dishes
-    controller: App\Controller\PageController::showDishes
-
 dashboard:
     path: /dashboard
     controller: App\Controller\DashboardController::index
@@ -204,3 +200,13 @@ update_order:
 category_toggle_visible:
     path:       /category/toggleVisibility/{categoryId}
     controller: App\Controller\CategoryController::toggleVisibility
+category_get_combo_count:
+    path:       /category/getComboCount/
+    controller: App\Controller\CategoryController::getComboCount
+dish_toggle_visible:
+    path:       /dish/toggleVisibility/{dishId}
+    controller: App\Controller\DishController::toggleVisibility
+
+homepage:
+    path:       /dishes
+    controller: App\Controller\PageController::showDishes

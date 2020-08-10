@@ -46,8 +46,10 @@
 
           <div class="row font-20" style="margin-bottom:15px">
               <div class="col-sm-10 mb-10">
+                  {% if categories | length == 0 %}
+                    <h2>No se ha creado ningún combo.</h2>
+                  {% endif %}
                   {% for category in categories %}
-
                       <h2 style="margin-bottom: 5px;">
                           {{ category.name }}
                           {% if category.enabled == 0 %}

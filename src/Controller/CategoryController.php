@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\ComboDish;
 use App\Entity\Currency;
 use App\Entity\Dish;
 use App\Form\Type\CategoryType;
@@ -43,6 +44,26 @@ class CategoryController extends AbstractController
             return new Response(json_encode([
                 'status' => 'nok',
                 'message' => 'Hay elementos en la categoria, no se puede eliminar',
+            ]));
+        }
+
+        $combosWithDishesSelected = $this->getDoctrine()->getRepository(ComboDish::class)->findBy(
+            ['comboId' => $id]
+        );
+        if (count($combosWithDishesSelected) !== 0) {
+            return new Response(json_encode([
+                'status' => 'nok',
+                'message' => 'Este combo contiene platos, no puede ser eliminado',
+            ]));
+        }
+
+        $categories = $this->getDoctrine()->getRepository(Category::class)->findBy(
+            ['id' => $id, 'categoryType' => PageController::CATEGORY_BASICO]
+        );
+        if (count($categories) === 1) {
+            return new Response(json_encode([
+                'status' => 'nok',
+                'message' => 'Tiene que haber al menos una categoría',
             ]));
         }
 
@@ -141,6 +162,22 @@ class CategoryController extends AbstractController
             'form' => $form->createView(),
             'submitUrl' => $this->generateUrl('submit_add_combo'),
         ]);
+    }
+
+    /**
+     * return json
+     */
+    public function getComboCount()
+    {
+        /** @var Category $category */
+        $category = $this->getDoctrine()->getRepository(Category::class)->findBy(
+            [
+                'restaurantId' => $this->getUser()->getRestaurantId(),
+                'categoryType' => PageController::CATEGORY_COMBO,
+            ]
+        );
+
+        return $this->json(['count' => (!$category) ? 0 : count($category)]);
     }
 
     /**
