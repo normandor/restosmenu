@@ -4,7 +4,7 @@ namespace App\Tests;
 
 use App\Tests\ApiTester;
 
-class ToggleCategoryVisibilityCest
+class ToggleVisibilityCest
 {
     public function _before(ApiTester $I)
     {
@@ -41,9 +41,29 @@ class ToggleCategoryVisibilityCest
                 'currency_id'   => 1,
                 'order_show'    => 3,
             ]);
+
+        $I->haveInDatabase('dish',
+            [
+                'id'            => 1,
+                'name'          => 'p1',
+                'enabled'       => 1,
+                'restaurant_id' => 1,
+                'currency_id'   => 1,
+                'price'         => 3,
+            ]);
+
+        $I->haveInDatabase('dish',
+            [
+                'id'            => 2,
+                'name'          => 'p2',
+                'enabled'       => 1,
+                'restaurant_id' => 1,
+                'currency_id'   => 1,
+                'price'         => 3,
+            ]);
     }
 
-    public function canToggleAVisibility(ApiTester $I)
+    public function canToggleACategoryVisibility(ApiTester $I)
     {
         $I->seeInDatabase('category',
             [
@@ -76,4 +96,34 @@ class ToggleCategoryVisibilityCest
         $I->sendPOST('/category/toggleVisibility/9');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::NOT_FOUND);
     }
+
+    public function canToggleADishVisibility(ApiTester $I)
+    {
+        $I->seeInDatabase('dish',
+            [
+                'id'      => 1,
+                'enabled' => 1,
+            ]);
+
+        $I->sendPOST('/dish/toggleVisibility/1');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::NO_CONTENT);
+
+        $I->seeInDatabase('dish',
+            [
+                'id'      => 1,
+                'enabled' => 0,
+            ]);
+        $I->seeInDatabase('category',
+            [
+                'id'      => 2,
+                'enabled' => 1,
+            ]);
+    }
+
+    public function getErrorForInexistingDish(ApiTester $I)
+    {
+        $I->sendPOST('/dish/toggleVisibility/9');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::NOT_FOUND);
+    }
+
 }

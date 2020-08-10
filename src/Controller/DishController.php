@@ -250,4 +250,33 @@ class DishController extends AbstractController
             'message' => $message
         ]);
     }
+
+    /**
+     * @param int $dishId
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function toggleVisibility(int $dishId)
+    {
+        /** @var Dish $dish */
+        $dish = $this->getDoctrine()->getRepository(Dish::class)->findOneBy(['id' => $dishId]);
+
+        if (!$dish) {
+            return $this->json([
+                'status'  => 'error',
+                'message' => 'Plato no existente'
+            ], 404);
+        }
+
+        $dish->setEnabled((int)!$dish->getEnabled());
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($dish);
+        $entityManager->flush();
+
+        return $this->json([
+            'status' => 'success',
+            'message' => 'actualizado'
+        ], 204);
+    }
 }

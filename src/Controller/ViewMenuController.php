@@ -19,6 +19,7 @@ class ViewMenuController extends AbstractController
         $page
     ) {
         $restoMenu = [];
+        $restaurantId = $this->getUser()->getRestaurantId();
         $categories = $this->getDoctrine()->getRepository(Category::class)
             ->findBy([
                 'restaurantId' => $this->getUser()->getRestaurantId(),
@@ -27,7 +28,7 @@ class ViewMenuController extends AbstractController
             ]);
 
         $restaurant = $this->getDoctrine()->getRepository(Restaurant::class)
-            ->findOneBy(['selected' => 1, 'id' => $this->getUser()->getRestaurantId()]);
+            ->findOneBy(['selected' => 1, 'id' => $restaurantId]);
 
         /** @var Category $category */
         foreach ($categories as $category) {
@@ -40,7 +41,7 @@ class ViewMenuController extends AbstractController
 
         $combos = $this->getDoctrine()->getRepository(Category::class)
             ->findBy([
-                'restaurantId' => $this->getUser()->getRestaurantId(),
+                'restaurantId' => $restaurantId,
                 'enabled' => 1,
                 'categoryType' => PageController::CATEGORY_COMBO,
             ]);
@@ -57,7 +58,7 @@ class ViewMenuController extends AbstractController
             ];
         }
 
-        $properties = $settingsPageService->getPropertiesByRestaurantId($this->getUser()->getRestaurantId());
+        $properties = $settingsPageService->getPropertiesByRestaurantId($restaurantId);
 
         return $this->render('view_menu_'.$page.'.html.twig', [
             'route' => $request->get('_route'),

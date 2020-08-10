@@ -66,6 +66,9 @@
                                   <th>
                                       Precio
                                   </th>
+                                  <th>
+                                      Visible
+                                  </th>
                                   <th></th>
                               </tr>
                               {% for dish in category.dishes %}
@@ -78,6 +81,12 @@
                                       </td>
                                       <td class="center">
                                           {{ dish.currency|raw ~ dish.price|raw }}
+                                      </td>
+                                      <td class="center">
+                                          {% set img = (dish.enabled) ? 'images/toggle_on.png' : 'images/toggle_off.png' %}
+                                          <img src="{{ asset(img) }}" height="30px" style="cursor: pointer;"
+                                               onclick="toggleDishVisibility({{ dish.id }});"
+                                          >
                                       </td>
                                       <td class="actions">
                                           <div class="col-sm-1 buttons action-buttons">
@@ -135,11 +144,30 @@
     }
 
     function showAddItemToCombo(dishId) {
-        $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-        $('.modal-body-new-user').load('../page/element/addSelectedDishToCombo/'+dishId, function () {});
-        $('.modal-title').html('Agregar plato a combo');
-        $('.modal-subtitle').html('Agregar plato a combo');
-        $("#newItemModal").modal('show');
+        let path = '{{ path('category_get_combo_count') }}';
+        $.ajax({
+            url: path,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data.count === 0) {
+                    alert("Debe crear primero una promoción");
+                    return false;
+                }
+
+                $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
+                $('.modal-body-new-user').load('../page/element/addSelectedDishToCombo/' + dishId, function () {
+                });
+                $('.modal-title').html('Agregar plato a combo');
+                $('.modal-subtitle').html('Agregar plato a combo');
+                $("#newItemModal").modal('show');
+            },
+            error: function (xhr, status) {
+                console.log(xhr);
+                console.log(status);
+                alert("{{ 'alert.error.processing' | trans }}");
+            }
+        });
     }
 
     function showEditDish(id) {
@@ -184,5 +212,23 @@
 
         }
     });
+
+    function toggleDishVisibility(dishId) {
+        const path = '{{ path('dish_toggle_visible', {'dishId': 'dishId'}) }}';
+        const finalPath = path.replace("dishId", dishId);
+
+        $.ajax({
+            url: finalPath,
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                location.reload();
+            },
+            error: function (xhr, status) {
+                alert("{{ 'alert.error.processing' | trans }}");
+            }
+        });
+    }
+
   </script>
 {% endblock %}
