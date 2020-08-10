@@ -9,6 +9,8 @@ use App\Form\Type\CategoryType;
 use App\Form\Type\ComboType;
 use App\Service\FileUploader;
 use App\Service\PagesService;
+use http\Exception\RuntimeException;
+use mysql_xdevapi\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -180,6 +182,10 @@ class CategoryController extends AbstractController
 
                 $combo = $form->getData();
 
+                $lastComboPosition = $this->getDoctrine()->getRepository(Category::class)
+                    ->getLastPosition();
+
+                $combo->setOrderShow((int) $lastComboPosition['max'] + 1);
                 $combo->setEnabled(1);
                 $combo->setCategoryType(PageController::CATEGORY_COMBO);
                 $combo->setRestaurantId($this->getUser()->getRestaurantId());
@@ -205,5 +211,34 @@ class CategoryController extends AbstractController
             'status' => $status,
             'message' => $message
         ]);
+    }
+
+    /**
+     * @param int $categoryId
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function toggleVisibility(int $categoryId)
+    {
+        /** @var Category $category */
+        $category = $this->getDoctrine()->getRepository(Category::class)->findOneBy(['id' => $categoryId]);
+
+        if (!$category) {
+            return $this->json([
+                'status'  => 'error',
+                'message' => 'Categoria no existente'
+            ], 404);
+        }
+
+        $category->setEnabled((int)!$category->getEnabled());
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($category);
+        $entityManager->flush();
+
+        return $this->json([
+            'status' => 'success',
+            'message' => 'actualizado'
+        ], 204);
     }
 }

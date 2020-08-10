@@ -198,3 +198,9 @@ api_logout:
 update_setting:
     path:       /page/updateSetting/{id}/{property}/{value}
     controller: App\Controller\SettingsPageController::editSetting
+update_order:
+    path:       /page/updateOrder/{id}/{newPosition}
+    controller: App\Controller\SettingsPageController::editOrder
+category_toggle_visible:
+    path:       /category/toggleVisibility/{categoryId}
+    controller: App\Controller\CategoryController::toggleVisibility

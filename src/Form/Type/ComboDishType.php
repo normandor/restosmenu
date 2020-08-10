@@ -33,9 +33,7 @@ class ComboDishType extends AbstractType
                     'class' => Dish::class,
                     'query_builder' => function (DishRepository $cr) {
                         return $cr->createQueryBuilder('u')
-                            ->where('u.enabled = :enabled')
-                            ->andWhere('u.restaurantId = :restaurantId')
-                            ->setParameter('enabled',1)
+                            ->where('u.restaurantId = :restaurantId')
                             ->setParameter('restaurantId', $this->user->getRestaurantId())
                             ->orderBy('u.name', 'ASC');
                     },

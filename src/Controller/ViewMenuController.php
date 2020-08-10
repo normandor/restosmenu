@@ -3,9 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
-use App\Entity\Combo;
 use App\Entity\Restaurant;
-use App\Entity\SettingsPage;
 use App\Service\DishService;
 use App\Service\SettingsPageService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,6 +22,7 @@ class ViewMenuController extends AbstractController
         $categories = $this->getDoctrine()->getRepository(Category::class)
             ->findBy([
                 'restaurantId' => $this->getUser()->getRestaurantId(),
+                'enabled' => 1,
                 'categoryType' => PageController::CATEGORY_BASICO,
             ]);
 
@@ -42,6 +41,7 @@ class ViewMenuController extends AbstractController
         $combos = $this->getDoctrine()->getRepository(Category::class)
             ->findBy([
                 'restaurantId' => $this->getUser()->getRestaurantId(),
+                'enabled' => 1,
                 'categoryType' => PageController::CATEGORY_COMBO,
             ]);
 

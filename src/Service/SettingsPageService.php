@@ -49,4 +49,23 @@ class SettingsPageService
 
         return $settings;
     }
+
+//    public function shiftByOneStartingByTableFromPosition(string $table, int $position): bool
+//    {
+//        $conn = $this->entityManager->getConnection();
+//
+//        $sql = <<<SQL
+//            UPDATE :theTable
+//            SET order = order + 1
+//            WHERE order >= :newPosition
+//SQL;
+//
+//        $stmt = $conn->prepare($sql);
+//        $stmt->bindParam(':theTable', $table);
+//        $stmt->bindParam(':newPosition', $position);
+//
+//        $stmt->execute();
+//
+//        return true;
+//    }
 }

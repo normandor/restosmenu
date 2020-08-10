@@ -18,4 +18,13 @@ class CategoryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Category::class);
     }
+
+    public function getLastPosition()
+    {
+        return $this->createQueryBuilder('u')
+            ->select('MAX(u.orderShow) as max')
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 }

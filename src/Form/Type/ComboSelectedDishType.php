@@ -34,10 +34,8 @@ class ComboSelectedDishType extends AbstractType
                     'class' => Category::class,
                     'query_builder' => function (CategoryRepository $cr) {
                         return $cr->createQueryBuilder('u')
-                            ->where('u.enabled = :enabled')
-                            ->andWhere('u.restaurantId = :restaurantId')
+                            ->where('u.restaurantId = :restaurantId')
                             ->andWhere('u.categoryType = :categoryType')
-                            ->setParameter('enabled',1)
                             ->setParameter('restaurantId', $this->user->getRestaurantId())
                             ->setParameter('categoryType', PageController::CATEGORY_COMBO)
                             ->orderBy('u.name', 'ASC');

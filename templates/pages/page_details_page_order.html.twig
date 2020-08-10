@@ -30,7 +30,7 @@
           <div id="breadcrumb" class="col-xs-12">
             <a href="#" class="show-sidebar"><i class="fa fa-bars"></i></a>
             <ol class="breadcrumbpanel pull-left">
-              <a href="#">Restaurant</a>
+              <a href="#">Orden</a>
             </ol>
           </div>
         </div>
@@ -60,40 +60,29 @@
                           <th>
                               Visible
                           </th>
-                          <th></th>
                       </tr>
-                      {% for setting in settings %}
+                      {% for category in categories %}
                           <tr>
                               <td class="left">
-                                  {{ setting.name }}
+                                  {{ category.name }}
                               </td>
-                              <td class="left">
-                                  <span style="font-family: {{ setting.font_family }};">{{ setting.font_family }}</span>
+                              <td class="center">
+                                  <a href="#" onClick="moveUp({{ category.id }}, {{ category.order }});">
+                                      <img src="{{ asset('images/arrow_up.png') }}" height="40px" style="margin-right: 10px">
+                                  </a>
+                                  <a href="#" onClick="moveDown({{ category.id }}, {{ category.order }});">
+                                      <img src="{{ asset('images/arrow_down.png') }}" height="40px">
+                                  </a>
                               </td>
-                              <td class="left">
-                                  {{ setting.font_size }}
+                              <td class="center">
+                                  {% set img = (category.enabled) ? 'images/toggle_on.png' : 'images/toggle_off.png' %}
+                                  <img src="{{ asset(img) }}" height="30px" style="cursor: pointer;"
+                                       onclick="toggleCategoryVisibility({{ category.id }});"
+                                  >
                               </td>
-                              <td class="actions">
-                                  <div class="buttons action-buttons">
-                                      <img class="icon" src="../images/icono_edit.png"
-                                           onclick="showEditStyle(1);"
-                                           style="cursor: pointer;" />
-
-{#                                      #}{#                                      <img class="icon"#}
-{#                                      #}{#                                           src="../images/icono_delete.png"#}
-{#                                      #}{#                                           onclick="showDeleteItem('{{ restaurant.id }}', '{{ restaurant.name|raw }}');"#}
-{#                                      #}{#                                           style="cursor: pointer;" />#}
-{#                                  </div>#}
-{#                              </td>#}
                           </tr>
-
                       {% endfor %}
                   </table>
-                  {#                  <button type="button" title="Agregar item"#}
-                  {#                          class="btn btn-success btn-lg addItem"#}
-                  {#                          onClick="showAddRestaurant();">#}
-                  {#                      +#}
-                  {#                  </button>#}
               </div>
               {#                  Restaurant seleccionado: <b>{{ selectedRestaurant }}</b>#}
           </div>
@@ -107,59 +96,51 @@
 {% block javascripts %}
   {{ parent() }}
   <script>
-    function showAddRestaurant() {
-        $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-        $('.modal-body-new-user').load('../page/element/addRestaurant/', function () {});
-        $('.modal-title').html('Nuevo restaurant');
-        $("#newItemModal").modal('show');
-    }
+      function moveUp(id, newposition) {
+          if (newposition === 1) {
+              return true;
+          }
 
-    function showDeleteItem(id, name) {
-        $(".modal-header #sectionId").val(id);
-        $('#myModalLabelMessage').html(`¿Confirma la eliminacion de ${name}?`);
+          reorder(id, newposition - 1);
+      }
 
-        $("#confirmModal").modal('show');
-    }
+      function moveDown(id, newposition) {
+          reorder(id, newposition + 1);
+      }
 
-    function showEditRestaurant(id) {
-        $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-        $('.modal-body-new-user').load('../page/element/editRestaurant/'+id, function () {});
-        $('.modal-title').html('Editar restaurant');
-        $("#newItemModal").modal('show');
-    }
+      function reorder(id, newposition) {
+        let path = '{{ path('update_order', {'id': 'id','newPosition': 'newPosition'}) }}';
+        let finalPath = path.replace("id", id);
+        finalPath = finalPath.replace("newPosition", newposition);
 
-    var modalConfirmDelete = function (callback) {
-        $("#modal-del-btn-si").on("click", function () {
-            callback(true);
-            $("#confirmModal").modal('hide');
+        $.ajax({
+            url: finalPath,
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                location.reload();
+            },
+            error: function (xhr, status) {
+                alert("{{ 'alert.error.processing' | trans }}");
+            }
         });
+      };
 
-        $("#modal-del-btn-no").on("click", function () {
-            callback(false);
-            $("#confirmModal").modal('hide');
-        });
-    };
+      function toggleCategoryVisibility(categoryId) {
+          const path = '{{ path('category_toggle_visible', {'categoryId': 'categoryId'}) }}';
+          const finalPath = path.replace("categoryId", categoryId);
 
-    modalConfirmDelete(function (confirm) {
-        if (confirm) {
-            let sectionId = $("#sectionId").val();
-            let path = '{{ path('remove_restaurant', {'id': 'sectionId'}) }}';
-            let finalPath = path.replace("sectionId", sectionId);
-
-            $.ajax({
-                url: finalPath,
-                type: 'POST',
-                dataType: 'json',
-                success: function (data) {
-                    location.reload();
-                },
-                error: function (xhr, status) {
-                    alert("{{ 'alert.error.processing' | trans }}");
-                }
-            });
-        } else {
-
-        }
-    });
+          $.ajax({
+              url: finalPath,
+              type: 'POST',
+              dataType: 'json',
+              success: function (data) {
+                  location.reload();
+              },
+              error: function (xhr, status) {
+                  alert("{{ 'alert.error.processing' | trans }}");
+              }
+          });
+      }
   </script>
 {% endblock %}

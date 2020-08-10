@@ -3,12 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Category;
-use App\Entity\Combo;
 use App\Entity\ComboDish;
 use App\Entity\Dish;
 use App\Entity\Restaurant;
 use App\Entity\SettingsPage;
-use App\Service\ImageService;
 use App\Service\PagesService;
 use App\Service\SettingsPageService;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,6 +57,7 @@ class PageController extends AbstractController
             $categoriesArray[] = [
                 'id' => $category->getId(),
                 'name' => $category->getName(),
+                'enabled' => $category->getEnabled(),
             ];
         }
 
@@ -94,6 +93,7 @@ class PageController extends AbstractController
                 'description' => $combo->getDescription(),
                 'imageUrl' => $combo->getImageUrl(),
                 'price' => $combo->getPrice(),
+                'enabled' => $combo->getEnabled(),
             ];
         }
 
@@ -147,6 +147,8 @@ class PageController extends AbstractController
     {
         $settings = $settingsPageService->getPropertiesByRestaurantId($this->getUser()->getRestaurantId());
 
+        $fontSizes = [];
+
         return $this->render('pages/page_details_page_settings.html.twig', [
             'pageName' => 'Restaurant',
             'itemTitle' => 'Restaurant',
@@ -154,14 +156,23 @@ class PageController extends AbstractController
             'user' => DashboardController::$user,
             'settings' => $settings,
             'select' => [
-                'font_options' => [
-                    '20px',
-                    '30px',
-                    '40px',
-                    '50px',
-                ],
+                'font_options' => $this->getAvailableFontSizes(),
             ],
         ]);
+    }
+
+    /**
+     * @return array
+     */
+    private function getAvailableFontSizes(): array
+    {
+        $sizes = [];
+
+        for ($i = 18; $i <= 40; $i += 2) {
+            $sizes[] = $i.'px';
+        }
+
+        return $sizes;
     }
 
     /**
@@ -191,7 +202,7 @@ class PageController extends AbstractController
             'subtitle' => 'select_font.select_font',
             'present' => 'select_font.present',
             'selected' => ($selectedFont) ? $selectedFont->getValue() : '',
-            'fonts' => $fonts
+            'fonts' => $fonts,
         ]);
     }
 
@@ -203,31 +214,27 @@ class PageController extends AbstractController
      */
     public function showPageOrder(PagesService $pagesService, Request $request)
     {
-        $settings = [
-            [
-                'key' => 'menu.body',
-                'name' => 'Cuerpo de la pagina',
-                'font-family' => '',
-                'font-size' => '',
-                'color' => '',
-                'background-color' => 'brown;',
-            ],
-            [
-                'key' => 'menu.restaurant.title',
-                'name' => 'Nombre del restaurant',
-                'font-family' => '"Comic Sans MS", cursive, sans-serif;',
-                'font-size' => '20px;',
-                'color' => 'red;',
-                'background-color' => '',
-            ],
-        ];
+        $categories = $this->getDoctrine()->getRepository(Category::class)
+            ->findBy(['restaurantId' => $this->getUser()->getRestaurantId()],['orderShow' => 'ASC']);
+
+        $categoriesArray = [];
+        /** @var Category $category */
+        foreach ($categories as $category) {
+            $categoriesArray[] = [
+                'id' => $category->getId(),
+                'name' => $category->getName(),
+                'order' => $category->getOrderShow(),
+                'enabled' => $category->getEnabled(),
+            ];
+
+        }
 
         return $this->render('pages/page_details_page_order.html.twig', [
-            'pageName' => 'Restaurant',
-            'itemTitle' => 'Restaurant',
+            'pageName' => 'Orden de las categorías',
+            'itemTitle' => 'Categoría',
             'route' => $request->get('_route'),
             'user' => DashboardController::$user,
-            'settings' => $settings,
+            'categories' => $categoriesArray,
         ]);
     }
 
@@ -241,7 +248,7 @@ class PageController extends AbstractController
     {
         $categories = $this->getDoctrine()->getRepository(Category::class)
             ->findBy(
-                ['enabled' => 1, 'restaurantId' => $this->getUser()->getRestaurantId()],
+                ['restaurantId' => $this->getUser()->getRestaurantId()],
                 ['id' => 'ASC']
             );
 
@@ -249,7 +256,7 @@ class PageController extends AbstractController
         /** @var Category $category */
         foreach ($categories as $category) {
             $dishes = $this->getDoctrine()->getRepository(Dish::class)
-                ->findBy(['enabled' => 1, 'categoryId' => $category->getId()]);
+                ->findBy(['categoryId' => $category->getId()]);
 
             $dishesArray = [];
             /** @var Dish $dish */
@@ -260,12 +267,14 @@ class PageController extends AbstractController
                     'description' => $dish->getDescription(),
                     'price' => $dish->getPrice(),
                     'currency' => $dish->getCurrency()->getSymbol(),
+                    'enabled' => $dish->getEnabled(),
                     //'image' => 'xxx',
                 ];
             }
 
             $returnArray[] = [
                 'name' => $category->getName(),
+                'enabled' => $category->getEnabled(),
                 'dishes' => $dishesArray,
             ];
         }
@@ -302,7 +311,7 @@ class PageController extends AbstractController
             /** @var ComboDish $comboDish */
             foreach ($comboDishes as $comboDish) {
                 $dishes = $this->getDoctrine()->getRepository(Dish::class)
-                    ->findBy(['id' => $comboDish->getDishId(), 'enabled' => 1]);
+                    ->findBy(['id' => $comboDish->getDishId()]);
 
                 if (null !== $dishes) {
                     foreach ($dishes as $dish) {
@@ -321,6 +330,7 @@ class PageController extends AbstractController
                 'description' => $combo->getDescription(),
                 'price' => $combo->getPrice(),
                 'currency' => $combo->getCurrency()->getSymbol(),
+                'enabled' => $combo->getEnabled(),
                 'dishes' => $dishesArray,
             ];
         }

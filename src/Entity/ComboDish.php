@@ -24,14 +24,14 @@ class ComboDish
     /**
      * @var int
      *
-     * @ORM\Column(name="comboId", type="integer", nullable=false)
+     * @ORM\Column(name="combo_id", type="integer", nullable=false)
      */
     private $comboId;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="dishId", type="integer", nullable=false)
+     * @ORM\Column(name="dish_id", type="integer", nullable=false)
      */
     private $dishId;
 

@@ -75,16 +75,16 @@ class Category
     /**
      * @var int
      *
-     * @ORM\Column(name="restaurantId", type="integer", nullable=false)
+     * @ORM\Column(name="restaurant_id", type="integer", nullable=false)
      */
     private $restaurantId;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="order", type="integer", nullable=false)
+     * @ORM\Column(name="order_show", type="integer", nullable=false)
      */
-    private $order;
+    private $orderShow;
 
     public function getName(): string
     {
@@ -171,13 +171,13 @@ class Category
         $this->categoryType = $categoryType;
     }
 
-    public function getOrder(): int
+    public function getOrderShow(): int
     {
-        return $this->order;
+        return $this->orderShow;
     }
 
-    public function setOrder($order): void
+    public function setOrderShow($orderShow): void
     {
-        $this->order = $order;
+        $this->orderShow = $orderShow;
     }
 }

@@ -75,7 +75,7 @@ class Dish
     /**
      * @var int
      *
-     * @ORM\Column(name="restaurantId", type="integer", nullable=false)
+     * @ORM\Column(name="restaurant_id", type="integer", nullable=false)
      */
     private $restaurantId;
 
