@@ -92,7 +92,7 @@ class ViewMenuController extends AbstractController
         $categories = $this->getDoctrine()->getRepository(Category::class)
             ->findBy(
                 [
-                    'restaurantId' => $this->getUser()->getRestaurantId(),
+                    'restaurantId' => $restaurantId,
                     'enabled' => 1,
                 ],
                 ['orderShow' => 'ASC']
