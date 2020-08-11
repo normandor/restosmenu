@@ -55,9 +55,9 @@
                               <th>
                                   Descripcion
                               </th>
-                              <th>
-                                  Imagen
-                              </th>
+{#                              <th>#}
+{#                                  Imagen#}
+{#                              </th>#}
                               <th>
                                   Precio
                               </th>
@@ -71,11 +71,11 @@
                                   <td class="left">
                                       {{ combo.description|raw }}
                                   </td>
+{#                                  <td class="center">#}
+{#                                      {{ combo.imageUrl|raw }}#}
+{#                                  </td>#}
                                   <td class="center">
-                                      {{ combo.imageUrl|raw }}
-                                  </td>
-                                  <td class="center">
-                                      {{ combo.price|raw }}
+                                      {{ combo.currency|raw ~ combo.price|raw }}
                                   </td>
                                   <td class="actions">
                                       <div class="col-sm-1 buttons action-buttons">

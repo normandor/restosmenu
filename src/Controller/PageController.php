@@ -67,7 +67,7 @@ class PageController extends AbstractController
             ]);
 
         $combosArray = [];
-        /** @var Combo $combo */
+        /** @var Category $combo */
         foreach ($combos as $combo) {
             $combosArray[] = [
                 'id' => $combo->getId(),
@@ -75,6 +75,7 @@ class PageController extends AbstractController
                 'description' => $combo->getDescription(),
                 'imageUrl' => $combo->getImageUrl(),
                 'price' => $combo->getPrice(),
+                'currency' => $combo->getCurrency()->getSymbol(),
                 'enabled' => $combo->getEnabled(),
             ];
         }
