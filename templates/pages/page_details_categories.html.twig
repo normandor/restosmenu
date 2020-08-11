@@ -100,7 +100,7 @@
 
     function showDeleteItem(id, name) {
         $(".modal-header #sectionId").val(id);
-        $('#myModalLabelMessage').html(`¿Confirma la eliminacion de la categoria ${name}?`);
+        $('#myModalLabelMessage').html('¿Confirma la eliminacion de la categoria '+name+'?');
 
         $("#confirmModal").modal('show');
     }
