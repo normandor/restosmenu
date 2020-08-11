@@ -58,8 +58,9 @@ class CategoryController extends AbstractController
         }
 
         $categories = $this->getDoctrine()->getRepository(Category::class)->findBy(
-            ['id' => $id, 'categoryType' => PageController::CATEGORY_BASICO]
+            ['categoryType' => PageController::CATEGORY_BASICO]
         );
+
         if (count($categories) === 1) {
             return new Response(json_encode([
                 'status' => 'nok',
