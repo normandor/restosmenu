@@ -70,8 +70,8 @@
                                       {{ restaurant.name|raw }}
                                   </td>
                                   <td class="center">
-                                      <a download="codigo-qr.png" href="{{ asset(restaurant.qrUrl) }}" title="Codigo QR">
-                                          <img class="qr-code" alt="Codigo QR" src="{{ asset(restaurant.qrUrl) }}"><br />
+                                      <a download="codigo-qr.png" href="{{ qr_code_url(restaurant.deeplink, { writer: 'png' }) }}" title="Codigo QR">
+                                          <img class="qr-code" alt="Codigo QR" src="{{ qr_code_url(restaurant.deeplink, { writer: 'png' }) }}"><br />
                                           <p>Descargar</p>
                                       </a>
                                   </td>

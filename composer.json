@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "doctrine/annotations": "^1.10",
+        "endroid/qr-code-bundle": "^3.4",
         "phpoffice/phpspreadsheet": "^1.6",
         "phpoffice/phpword": "^0.16.0",
         "ramsey/uuid": "^3.8",

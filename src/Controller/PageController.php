@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 class PageController extends AbstractController
 {
     const baseUrl = '/restaurant/';
+    const absoluteUrl = 'https://restos.wichisoft.com.ar/restaurant/';
 
     const CATEGORY_BASICO = 'basico';
     const CATEGORY_COMBO = 'combo';
@@ -105,6 +106,7 @@ class PageController extends AbstractController
                 'qrUrl' => $restaurant->getQrUrl(),
                 'logo' => $restaurant->getLogoUrl(),
                 'link' => self::baseUrl.$restaurant->getSlug(),
+                'deeplink' => self::absoluteUrl.$restaurant->getSlug(),
             ];
         }
 
