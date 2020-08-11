@@ -216,20 +216,21 @@ class UserController extends AbstractController
             $plainPassword = $form->get('password')->getData();
 
             if (!empty($plainPassword))  {
-                $tempPassword = $this->passwordEncoder->encodePassword($userEntity, $userEntity->getPassword());
-                $userEntity->setPassword($tempPassword);
-            }
-            else {
-                $userEntity->setPassword($originalPassword);
-            }
 
-            // logout_on_user_change
-            // causing issues with ValidatorInterface
-            // todo: fix the auto logout when validation fails and remove following workaround
+                // logout_on_user_change
+                // causing issues with ValidatorInterface
+                // todo: fix the auto logout when validation fails and remove following workaround
 //            $pattern = '/^(?=.*[0-9])(?=.*[a-z].*[A-Z]).{8,20}$/';
 //            if(!preg_match($pattern, $plainPassword)){
-            if (strlen($plainPassword) < 8) {
-                $form->addError(new FormError('La clave debe tener al menos 8 letras'));
+                if (strlen($plainPassword) < 8) {
+                    $form->addError(new FormError('La clave debe tener al menos 8 letras'));
+                    $userEntity->setPassword($originalPassword);
+                } else {
+                    $tempPassword = $this->passwordEncoder->encodePassword($userEntity, $userEntity->getPassword());
+                    $userEntity->setPassword($tempPassword);
+                }
+            }
+            else {
                 $userEntity->setPassword($originalPassword);
             }
 
