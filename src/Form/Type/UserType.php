@@ -29,6 +29,8 @@ class UserType extends AbstractType
             ])
             ->add('username', TextType::class, [
                 'label' => 'Usuario',
+                'disabled' => true,
+                'required' => false,
             ])
             ->add('avatar_path', FileType::class, [
                 'label' => 'Imagen de perfil',
