@@ -103,16 +103,16 @@
                                           <div class="col-sm-1 buttons action-buttons">
 
                                               <img class="icon"
-                                                   src="../images/icono_plus.png"
+                                                   src="{{ asset('images/icono_plus.png') }}"
                                                    onclick="showAddItemToCombo({{ dish.id }});"
                                                    style="cursor: pointer;" />
 
-                                              <img class="icon" src="../images/icono_edit.png"
+                                              <img class="icon" src="{{ asset('images/icono_edit.png') }}"
                                                    onclick="showEditDish({{ dish.id }});"
                                                    style="cursor: pointer;" />
 
                                               <img class="icon"
-                                                   src="../images/icono_delete.png"
+                                                   src="{{ asset('images/icono_delete.png') }}"
                                                    onclick="showDeleteItem('{{ dish.id }}', '{{ dish.name|raw }}');"
                                                    style="cursor: pointer;" />
 

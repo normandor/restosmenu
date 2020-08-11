@@ -79,12 +79,12 @@
                                   </td>
                                   <td class="actions">
                                       <div class="col-sm-1 buttons action-buttons">
-                                          <img class="icon" src="../images/icono_edit.png"
+                                          <img class="icon" src="{{ asset('images/icono_edit.png') }}"
                                                onclick="showEditCombo({{ combo.id }});"
                                                style="cursor: pointer;" />
 
                                           <img class="icon"
-                                               src="../images/icono_delete.png"
+                                               src="{{ asset('images/icono_delete.png') }}"
                                                onclick="showDeleteItem('{{ combo.id }}', '{{ combo.name|raw }}');"
                                                style="cursor: pointer;" />
                                       </div>
