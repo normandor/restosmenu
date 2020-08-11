@@ -37,6 +37,10 @@ class CategoryController extends AbstractController
      */
     public function remove($id): Response
     {
+        /** @var Category $categoryToDelete */
+        $categoryToDelete = $this->getDoctrine()->getRepository(Category::class)->findBy(['id' => $id]);
+        $categoryToDeleteType = $categoryToDelete->getCategoryType();
+
         /** @var Dish $dish */
         $dish = $this->getDoctrine()->getRepository(Dish::class)->findOneBy(['categoryId' => $id]);
 
@@ -47,25 +51,29 @@ class CategoryController extends AbstractController
             ]));
         }
 
-        $combosWithDishesSelected = $this->getDoctrine()->getRepository(ComboDish::class)->findBy(
-            ['comboId' => $id]
-        );
-        if (count($combosWithDishesSelected) !== 0) {
-            return new Response(json_encode([
-                'status' => 'nok',
-                'message' => 'Este combo contiene platos, no puede ser eliminado',
-            ]));
+        if (PageController::CATEGORY_COMBO ===  $categoryToDeleteType) {
+            $combosWithDishesSelected = $this->getDoctrine()->getRepository(ComboDish::class)->findBy(
+                ['comboId' => $id]
+            );
+            if (count($combosWithDishesSelected) !== 0) {
+                return new Response(json_encode([
+                    'status'  => 'nok',
+                    'message' => 'Este combo contiene platos, no puede ser eliminado',
+                ]));
+            }
         }
 
-        $categories = $this->getDoctrine()->getRepository(Category::class)->findBy(
-            ['categoryType' => PageController::CATEGORY_BASICO, 'restaurantId' => $this->getUser()->getRestaurantId()]
-        );
+        if (PageController::CATEGORY_BASICO === $categoryToDeleteType) {
+            $categories = $this->getDoctrine()->getRepository(Category::class)->findBy(
+                ['categoryType' => PageController::CATEGORY_BASICO, 'restaurantId' => $this->getUser()->getRestaurantId()]
+            );
 
-        if (count($categories) === 1) {
-            return new Response(json_encode([
-                'status' => 'nok',
-                'message' => 'Tiene que haber al menos una categoría',
-            ]));
+            if (count($categories) === 1) {
+                return new Response(json_encode([
+                    'status' => 'nok',
+                    'message' => 'Tiene que haber al menos una categoría',
+                ]));
+            }
         }
 
         /** @var Category $category */
