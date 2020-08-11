@@ -85,7 +85,7 @@
 
         function showAddUser() {
             $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-            $('.modal-body-new-user').load('../admin/modal/user/add/', function () {});
+            $('.modal-body-new-user').load('{{ path('modal_data_add_user') }}', function () {});
             $("#newItemModal").modal('show');
         }
 
