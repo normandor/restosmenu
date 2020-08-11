@@ -4,6 +4,11 @@
         color: {{ properties.menu_body.properties.color }};
     }
 
+    .logo-img {
+        max-width: 100%;
+        height: auto;
+    }
+
     .underline {
         border-bottom: 1px solid currentColor;
         border-top: 1px solid currentColor;
@@ -26,7 +31,7 @@
     <div class="col-xs-12 col-sm-12 text-center">
         <h1 class="menu_restaurant_title">{{ titulo }}</h1>
         {% if logo is not null %}
-            <img src="{{ asset(logo) }}">
+            <img class="logo-img" src="{{ asset(logo) }}">
         {% endif %}
 
         <div class="row" style="visibility: visible; position: relative;">
@@ -48,7 +53,7 @@
                     {% for item in entrada.items %}
                         <div style="margin-top: 20px;" class="col-sm-12 col-md-12">
                             <h4><b>
-                                    {%  if item.count is defined %}{{ item.count}} x {% endif %}
+                                    {%  if (item.count is defined) and (item.count != 1) %}{{ item.count}} x {% endif %}
                                     {{ item.label | nl2br }}</b></h4>
                             <h4><i>{{ item.descripcion | nl2br }}</i></h4>
                             {% if item.price is defined %}

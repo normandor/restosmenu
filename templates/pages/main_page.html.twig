@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" />
+    <title>{% block title %}{{ title }}{% endblock %}</title>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('build/css/bootstrap.min.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('build/css/font-awesome/4.2.0/css/font-awesome.min.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('build/css/main.css') }}"/>
+    {% endblock %}
+    <style>
+        body {
+            background-color: #e4d7af;
+            color: #6f4444;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+        }
+
+        h1 {
+            margin: 30px 0px 30px 0px;
+        }
+    </style>
+</head>
+<body>
+
+{% block body %}
+    <div class="row-fluid" style="padding-top: 30px">
+
+        <div class="col-xs-12 col-sm-12 text-center">
+            <h1 class="menu_restaurant_title">{{ title }}</h1>
+            <img class="logo-img" src="{{ asset('images/logo_tray.png') }}">
+        </div>
+    </div>
+{% endblock %}
+
+</body>
+</html>

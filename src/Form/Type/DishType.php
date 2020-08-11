@@ -2,9 +2,11 @@
 
 namespace App\Form\Type;
 
+use App\Controller\PageController;
 use App\Entity\Category;
 use App\Entity\Dish;
 use App\Repository\CategoryRepository;
+use Codeception\PHPUnit\Constraint\Page;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -29,7 +31,7 @@ class DishType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, ['label' => 'name'])
-            ->add('description', TextType::class, ['label' => 'description'])
+            ->add('description', TextType::class, ['label' => 'description', 'required' => false])
             ->add('categoryId',
                 EntityType::class,
                 [
@@ -37,7 +39,9 @@ class DishType extends AbstractType
                     'query_builder' => function (CategoryRepository $cr) {
                         return $cr->createQueryBuilder('u')
                             ->where('u.restaurantId = :restaurantId')
+                            ->andWhere('u.categoryType = :categoryType')
                             ->setParameter('restaurantId', $this->user->getRestaurantId())
+                            ->setParameter('categoryType', PageController::CATEGORY_BASICO)
                             ->orderBy('u.name', 'ASC');
                     },
                     'choice_label' => 'name',

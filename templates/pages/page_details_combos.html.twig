@@ -46,52 +46,54 @@
 
           <div class="row font-20" style="margin-bottom:15px">
               <div class="col-sm-10 mb-10">
-                  <table>
-                      <tr>
-                          <th>
-                              Combo
-                          </th>
-                          <th>
-                              Descripcion
-                          </th>
-                          <th>
-                              Imagen
-                          </th>
-                          <th>
-                              Precio
-                          </th>
-                          <th></th>
-                      </tr>
-                      {% for combo in combos %}
+                  <div class="table-responsive">
+                      <table>
                           <tr>
-                              <td class="left">
-                                  {{ combo.name|raw }}
-                              </td>
-                              <td class="left">
-                                  {{ combo.description|raw }}
-                              </td>
-                              <td class="center">
-                                  {{ combo.imageUrl|raw }}
-                              </td>
-                              <td class="center">
-                                  {{ combo.price|raw }}
-                              </td>
-                              <td class="actions">
-                                  <div class="col-sm-1 buttons action-buttons">
-                                      <img class="icon" src="../images/icono_edit.png"
-                                           onclick="showEditCombo({{ combo.id }});"
-                                           style="cursor: pointer;" />
-
-                                      <img class="icon"
-                                           src="../images/icono_delete.png"
-                                           onclick="showDeleteItem('{{ combo.id }}', '{{ combo.name|raw }}');"
-                                           style="cursor: pointer;" />
-                                  </div>
-                              </td>
+                              <th>
+                                  Combo
+                              </th>
+                              <th>
+                                  Descripcion
+                              </th>
+                              <th>
+                                  Imagen
+                              </th>
+                              <th>
+                                  Precio
+                              </th>
+                              <th></th>
                           </tr>
+                          {% for combo in combos %}
+                              <tr>
+                                  <td class="left">
+                                      {{ combo.name|raw }}
+                                  </td>
+                                  <td class="left">
+                                      {{ combo.description|raw }}
+                                  </td>
+                                  <td class="center">
+                                      {{ combo.imageUrl|raw }}
+                                  </td>
+                                  <td class="center">
+                                      {{ combo.price|raw }}
+                                  </td>
+                                  <td class="actions">
+                                      <div class="col-sm-1 buttons action-buttons">
+                                          <img class="icon" src="../images/icono_edit.png"
+                                               onclick="showEditCombo({{ combo.id }});"
+                                               style="cursor: pointer;" />
 
-                      {% endfor %}
-                  </table>
+                                          <img class="icon"
+                                               src="../images/icono_delete.png"
+                                               onclick="showDeleteItem('{{ combo.id }}', '{{ combo.name|raw }}');"
+                                               style="cursor: pointer;" />
+                                      </div>
+                                  </td>
+                              </tr>
+
+                          {% endfor %}
+                      </table>
+                  </div>
                   <button type="button" title="Agregar item"
                           class="btn btn-success btn-lg addItem"
                           onClick="showAddCategory();">
@@ -111,7 +113,7 @@
   <script>
     function showAddCategory() {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-        $('.modal-body-new-user').load('../page/element/addCombo/', function () {});
+        $('.modal-body-new-user').load('../admin/page/element/addCombo/', function () {});
         $('.modal-title').html('Nuevo combo');
         $("#newItemModal").modal('show');
     }
@@ -125,7 +127,7 @@
 
     function showEditCombo(id) {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-        $('.modal-body-new-user').load('../page/element/editCombo/'+id, function () {});
+        $('.modal-body-new-user').load('../admin/page/element/editCombo/'+id, function () {});
         $('.modal-title').html('Editar combo');
         $("#newItemModal").modal('show');
     }

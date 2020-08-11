@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
+        "doctrine/annotations": "^1.10",
         "phpoffice/phpspreadsheet": "^1.6",
         "phpoffice/phpword": "^0.16.0",
         "ramsey/uuid": "^3.8",
@@ -30,7 +31,7 @@
         "symfony/translation": "*",
         "symfony/twig-bundle": "*",
         "symfony/twig-pack": "^1.0",
-        "symfony/validator": "*",
+        "symfony/validator": "5.0.*",
         "symfony/web-link": "*",
         "symfony/webpack-encore-pack": "^1.0",
         "symfony/yaml": "*"

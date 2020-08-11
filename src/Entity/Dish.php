@@ -33,7 +33,7 @@ class Dish
      *
      * @ORM\Column(name="description", type="string", length=250, nullable=true)
      */
-    private $description;
+    private $description = null;
 
     /**
      * @var string|null
@@ -78,6 +78,13 @@ class Dish
      * @ORM\Column(name="restaurant_id", type="integer", nullable=false)
      */
     private $restaurantId;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="order_show", type="integer", nullable=false)
+     */
+    private $orderShow = 0;
 
     public function getId()
     {
@@ -167,5 +174,15 @@ class Dish
     public function setCurrency(Currency $currency)
     {
         $this->currency = $currency;
+    }
+
+    public function getOrderShow() : int
+    {
+        return $this->orderShow;
+    }
+
+    public function setOrderShow(int $orderShow)
+    {
+        $this->orderShow = $orderShow;
     }
 }

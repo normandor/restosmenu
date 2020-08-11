@@ -4,7 +4,7 @@ namespace App\Tests;
 
 use App\Tests\ApiTester;
 
-class ToggleCategoryVisibilityCest
+class CategoryControllerCest
 {
     public function _before(ApiTester $I)
     {
@@ -14,6 +14,10 @@ class ToggleCategoryVisibilityCest
         $I->click('login');
 
         $I->deleteFromTable('category');
+    }
+
+    public function canGetCountWhenNoneExisting(ApiTester $I)
+    {
         $I->haveInDatabase('category',
             [
                 'id'            => 1,
@@ -32,48 +36,37 @@ class ToggleCategoryVisibilityCest
                 'currency_id'   => 1,
                 'order_show'    => 2,
             ]);
+
+        $I->sendGET('/category/getComboCount/');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('{"count":0}');
+    }
+
+    public function canGetCountWhenOneExisting(ApiTester $I)
+    {
         $I->haveInDatabase('category',
             [
-                'id'            => 3,
+                'id'            => 1,
+                'category_type' => 'combo',
+                'enabled'       => 1,
+                'restaurant_id' => 1,
+                'currency_id'   => 1,
+                'order_show'    => 1,
+            ]);
+        $I->haveInDatabase('category',
+            [
+                'id'            => 2,
                 'category_type' => 'basico',
                 'enabled'       => 1,
                 'restaurant_id' => 1,
                 'currency_id'   => 1,
-                'order_show'    => 3,
-            ]);
-    }
-
-    public function canToggleAVisibility(ApiTester $I)
-    {
-        $I->seeInDatabase('category',
-            [
-                'id'      => 1,
-                'enabled' => 1,
+                'order_show'    => 2,
             ]);
 
-        $I->sendPOST('/category/toggleVisibility/2');
-        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::NO_CONTENT);
-
-        $I->seeInDatabase('category',
-            [
-                'id'      => 2,
-                'enabled' => 0,
-            ]);
-        $I->seeInDatabase('category',
-            [
-                'id'      => 1,
-                'enabled' => 1,
-            ]);
-        $I->seeInDatabase('category',
-            [
-                'id'      => 3,
-                'enabled' => 1,
-            ]);
-    }
-
-    public function getErrorForInexistingCategory(ApiTester $I)
-    {
-        $I->sendPOST('/category/toggleVisibility/9');
-        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::NOT_FOUND);
+        $I->sendGET('/category/getComboCount/');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('{"count":1}');
     }
 }

@@ -54,8 +54,8 @@
                                 ({{ 'hidden' | trans}})
                               {% endif %}
                           </h2>
-
-                          <table style="margin-bottom: 50px;">
+                          <div class="table-responsive">
+                           <table>
                               <tr>
                                   <th>
                                       Plato
@@ -65,6 +65,12 @@
                                   </th>
                                   <th>
                                       Precio
+                                  </th>
+                                  <th>
+                                      Visible
+                                  </th>
+                                  <th>
+                                      Posición
                                   </th>
                                   <th></th>
                               </tr>
@@ -78,6 +84,20 @@
                                       </td>
                                       <td class="center">
                                           {{ dish.currency|raw ~ dish.price|raw }}
+                                      </td>
+                                      <td class="center">
+                                          {% set img = (dish.enabled) ? 'images/toggle_on.png' : 'images/toggle_off.png' %}
+                                          <img src="{{ asset(img) }}" height="30px" style="cursor: pointer;"
+                                               onclick="toggleDishVisibility({{ dish.id }});"
+                                          >
+                                      </td>
+                                      <td class="center">
+                                          <a href="#" onClick="moveUpDishInCategory({{ dish.id }}, {{ category.id }}, {{ dish.order }});">
+                                              <img src="{{ asset('images/arrow_up.png') }}" height="40px" style="margin-right: 10px">
+                                          </a>
+                                          <a href="#" onClick="moveDownDishInCategory({{ dish.id }}, {{ category.id }}, {{ dish.order }});">
+                                              <img src="{{ asset('images/arrow_down.png') }}" height="40px">
+                                          </a>
                                       </td>
                                       <td class="actions">
                                           <div class="col-sm-1 buttons action-buttons">
@@ -101,6 +121,7 @@
                                   </tr>
                              {% endfor %}
                            </table>
+                          </div>
                       {% endif %}
                   {% endfor %}
                   <button type="button" title="Agregar item"
@@ -122,7 +143,7 @@
   <script>
     function showAddDish() {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-        $('.modal-body-new-user').load('../page/element/addDish/', function () {});
+        $('.modal-body-new-user').load('../admin/page/element/addDish/', function () {});
         $('.modal-title').html('Nuevo plato');
         $("#newItemModal").modal('show');
     }
@@ -135,16 +156,35 @@
     }
 
     function showAddItemToCombo(dishId) {
-        $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-        $('.modal-body-new-user').load('../page/element/addSelectedDishToCombo/'+dishId, function () {});
-        $('.modal-title').html('Agregar plato a combo');
-        $('.modal-subtitle').html('Agregar plato a combo');
-        $("#newItemModal").modal('show');
+        let path = '{{ path('category_get_combo_count') }}';
+        $.ajax({
+            url: path,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data.count === 0) {
+                    alert("Debe crear primero una promoción");
+                    return false;
+                }
+
+                $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
+                $('.modal-body-new-user').load('../admin/page/element/addSelectedDishToCombo/' + dishId, function () {
+                });
+                $('.modal-title').html('Agregar plato a combo');
+                $('.modal-subtitle').html('Agregar plato a combo');
+                $("#newItemModal").modal('show');
+            },
+            error: function (xhr, status) {
+                console.log(xhr);
+                console.log(status);
+                alert("{{ 'alert.error.processing' | trans }}");
+            }
+        });
     }
 
     function showEditDish(id) {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-        $('.modal-body-new-user').load('../page/element/editDish/'+id, function () {});
+        $('.modal-body-new-user').load('../admin/page/element/editDish/'+id, function () {});
         $('.modal-title').html('Editar item');
         $("#newItemModal").modal('show');
     }
@@ -184,5 +224,55 @@
 
         }
     });
+
+    function toggleDishVisibility(dishId) {
+        const path = '{{ path('dish_toggle_visible', {'dishId': 'dishId'}) }}';
+        const finalPath = path.replace("dishId", dishId);
+
+        $.ajax({
+            url: finalPath,
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                location.reload();
+            },
+            error: function (xhr, status) {
+                alert("{{ 'alert.error.processing' | trans }}");
+            }
+        });
+    }
+
+    function moveUpDishInCategory(dishId, categoryId, newPosition) {
+        if (newPosition === 1) {
+            return true;
+        }
+
+        reorderDishInCategory(dishId, categoryId, newPosition - 1);
+    }
+
+    function moveDownDishInCategory(dishId, categoryId, newPosition) {
+        reorderDishInCategory(dishId, categoryId, newPosition + 1);
+    }
+
+    function reorderDishInCategory(dishId, categoryId, newPosition) {
+        let path = '{{ path('dish_update_order_in_category', {'dishId': 'dishId','categoryId': 'categoryId', 'newPosition': 'newPosition'}) }}';
+        let finalPath = path.replace("dishId", dishId);
+        finalPath = finalPath.replace("categoryId", categoryId);
+        finalPath = finalPath.replace("newPosition", newPosition);
+
+        $.ajax({
+            url: finalPath,
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                location.reload();
+            },
+            error: function (xhr, status) {
+                alert("{{ 'alert.error.processing' | trans }}");
+            }
+        });
+    };
+
+
   </script>
 {% endblock %}

@@ -15,35 +15,17 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PageController extends AbstractController
 {
-    const ALLOWED_DOMS = '<p><b><strong><a><i><br><u>';
-    const KEY_FOR_LIST = 'elements';
     const baseUrl = '/restaurant/';
 
     const CATEGORY_BASICO = 'basico';
     const CATEGORY_COMBO = 'combo';
-//    const baseUrl = 'https://restos.wichisoft.com.ar/restaurant/';
-
-    public function __construct()
-    {
-    }
-
-    private function getCookie($key)
-    {
-        if (isset($_COOKIE[$key]))
-        {
-            return $_COOKIE[$key];
-        }
-
-        return false;
-    }
 
     /**
-     * @param PagesService $pagesService
-     * @param Request      $request
+     * @param Request $request
      *
      * @return Response
      */
-    public function showCategories(PagesService $pagesService, Request $request)
+    public function showCategories(Request $request)
     {
         $categories = $this->getDoctrine()->getRepository(Category::class)
             ->findBy([
@@ -71,12 +53,11 @@ class PageController extends AbstractController
     }
 
     /**
-     * @param PagesService $pagesService
-     * @param Request      $request
+     * @param Request $request
      *
      * @return Response
      */
-    public function showCombos(PagesService $pagesService, Request $request)
+    public function showCombos(Request $request)
     {
         $combos = $this->getDoctrine()->getRepository(Category::class)
             ->findBy([
@@ -105,13 +86,12 @@ class PageController extends AbstractController
         ]);
     }
 
-   /**
-     * @param PagesService $pagesService
-     * @param Request      $request
+    /**
+     * @param Request $request
      *
      * @return Response
      */
-    public function showRestaurants(PagesService $pagesService, Request $request)
+    public function showRestaurants(Request $request)
     {
         $restaurants = $this->getDoctrine()->getRepository(Restaurant::class)
             ->findBy(['enabled' => 1, 'id' => $this->getUser()->getRestaurantId()], ['id' => 'ASC']);
@@ -207,12 +187,11 @@ class PageController extends AbstractController
     }
 
     /**
-     * @param PagesService $pagesService
-     * @param Request      $request
+     * @param Request $request
      *
      * @return Response
      */
-    public function showPageOrder(PagesService $pagesService, Request $request)
+    public function showPageOrder(Request $request)
     {
         $categories = $this->getDoctrine()->getRepository(Category::class)
             ->findBy(['restaurantId' => $this->getUser()->getRestaurantId()],['orderShow' => 'ASC']);
@@ -226,7 +205,6 @@ class PageController extends AbstractController
                 'order' => $category->getOrderShow(),
                 'enabled' => $category->getEnabled(),
             ];
-
         }
 
         return $this->render('pages/page_details_page_order.html.twig', [
@@ -239,24 +217,26 @@ class PageController extends AbstractController
     }
 
     /**
-     * @param PagesService $pagesService
-     * @param Request      $request
+     * @param Request $request
      *
      * @return Response
      */
-    public function showDishes(PagesService $pagesService, Request $request)
+    public function showDishes(Request $request)
     {
         $categories = $this->getDoctrine()->getRepository(Category::class)
             ->findBy(
-                ['restaurantId' => $this->getUser()->getRestaurantId()],
-                ['id' => 'ASC']
+                ['restaurantId' => $this->getUser()->getRestaurantId(), 'categoryType' => self::CATEGORY_BASICO],
+                ['orderShow' => 'ASC']
             );
 
         $returnArray = [];
         /** @var Category $category */
         foreach ($categories as $category) {
             $dishes = $this->getDoctrine()->getRepository(Dish::class)
-                ->findBy(['categoryId' => $category->getId()]);
+                ->findBy(
+                    ['categoryId' => $category->getId()],
+                    ['orderShow' => 'ASC']
+                );
 
             $dishesArray = [];
             /** @var Dish $dish */
@@ -268,11 +248,13 @@ class PageController extends AbstractController
                     'price' => $dish->getPrice(),
                     'currency' => $dish->getCurrency()->getSymbol(),
                     'enabled' => $dish->getEnabled(),
+                    'order' => $dish->getOrderShow(),
                     //'image' => 'xxx',
                 ];
             }
 
             $returnArray[] = [
+                'id' => $category->getId(),
                 'name' => $category->getName(),
                 'enabled' => $category->getEnabled(),
                 'dishes' => $dishesArray,
@@ -288,24 +270,29 @@ class PageController extends AbstractController
     }
 
     /**
-     * @param PagesService $pagesService
-     * @param Request      $request
+     * @param Request $request
      *
      * @return Response
      */
-    public function showDishesCombos(PagesService $pagesService, Request $request)
+    public function showDishesCombos(Request $request)
     {
         $combos = $this->getDoctrine()->getRepository(Category::class)
-            ->findBy([
+            ->findBy(
+                [
                 'restaurantId' => $this->getUser()->getRestaurantId(),
                 'categoryType' => PageController::CATEGORY_COMBO,
-            ]);
+                ],
+                ['orderShow' => 'ASC']
+            );
 
         $returnArray = [];
-        /** @var Combo $combo */
+        /** @var Category $combo */
         foreach ($combos as $combo) {
             $comboDishes = $this->getDoctrine()->getRepository(ComboDish::class)
-                ->findBy(['comboId' => $combo->getId()],['dishId' => 'ASC']);
+                ->findBy(
+                    ['comboId' => $combo->getId()],
+                    ['orderShow' => 'ASC']
+                );
 
             $dishesArray = [];
             /** @var ComboDish $comboDish */
@@ -318,6 +305,7 @@ class PageController extends AbstractController
                         $dishesArray[] = [
                             'id' => $dish->getId(),
                             'name' => $dish->getName(),
+                            'order' => $comboDish->geOrderShow(),
                             'description' => $dish->getDescription(),
                         ];
                     }

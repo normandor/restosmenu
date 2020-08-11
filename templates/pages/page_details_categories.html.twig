@@ -46,34 +46,36 @@
 
           <div class="row font-20" style="margin-bottom:15px">
               <div class="col-sm-10 mb-10">
-                  <table>
-                      <tr>
-                          <th>
-                              Categoria
-                          </th>
-                          <th style="width: 10%;"></th>
-                      </tr>
-                      {% for category in categories %}
+                  <div class="table-responsive">
+                      <table>
                           <tr>
-                              <td class="left">
-                                  {{ category.name|raw }}
-                              </td>
-                              <td class="actions">
-                                  <div class="col-sm-1 buttons action-buttons">
-                                      <img class="icon" src="../images/icono_edit.png"
-                                           onclick="showEditCategory({{ category.id }});"
-                                           style="cursor: pointer;" />
-
-                                      <img class="icon"
-                                           src="../images/icono_delete.png"
-                                           onclick="showDeleteItem('{{ category.id }}', '{{ category.name|raw }}');"
-                                           style="cursor: pointer;" />
-                                  </div>
-                              </td>
+                              <th>
+                                  Categoria
+                              </th>
+                              <th style="width: 10%;"></th>
                           </tr>
+                          {% for category in categories %}
+                              <tr>
+                                  <td class="left">
+                                      {{ category.name|raw }}
+                                  </td>
+                                  <td class="actions">
+                                      <div class="col-sm-1 buttons action-buttons">
+                                          <img class="icon" src="../images/icono_edit.png"
+                                               onclick="showEditCategory({{ category.id }});"
+                                               style="cursor: pointer;" />
 
-                      {% endfor %}
-                  </table>
+                                          <img class="icon"
+                                               src="../images/icono_delete.png"
+                                               onclick="showDeleteItem('{{ category.id }}', '{{ category.name|raw }}');"
+                                               style="cursor: pointer;" />
+                                      </div>
+                                  </td>
+                              </tr>
+
+                          {% endfor %}
+                      </table>
+                  </div>
                   <button type="button" title="Agregar item"
                           class="btn btn-success btn-lg addItem"
                           onClick="showAddCategory();">
@@ -93,7 +95,7 @@
   <script>
     function showAddCategory() {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-        $('.modal-body-new-user').load('../page/element/addCategory/', function () {});
+        $('.modal-body-new-user').load('../admin/page/element/addCategory/', function () {});
         $('.modal-title').html('Nueva categoria');
         $("#newItemModal").modal('show');
     }
@@ -107,7 +109,7 @@
 
     function showEditCategory(id) {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-        $('.modal-body-new-user').load('../page/element/editCategory/'+id, function () {});
+        $('.modal-body-new-user').load('../admin/page/element/editCategory/'+id, function () {});
         $('.modal-title').html('Editar categoria');
         $("#newItemModal").modal('show');
     }

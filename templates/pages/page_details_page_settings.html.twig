@@ -49,63 +49,65 @@
                   <h2>Apariencia de la carta</h2>
               </div>
               <div class="col-sm-10 mb-10">
-                  <table>
-                      <tr>
-                          <th>
-                              Item
-                          </th>
-                          <th>
-                              Fuente
-                          </th>
-                          <th>
-                              Tamano de letra
-                          </th>
-                          <th>
-                              Color de letra
-                          </th>
-                          <th>
-                              Color de fondo
-                          </th>
-                      </tr>
-                      {% for key, setting in settings %}
+                  <div class="table-responsive">
+                      <table>
                           <tr>
-                              <td class="left">
-                                  {{ setting.name }}
-                              </td>
-                              <td class="left">
-                                  <span href="#" style="cursor: pointer; font-family: {{ setting.properties["font-family"] }};"
-                                        onClick="showFontSelector('{{ key }}', 'font-family');"
-                                  >
-                                      {{ setting.properties["font-family"] }}
-                                  </span>
-                              </td>
-                              <td class="center">
-                                  <select id="fontsize_{{ key }}" data-itemid="{{ key }}" data-property="font-size">
-                                      {% for font_option in select.font_options %}
-                                        <option value="{{ font_option }}"
-                                            {{  (setting.properties["font-size"] == font_option) ? 'selected' : '' }}
-                                        >
-                                            {{ font_option }}
-                                        </option>
-                                      {% endfor %}
-                                  </select>
-                              </td>
-                              <td class="center">
-                                  {% if setting.properties.color != '' %}
-                                      <label for="color"></label>
-                                      <input type="color" value="{{ setting.properties.color }}" id="color_{{ key }}" data-itemid="{{ key }}" data-property="color">
-                                  {% endif %}
-                              </td>
-                              <td class="center">
-                                  {% if setting.properties["background-color"] != '' %}
-                                    <label for="backgroundColor-{{ key }}"></label>
-                                      <input type="color" value="{{ setting.properties["background-color"] }}" id="backgroundColor_{{ key }}" data-itemid="{{ key }}"  data-property="background-color">
-                                  {% endif %}
-                              </td>
+                              <th>
+                                  Item
+                              </th>
+                              <th>
+                                  Fuente
+                              </th>
+                              <th>
+                                  Tamano de letra
+                              </th>
+                              <th>
+                                  Color de letra
+                              </th>
+                              <th>
+                                  Color de fondo
+                              </th>
                           </tr>
+                          {% for key, setting in settings %}
+                              <tr>
+                                  <td class="left">
+                                      {{ setting.name }}
+                                  </td>
+                                  <td class="left">
+                                      <span href="#" style="cursor: pointer; font-family: {{ setting.properties["font-family"] }};"
+                                            onClick="showFontSelector('{{ key }}', 'font-family');"
+                                      >
+                                          {{ setting.properties["font-family"] }}
+                                      </span>
+                                  </td>
+                                  <td class="center">
+                                      <select id="fontsize_{{ key }}" data-itemid="{{ key }}" data-property="font-size">
+                                          {% for font_option in select.font_options %}
+                                            <option value="{{ font_option }}"
+                                                {{  (setting.properties["font-size"] == font_option) ? 'selected' : '' }}
+                                            >
+                                                {{ font_option }}
+                                            </option>
+                                          {% endfor %}
+                                      </select>
+                                  </td>
+                                  <td class="center">
+                                      {% if setting.properties.color != '' %}
+                                          <label for="color"></label>
+                                          <input type="color" value="{{ setting.properties.color }}" id="color_{{ key }}" data-itemid="{{ key }}" data-property="color">
+                                      {% endif %}
+                                  </td>
+                                  <td class="center">
+                                      {% if setting.properties["background-color"] != '' %}
+                                        <label for="backgroundColor-{{ key }}"></label>
+                                          <input type="color" value="{{ setting.properties["background-color"] }}" id="backgroundColor_{{ key }}" data-itemid="{{ key }}"  data-property="background-color">
+                                      {% endif %}
+                                  </td>
+                              </tr>
 
-                      {% endfor %}
-                  </table>
+                          {% endfor %}
+                      </table>
+                  </div>
               </div>
           </div>
       </div>
@@ -189,7 +191,7 @@
         $(".modal-header #property").val(name);
         console.log($(".modal-header #key").val());
 
-        $('#myModalLabelMessage').load("/page/element/select-font/" + id );
+        $('#myModalLabelMessage').load("/admin/page/element/select-font/" + id );
         $('#modal-del-btn-si').html('Aceptar');
 
         $("#confirmModal").modal('show');

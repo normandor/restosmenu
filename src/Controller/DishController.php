@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\ComboDish;
 use App\Entity\Currency;
 use App\Entity\Dish;
@@ -71,81 +72,6 @@ class DishController extends AbstractController
     }
 
     /**
-     * @param int $comboId
-     *
-     * @return Response
-     */
-    public function modalShowAddDishToCombo(int $comboId)
-    {
-        $comboDish = new ComboDish();
-
-        $form = $this->createForm(ComboDishType::class, $comboDish, ['csrf_protection' => false, 'comboId' => $comboId]);
-
-        return $this->render('user/modals/modal_new_element.twig', [
-            'form' => $form->createView(),
-            'submitUrl' => $this->generateUrl('submit_add_dish_to_combo'),
-        ]);
-    }
-
-    /**
-     * @param int $dishId
-     *
-     * @return Response|bool
-     */
-    public function modalShowAddSelectedDishToCombo(int $dishId)
-    {
-        $comboDish = new ComboDish();
-
-        $form = $this->createForm(ComboSelectedDishType::class, $comboDish, ['csrf_protection' => false, 'dishId' => $dishId]);
-
-        /** @var Dish $dish */
-        $dish = $this->getDoctrine()->getRepository(Dish::class)->findOneBy(['id' => $dishId]);
-        if (!$dishId) {
-            return false;
-        }
-
-        return $this->render('user/modals/modal_new_element.twig', [
-            'form' => $form->createView(),
-            'subtitle' => 'Agregar "'.$dish->getName().'" a:',
-            'submitUrl' => $this->generateUrl('submit_add_selected_dish_to_combo'),
-        ]);
-    }
-
-    public function submitFormSelectedDishToCombo(Request $request, PagesService $pagesService, FileUploader $fileUploader)
-    {
-        $comboDish = new ComboDish();
-
-        $form = $this->createForm(ComboSelectedDishType::class, $comboDish, ['csrf_protection' => false]);
-        $form->handleRequest($request);
-        $status = 'error';
-        $message = '';
-
-        if ($request->isMethod('POST')) {
-            if ($form->isValid()) {
-
-                $comboDish = $form->getData();
-
-                $entityManager = $this->getDoctrine()->getManager();
-
-                $entityManager->persist($comboDish);
-                $entityManager->flush();
-
-                $status = 'success';
-                $message = 'guardado';
-            } else {
-                foreach ($form->getErrors(true, false) as $error) {
-                    $message .= $error->current()->getMessage();
-                }
-            }
-        }
-
-        return $this->json([
-            'status' => $status,
-            'message' => $message
-        ]);
-    }
-
-    /**
      * @param $id
      *
      * @return Response
@@ -157,27 +83,6 @@ class DishController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($dish);
-        $entityManager->flush();
-
-        return new Response(json_encode([
-            'message' => 'success',
-        ]));
-    }
-
-    /**
-     * @param int $comboId
-     * @param int $dishId
-     *
-     * @return Response
-     */
-    public function removeDishFromCombo($comboId, $dishId): Response
-    {
-        /** @var ComboDish $comboDish */
-        $comboDish = $this->getDoctrine()->getRepository(ComboDish::class)
-            ->findOneBy(['comboId' => $comboId, 'dishId' => $dishId]);
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($comboDish);
         $entityManager->flush();
 
         return new Response(json_encode([
@@ -217,37 +122,32 @@ class DishController extends AbstractController
         ]);
     }
 
-    public function submitFormDishToCombo(Request $request, PagesService $pagesService, FileUploader $fileUploader)
+    /**
+     * @param int $dishId
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function toggleVisibility(int $dishId)
     {
-        $comboDish = new ComboDish();
+        /** @var Dish $dish */
+        $dish = $this->getDoctrine()->getRepository(Dish::class)->findOneBy(['id' => $dishId]);
 
-        $form = $this->createForm(ComboDishType::class, $comboDish, ['csrf_protection' => false]);
-        $form->handleRequest($request);
-        $status = 'error';
-        $message = '';
-
-        if ($request->isMethod('POST')) {
-            if ($form->isValid()) {
-
-                $comboDish = $form->getData();
-
-                $entityManager = $this->getDoctrine()->getManager();
-
-                $entityManager->persist($comboDish);
-                $entityManager->flush();
-
-                $status = 'success';
-                $message = 'guardado';
-            } else {
-                foreach ($form->getErrors(true, false) as $error) {
-                    $message .= $error->current()->getMessage();
-                }
-            }
+        if (!$dish) {
+            return $this->json([
+                'status'  => 'error',
+                'message' => 'Plato no existente'
+            ], 404);
         }
 
+        $dish->setEnabled((int)!$dish->getEnabled());
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($dish);
+        $entityManager->flush();
+
         return $this->json([
-            'status' => $status,
-            'message' => $message
-        ]);
+            'status' => 'success',
+            'message' => 'actualizado'
+        ], 204);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\Type\UserType;
 use App\Service\FileUploader;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -118,8 +119,6 @@ class UserController extends AbstractController
         $usuario_activo = filter_var($request->get('usuario_activo'), FILTER_SANITIZE_NUMBER_INT);
         $userid = filter_var($request->get('userid'), FILTER_SANITIZE_NUMBER_INT);
 
-        // TODO use TRANSACTIONS!!!!
-        // !!!!!!!!!!!!!!!!!
         $success = $userService->updateUser($lastname, $firstname, $email, $role, $zonas, $acceso_tablero, $usuario_activo, $userid);
 
         return new Response(json_encode([
@@ -137,8 +136,6 @@ class UserController extends AbstractController
     {
         $userid = filter_var($request->get('user_id'), FILTER_SANITIZE_NUMBER_INT);
 
-        // TODO use TRANSACTIONS!!!!
-        // !!!!!!!!!!!!!!!!!
         $success = $userService->deleteUser($userid);
 
         return new Response(json_encode([
@@ -163,8 +160,6 @@ class UserController extends AbstractController
         $email = filter_var($request->get('email'), FILTER_SANITIZE_STRING);
         $password = filter_var($request->get('password1'), FILTER_SANITIZE_STRING);
         $roles = [];
-        // TODO use TRANSACTIONS!!!!
-        // !!!!!!!!!!!!!!!!!
 
         if ($userService->usernameExists($username))
         {
@@ -225,6 +220,16 @@ class UserController extends AbstractController
                 $userEntity->setPassword($tempPassword);
             }
             else {
+                $userEntity->setPassword($originalPassword);
+            }
+
+            // logout_on_user_change
+            // causing issues with ValidatorInterface
+            // todo: fix the auto logout when validation fails and remove following workaround
+//            $pattern = '/^(?=.*[0-9])(?=.*[a-z].*[A-Z]).{8,20}$/';
+//            if(!preg_match($pattern, $plainPassword)){
+            if (strlen($plainPassword) < 8) {
+                $form->addError(new FormError('La clave debe tener al menos 8 letras'));
                 $userEntity->setPassword($originalPassword);
             }
 

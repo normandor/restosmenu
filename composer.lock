@@ -4,26 +4,26 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "261a8ece57fa627f417b93e426fb170d",
+    "content-hash": "acdc36180fa9a6e2f5c18a36e8a8e7e8",
     "packages": [
         {
             "name": "doctrine/annotations",
-            "version": "1.10.2",
+            "version": "1.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "b9d758e831c70751155c698c2f7df4665314a1cb"
+                "reference": "5db60a4969eba0e0c197a19c077780aadbc43c5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/b9d758e831c70751155c698c2f7df4665314a1cb",
-                "reference": "b9d758e831c70751155c698c2f7df4665314a1cb",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/5db60a4969eba0e0c197a19c077780aadbc43c5d",
+                "reference": "5db60a4969eba0e0c197a19c077780aadbc43c5d",
                 "shasum": ""
             },
             "require": {
                 "doctrine/lexer": "1.*",
                 "ext-tokenizer": "*",
-                "php": "^7.1"
+                "php": "^7.1 || ^8.0"
             },
             "require-dev": {
                 "doctrine/cache": "1.*",
@@ -73,7 +73,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2020-04-20T09:18:32+00:00"
+            "time": "2020-05-25T17:24:27+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -6075,20 +6075,20 @@
         },
         {
             "name": "symfony/validator",
-            "version": "v5.0.8",
+            "version": "v5.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/validator.git",
-                "reference": "909c45839d32f9e4c09d4f155a7d761201e7e47e"
+                "reference": "9084a603e998e7abb010c44f8e3a2046b61fa9f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/validator/zipball/909c45839d32f9e4c09d4f155a7d761201e7e47e",
-                "reference": "909c45839d32f9e4c09d4f155a7d761201e7e47e",
+                "url": "https://api.github.com/repos/symfony/validator/zipball/9084a603e998e7abb010c44f8e3a2046b61fa9f6",
+                "reference": "9084a603e998e7abb010c44f8e3a2046b61fa9f6",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2.5",
+                "php": ">=7.2.5",
                 "symfony/polyfill-ctype": "~1.8",
                 "symfony/polyfill-mbstring": "~1.0",
                 "symfony/translation-contracts": "^1.1|^2"
@@ -6164,7 +6164,7 @@
             ],
             "description": "Symfony Validator Component",
             "homepage": "https://symfony.com",
-            "time": "2020-04-28T18:26:18+00:00"
+            "time": "2020-06-30T17:40:59+00:00"
         },
         {
             "name": "symfony/var-dumper",

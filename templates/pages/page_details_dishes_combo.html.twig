@@ -44,25 +44,30 @@
           </div>
         </div>
 
-          <div class="row font-20" style="margin-bottom:15px">
+          <div class="row font-20" style="margin-bottom:15px;">
               <div class="col-sm-10 mb-10">
+                  {% if categories | length == 0 %}
+                    <h2>No se ha creado ningún combo.</h2>
+                  {% endif %}
                   {% for category in categories %}
-
                       <h2 style="margin-bottom: 5px;">
                           {{ category.name }}
                           {% if category.enabled == 0 %}
                               ({{ 'hidden' | trans}})
                           {% endif %}
                       </h2>
-                          <h3 style="margin-bottom: 15px; font-style: italic"> {{ category.description }} ({{ category.currency }}{{ category.price }})</h3>
-
+                      <h3 style="margin-bottom: 15px; font-style: italic"> {{ category.description }} ({{ category.currency }}{{ category.price }})</h3>
+                      <div class="table-responsive">
                           <table>
                               <tr>
-                                  <th style="width: 45%;">
+                                  <th>
                                       Plato
                                   </th>
-                                  <th style="width: 45%;">
+                                  <th>
                                       Descripcion
+                                  </th>
+                                  <th>
+                                      Posición
                                   </th>
                                   <th style="width: 10%;"></th>
                               </tr>
@@ -73,6 +78,14 @@
                                       </td>
                                       <td class="left">
                                           {{ dish.description|raw }}
+                                      </td>
+                                      <td class="center">
+                                          <a href="#" onClick="moveUpDishInCombo({{ dish.id }}, {{ category.id }}, {{ dish.order }});">
+                                              <img src="{{ asset('images/arrow_up.png') }}" height="40px" style="margin-right: 10px">
+                                          </a>
+                                          <a href="#" onClick="moveDownDishInCombo({{ dish.id }}, {{ category.id }}, {{ dish.order }});">
+                                              <img src="{{ asset('images/arrow_down.png') }}" height="40px">
+                                          </a>
                                       </td>
                                       <td class="actions">
                                           <div class="col-sm-1 buttons action-buttons">
@@ -85,6 +98,7 @@
                                   </tr>
                              {% endfor %}
                            </table>
+                          </div>
                           <button type="button" title="Agregar item"
                                   class="btn btn-success btn-lg addItem"
                                   onClick="showAddDishToCombo({{ category.id }});">
@@ -105,9 +119,40 @@
 {% block javascripts %}
   {{ parent() }}
   <script>
+      function moveUpDishInCombo(dishId, categoryId, newPosition) {
+          if (newPosition === 1) {
+              return true;
+          }
+
+          reorderDishInCombo(dishId, categoryId, newPosition - 1);
+      }
+
+      function moveDownDishInCombo(dishId, categoryId, newPosition) {
+          reorderDishInCombo(dishId, categoryId, newPosition + 1);
+      }
+
+      function reorderDishInCombo(dishId, categoryId, newPosition) {
+          let path = '{{ path('dish_update_order_in_combo', {'dishId': 'dishId','categoryId': 'categoryId', 'newPosition': 'newPosition'}) }}';
+          let finalPath = path.replace("dishId", dishId);
+          finalPath = finalPath.replace("categoryId", categoryId);
+          finalPath = finalPath.replace("newPosition", newPosition);
+
+          $.ajax({
+              url: finalPath,
+              type: 'POST',
+              dataType: 'json',
+              success: function (data) {
+                  location.reload();
+              },
+              error: function (xhr, status) {
+                  alert("{{ 'alert.error.processing' | trans }}");
+              }
+          });
+      };
+
       function showAddDishToCombo(comboId) {
           $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
-          $('.modal-body-new-user').load('../page/element/addDishToCombo/'+comboId, function () {});
+          $('.modal-body-new-user').load('../admin/page/element/addDishToCombo/'+comboId, function () {});
           $('.modal-title').html('Agregar plato a combo');
           $("#newItemModal").modal('show');
       }

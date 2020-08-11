@@ -2,6 +2,11 @@
 
 {% block stylesheets %}
   {{ parent() }}
+    <style>
+        .form-error-message {
+            color: red;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -61,7 +66,7 @@
                   {{ form_widget(form.avatar_path) }}
               </div>
               <div class="col-lg-9">
-                  <div class="my-custom-class-for-errors">
+                  <div class="error">
                       {{ form_errors(form) }}
                   </div>
                   <h4>Datos personales</h4>
