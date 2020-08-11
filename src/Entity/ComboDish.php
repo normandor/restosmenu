@@ -35,6 +35,20 @@ class ComboDish
      */
     private $dishId;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="restaurant_id", type="integer", nullable=false)
+     */
+    private $restaurantId;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="order_show", type="integer", nullable=false)
+     */
+    private $orderShow;
+
     public function getId(): int
     {
         return $this->id;
@@ -63,5 +77,25 @@ class ComboDish
     public function setDishId($dishId)
     {
         return $this->dishId = $dishId;
+    }
+
+    public function getRestaurantId(): ?int
+    {
+        return $this->restaurantId;
+    }
+
+    public function setRestaurantId($restaurantId)
+    {
+        return $this->restaurantId = $restaurantId;
+    }
+
+    public function geOrderShow(): int
+    {
+        return $this->orderShow;
+    }
+
+    public function setOrderShow($orderShow)
+    {
+        return $this->orderShow = $orderShow;
     }
 }

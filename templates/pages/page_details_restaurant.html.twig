@@ -47,55 +47,57 @@
           <div class="row font-20" style="margin-bottom:15px">
               <div class="col-sm-10 mb-10">
                   {#                  Restaurant seleccionado: <b>{{ selectedRestaurant }}</b>#}
-                  <table>
-                      <tr>
-                          <th>
-                              Restaurant
-                          </th>
-                          <th>
-                              Codigo QR
-                          </th>
-                          <th>
-                              Logo
-                          </th>
-                          <th>
-                              Link al menu
-                          </th>
-                          <th></th>
-                      </tr>
-                      {% for restaurant in restaurants %}
+                  <div class="table-responsive">
+                      <table>
                           <tr>
-                              <td class="left">
-                                  {{ restaurant.name|raw }}
-                              </td>
-                              <td class="center">
-                                  <a download="codigo-qr.png" href="{{ asset(restaurant.qrUrl) }}" title="Codigo QR">
-                                      <img class="qr-code" alt="Codigo QR" src="{{ asset(restaurant.qrUrl) }}"><br />
-                                      <p>Descargar</p>
-                                  </a>
-                              </td>
-                              <td class="center">
-                                  <img alt="Logo" src="{{ asset(restaurant.logo) }}" class="restaurant-logo"><br />
-                              </td>
-                              <td class="center restaurant-link">
-                                  <a href="{{ restaurant.link }}" target="_blank">{{ restaurant.link }}</a>
-                              </td>
-                              <td class="actions">
-                                  <div class="buttons action-buttons">
-                                      <img class="icon" src="../images/icono_edit.png"
-                                           onclick="showEditRestaurant({{ restaurant.id }});"
-                                           style="cursor: pointer;" />
-
-{#                                      <img class="icon"#}
-{#                                           src="../images/icono_delete.png"#}
-{#                                           onclick="showDeleteItem('{{ restaurant.id }}', '{{ restaurant.name|raw }}');"#}
-{#                                           style="cursor: pointer;" />#}
-                                  </div>
-                              </td>
+                              <th>
+                                  Restaurant
+                              </th>
+                              <th>
+                                  Codigo QR
+                              </th>
+                              <th>
+                                  Logo
+                              </th>
+                              <th>
+                                  Link al menu
+                              </th>
+                              <th></th>
                           </tr>
+                          {% for restaurant in restaurants %}
+                              <tr>
+                                  <td class="left">
+                                      {{ restaurant.name|raw }}
+                                  </td>
+                                  <td class="center">
+                                      <a download="codigo-qr.png" href="{{ asset(restaurant.qrUrl) }}" title="Codigo QR">
+                                          <img class="qr-code" alt="Codigo QR" src="{{ asset(restaurant.qrUrl) }}"><br />
+                                          <p>Descargar</p>
+                                      </a>
+                                  </td>
+                                  <td class="center">
+                                      <img alt="Logo" src="{{ asset(restaurant.logo) }}" class="restaurant-logo"><br />
+                                  </td>
+                                  <td class="center restaurant-link">
+                                      <a href="{{ restaurant.link }}" target="_blank">{{ restaurant.link }}</a>
+                                  </td>
+                                  <td class="actions">
+                                      <div class="buttons action-buttons">
+                                          <img class="icon" src="../images/icono_edit.png"
+                                               onclick="showEditRestaurant({{ restaurant.id }});"
+                                               style="cursor: pointer;" />
 
-                      {% endfor %}
-                  </table>
+    {#                                      <img class="icon"#}
+    {#                                           src="../images/icono_delete.png"#}
+    {#                                           onclick="showDeleteItem('{{ restaurant.id }}', '{{ restaurant.name|raw }}');"#}
+    {#                                           style="cursor: pointer;" />#}
+                                      </div>
+                                  </td>
+                              </tr>
+
+                          {% endfor %}
+                      </table>
+                  </div>
               </div>
           </div>
       </div>

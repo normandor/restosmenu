@@ -23,7 +23,10 @@ class DishService
     public function getDishesByCategoryId($categoryId): array
     {
         $dishRepository = $this->entityManager->getRepository(Dish::class);
-        $dishes = $dishRepository->findBy(['categoryId' => $categoryId, 'enabled' => 1]);
+        $dishes = $dishRepository->findBy(
+            ['categoryId' => $categoryId, 'enabled' => 1],
+            ['orderShow' => 'ASC']
+        );
 
         $dishArray = [];
         /** @var Dish $dish */

@@ -141,10 +141,10 @@ show_modal_add_dish:
     controller: App\Controller\DishController::modalShowAddDish
 show_modal_add_dish_to_combo:
     path:       /admin/page/element/addDishToCombo/{comboId}
-    controller: App\Controller\DishController::modalShowAddDishToCombo
+    controller: App\Controller\ComboDishController::modalShowAddDishToCombo
 show_modal_add_selected_dish_to_combo:
     path:       /admin/page/element/addSelectedDishToCombo/{dishId}
-    controller: App\Controller\DishController::modalShowAddSelectedDishToCombo
+    controller: App\Controller\ComboDishController::modalShowAddSelectedDishToCombo
 submit_add_image:
     path:       /admin/page/element/submitImage/{sectionId}
     controller: App\Controller\ImageController::submitForm
@@ -168,10 +168,10 @@ submit_add_dish:
     controller: App\Controller\DishController::submitFormAddDish
 submit_add_dish_to_combo:
     path:       /admin/page/element/submitDishToCombo/
-    controller: App\Controller\DishController::submitFormDishToCombo
+    controller: App\Controller\ComboDishController::submitFormDishToCombo
 submit_add_selected_dish_to_combo:
     path:       /admin/page/element/submitSelectedDishToCombo/
-    controller: App\Controller\DishController::submitFormSelectedDishToCombo
+    controller: App\Controller\ComboDishController::submitFormSelectedDishToCombo
 remove_restaurant:
     path:       /admin/page/element/removeRestaurant/{id}
     controller: App\Controller\RestaurantController::remove
@@ -186,7 +186,7 @@ remove_dish:
     controller: App\Controller\DishController::remove
 remove_dish_from_combo:
     path:       /admin/page/element/removeDishFromCombo/{comboId}/{dishId}
-    controller: App\Controller\DishController::removeDishFromCombo
+    controller: App\Controller\ComboDishController::removeDishFromCombo
 menu:
     path:       /admin/menu/
     controller: App\Controller\MenuController::index
@@ -203,9 +203,9 @@ api_logout:
 update_setting:
     path:       /admin/page/updateSetting/{id}/{property}/{value}
     controller: App\Controller\SettingsPageController::editSetting
-update_order:
+category_update_order:
     path:       /admin/page/updateOrder/{id}/{newPosition}
-    controller: App\Controller\SettingsPageController::editOrder
+    controller: App\Controller\SettingsPageController::updateCategoryOrder
 category_toggle_visible:
     path:       /admin/category/toggleVisibility/{categoryId}
     controller: App\Controller\CategoryController::toggleVisibility
@@ -215,7 +215,12 @@ category_get_combo_count:
 dish_toggle_visible:
     path:       /admin/dish/toggleVisibility/{dishId}
     controller: App\Controller\DishController::toggleVisibility
-
+dish_update_order_in_combo:
+    path:       /admin/page/updateOrderInCombo/{dishId}/{categoryId}/{newPosition}
+    controller: App\Controller\SettingsPageController::updateDishInComboOrder
+dish_update_order_in_category:
+    path:       /admin/page/updateOrderInCategory/{dishId}/{categoryId}/{newPosition}
+    controller: App\Controller\SettingsPageController::updateDishInCategoryOrder
 homepage:
     path:       /
     controller: App\Controller\DefaultController::index

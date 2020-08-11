@@ -12,51 +12,21 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ViewMenuController extends AbstractController
 {
+    private $dishService;
+
+    public function __construct(DishService $dishService)
+    {
+        $this->dishService = $dishService;
+    }
+
     public function showPreview(
         Request $request,
-        DishService $dishService,
         SettingsPageService $settingsPageService,
         $page
     ) {
-        $restoMenu = [];
         $restaurantId = $this->getUser()->getRestaurantId();
-        $categories = $this->getDoctrine()->getRepository(Category::class)
-            ->findBy([
-                'restaurantId' => $this->getUser()->getRestaurantId(),
-                'enabled' => 1,
-                'categoryType' => PageController::CATEGORY_BASICO,
-            ]);
-
-        $restaurant = $this->getDoctrine()->getRepository(Restaurant::class)
-            ->findOneBy(['selected' => 1, 'id' => $restaurantId]);
-
-        /** @var Category $category */
-        foreach ($categories as $category) {
-            $restoMenu[] = [
-                'categoria' => $category->getName(),
-                'class' => 'menu_category',
-                'items' => $dishService->getDishesByCategoryId($category->getId()),
-            ];
-        }
-
-        $combos = $this->getDoctrine()->getRepository(Category::class)
-            ->findBy([
-                'restaurantId' => $restaurantId,
-                'enabled' => 1,
-                'categoryType' => PageController::CATEGORY_COMBO,
-            ]);
-
-        /** @var Combo $combo */
-        foreach ($combos as $combo) {
-            $restoMenu[] = [
-                'categoria' => $combo->getName(),
-                'description' => $combo->getDescription(),
-                'class' => 'menu_promo_title',
-                'price' => $combo->getPrice(),
-                'currency' => $combo->getCurrency()->getSymbol(),
-                'items' => $dishService->getDishesByComboId($combo->getId()),
-            ];
-        }
+        $restaurant = $this->getRestaurantByRestaurantId($restaurantId);
+        $restoMenu = $this->getRestoMenuByRestaurantId($restaurantId);
 
         $properties = $settingsPageService->getPropertiesByRestaurantId($restaurantId);
 
@@ -70,12 +40,11 @@ class ViewMenuController extends AbstractController
     }
 
     public function showMenu(
-        DishService $dishService,
         SettingsPageService $settingsPageService,
         $restaurantSlug
     ) {
         if (0 === $restaurantSlug) {
-            throw new NotFoundHttpException('Sorry not existing!');
+            throw new NotFoundHttpException('Sorry, not existing!');
         }
 
         /** @var Restaurant $restaurant */
@@ -86,42 +55,7 @@ class ViewMenuController extends AbstractController
             throw new NotFoundHttpException('Restaurant not found');
         }
 
-        $restoMenu = [];
-        $categories = $this->getDoctrine()->getRepository(Category::class)
-            ->findBy([
-                'restaurantId' => $restaurant->getId(),
-                'enabled' => 1,
-                'categoryType' => PageController::CATEGORY_BASICO,
-            ]);
-
-        /** @var Category $category */
-        foreach ($categories as $category) {
-            $restoMenu[] = [
-                'categoria' => $category->getName(),
-                'class' => 'menu_category',
-                'items' => $dishService->getDishesByCategoryId($category->getId()),
-            ];
-        }
-
-        $combos = $this->getDoctrine()->getRepository(Category::class)
-            ->findBy([
-                'restaurantId' => $restaurant->getId(),
-                'enabled' => 1,
-                'categoryType' => PageController::CATEGORY_COMBO,
-            ]);
-
-        /** @var Combo $combo */
-        foreach ($combos as $combo) {
-            $restoMenu[] = [
-                'categoria' => $combo->getName(),
-                'description' => $combo->getDescription(),
-                'class' => 'menu_promo_title',
-                'price' => $combo->getPrice(),
-                'currency' => $combo->getCurrency()->getSymbol(),
-                'items' => $dishService->getDishesByComboId($combo->getId()),
-            ];
-        }
-
+        $restoMenu = $this->getRestoMenuByRestaurantId($restaurant->getId());
         $properties = $settingsPageService->getPropertiesByRestaurantId($restaurant->getId());
 
         return $this->render('view_menu_1_public.html.twig', [
@@ -130,5 +64,61 @@ class ViewMenuController extends AbstractController
             'properties' => $properties,
             'restoMenu' => $restoMenu,
         ]);
+    }
+
+    /**
+     * @param int $restaurantId
+     *
+     * @return Restaurant
+     */
+    private function getRestaurantByRestaurantId(int $restaurantId) : Restaurant
+    {
+        /** @var Restaurant $restaurant */
+        $restaurant = $this->getDoctrine()->getRepository(Restaurant::class)
+            ->findOneBy(['selected' => 1, 'id' => $restaurantId]);
+
+        return $restaurant;
+    }
+
+    /**
+     * @param int $restaurantId
+     *
+     * @return array
+     */
+    private function getRestoMenuByRestaurantId(int $restaurantId) : array
+    {
+        $restoMenu = [];
+
+        $categories = $this->getDoctrine()->getRepository(Category::class)
+            ->findBy(
+                [
+                    'restaurantId' => $this->getUser()->getRestaurantId(),
+                    'enabled' => 1,
+                ],
+                ['orderShow' => 'ASC']
+            );
+
+        /** @var Category $category */
+        foreach ($categories as $category) {
+            if (PageController::CATEGORY_BASICO === $category->getCategoryType()) {
+                $restoMenu[] = [
+                    'categoria' => $category->getName(),
+                    'class' => 'menu_category',
+                    'items' => $this->dishService->getDishesByCategoryId($category->getId()),
+                ];
+            }
+            if (PageController::CATEGORY_COMBO === $category->getCategoryType()) {
+                $restoMenu[] = [
+                    'categoria' => $category->getName(),
+                    'description' => $category->getDescription(),
+                    'class' => 'menu_promo_title',
+                    'price' => $category->getPrice(),
+                    'currency' => $category->getCurrency()->getSymbol(),
+                    'items' => $this->dishService->getDishesByComboId($category->getId()),
+                ];
+            }
+        }
+
+        return $restoMenu;
     }
 }

@@ -54,8 +54,8 @@
                                 ({{ 'hidden' | trans}})
                               {% endif %}
                           </h2>
-
-                          <table style="margin-bottom: 50px;">
+                          <div class="table-responsive">
+                           <table>
                               <tr>
                                   <th>
                                       Plato
@@ -68,6 +68,9 @@
                                   </th>
                                   <th>
                                       Visible
+                                  </th>
+                                  <th>
+                                      Posición
                                   </th>
                                   <th></th>
                               </tr>
@@ -87,6 +90,14 @@
                                           <img src="{{ asset(img) }}" height="30px" style="cursor: pointer;"
                                                onclick="toggleDishVisibility({{ dish.id }});"
                                           >
+                                      </td>
+                                      <td class="center">
+                                          <a href="#" onClick="moveUpDishInCategory({{ dish.id }}, {{ category.id }}, {{ dish.order }});">
+                                              <img src="{{ asset('images/arrow_up.png') }}" height="40px" style="margin-right: 10px">
+                                          </a>
+                                          <a href="#" onClick="moveDownDishInCategory({{ dish.id }}, {{ category.id }}, {{ dish.order }});">
+                                              <img src="{{ asset('images/arrow_down.png') }}" height="40px">
+                                          </a>
                                       </td>
                                       <td class="actions">
                                           <div class="col-sm-1 buttons action-buttons">
@@ -110,6 +121,7 @@
                                   </tr>
                              {% endfor %}
                            </table>
+                          </div>
                       {% endif %}
                   {% endfor %}
                   <button type="button" title="Agregar item"
@@ -229,6 +241,38 @@
             }
         });
     }
+
+    function moveUpDishInCategory(dishId, categoryId, newPosition) {
+        if (newPosition === 1) {
+            return true;
+        }
+
+        reorderDishInCategory(dishId, categoryId, newPosition - 1);
+    }
+
+    function moveDownDishInCategory(dishId, categoryId, newPosition) {
+        reorderDishInCategory(dishId, categoryId, newPosition + 1);
+    }
+
+    function reorderDishInCategory(dishId, categoryId, newPosition) {
+        let path = '{{ path('dish_update_order_in_category', {'dishId': 'dishId','categoryId': 'categoryId', 'newPosition': 'newPosition'}) }}';
+        let finalPath = path.replace("dishId", dishId);
+        finalPath = finalPath.replace("categoryId", categoryId);
+        finalPath = finalPath.replace("newPosition", newPosition);
+
+        $.ajax({
+            url: finalPath,
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                location.reload();
+            },
+            error: function (xhr, status) {
+                alert("{{ 'alert.error.processing' | trans }}");
+            }
+        });
+    };
+
 
   </script>
 {% endblock %}

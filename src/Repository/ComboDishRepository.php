@@ -26,8 +26,18 @@ class ComboDishRepository extends ServiceEntityRepository
             ->where('u.comboId = :comboId')
             ->groupBy('u.dishId')
             ->setParameter('comboId', $comboId)
+            ->orderBy('u.orderShow', 'ASC')
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function getLastPosition()
+    {
+        return $this->createQueryBuilder('u')
+            ->select('MAX(u.orderShow) as max')
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
     }
 }
