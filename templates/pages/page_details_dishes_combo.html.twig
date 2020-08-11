@@ -160,7 +160,7 @@
     function showDeleteItem(id, comboId, name) {
         $(".modal-header #elementId").val(id);
         $(".modal-header #sectionId").val(comboId);
-        $('#myModalLabelMessage').html(`¿Desea quitar el plato ${name} de este combo?`);
+        $('#myModalLabelMessage').html('¿Desea quitar el plato '+name+' de este combo?');
 
         $("#confirmModal").modal('show');
     }

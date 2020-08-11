@@ -119,7 +119,7 @@
 
     function showDeleteItem(id, name) {
         $(".modal-header #sectionId").val(id);
-        $('#myModalLabelMessage').html(`¿Confirma la eliminacion de ${name}?`);
+        $('#myModalLabelMessage').html('¿Confirma la eliminacion de '+name+'?');
 
         $("#confirmModal").modal('show');
     }
