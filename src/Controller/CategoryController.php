@@ -58,7 +58,7 @@ class CategoryController extends AbstractController
         }
 
         $categories = $this->getDoctrine()->getRepository(Category::class)->findBy(
-            ['categoryType' => PageController::CATEGORY_BASICO]
+            ['categoryType' => PageController::CATEGORY_BASICO, 'restaurantId' => $this->getUser()->getRestaurantId()]
         );
 
         if (count($categories) === 1) {
