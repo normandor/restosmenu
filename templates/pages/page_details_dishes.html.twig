@@ -150,7 +150,7 @@
 
     function showDeleteItem(id, name) {
         $(".modal-header #sectionId").val(id);
-        $('#myModalLabelMessage').html(`¿Confirma la eliminacion del plato ${name}?`);
+        $('#myModalLabelMessage').html('¿Confirma la eliminacion del plato '.name.'?');
 
         $("#confirmModal").modal('show');
     }
