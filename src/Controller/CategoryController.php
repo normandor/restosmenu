@@ -38,18 +38,8 @@ class CategoryController extends AbstractController
     public function remove($id): Response
     {
         /** @var Category $categoryToDelete */
-        $categoryToDelete = $this->getDoctrine()->getRepository(Category::class)->findBy(['id' => $id]);
+        $categoryToDelete = $this->getDoctrine()->getRepository(Category::class)->findOneBy(['id' => $id]);
         $categoryToDeleteType = $categoryToDelete->getCategoryType();
-
-        /** @var Dish $dish */
-        $dish = $this->getDoctrine()->getRepository(Dish::class)->findOneBy(['categoryId' => $id]);
-
-        if (null !== $dish) {
-            return new Response(json_encode([
-                'status' => 'nok',
-                'message' => 'Hay elementos en la categoria, no se puede eliminar',
-            ]));
-        }
 
         if (PageController::CATEGORY_COMBO ===  $categoryToDeleteType) {
             $combosWithDishesSelected = $this->getDoctrine()->getRepository(ComboDish::class)->findBy(
@@ -64,6 +54,16 @@ class CategoryController extends AbstractController
         }
 
         if (PageController::CATEGORY_BASICO === $categoryToDeleteType) {
+            /** @var Dish $dish */
+            $dish = $this->getDoctrine()->getRepository(Dish::class)->findOneBy(['categoryId' => $id]);
+
+            if (null !== $dish) {
+                return new Response(json_encode([
+                    'status' => 'nok',
+                    'message' => 'Hay elementos en la categoria, no se puede eliminar',
+                ]));
+            }
+
             $categories = $this->getDoctrine()->getRepository(Category::class)->findBy(
                 ['categoryType' => PageController::CATEGORY_BASICO, 'restaurantId' => $this->getUser()->getRestaurantId()]
             );
