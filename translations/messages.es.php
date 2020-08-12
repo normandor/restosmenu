@@ -15,6 +15,7 @@ return array(
     'element.link' => 'Link',
     'hidden' => 'oculto',
     'index.welcomemessage' => 'Bienvenidos',
+    'index.no_data_available' => 'No hay datos disponibles aún.',
     'login.error.loginerror' => 'Error en usuario o contraseña',
     'login.message.connexion' => 'Conexión',
     'login.message.password' => 'Contraseña',
