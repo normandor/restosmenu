@@ -23,19 +23,19 @@ use Doctrine\Common\Util\Inflector;
 class SettingsPageController extends AbstractController
 {
     /**
-     * @param int    $id
+     * @param string $key
      * @param string $property
      * @param string $value
      *
      * @return JsonResponse
      */
-    public function editSetting(int $id, string $property, string $value): JsonResponse
+    public function editSetting(string $key, string $property, string $value): JsonResponse
     {
         /** @var SettingsPage $setting */
         $setting = $this->getDoctrine()->getRepository(SettingsPage::class)
             ->findOneBy([
                 'restaurantId' => $this->getUser()->getRestaurantId(),
-                'key' => $id,
+                'key' => $key,
                 'property' => $property,
             ]);
 

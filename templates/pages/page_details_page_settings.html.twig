@@ -164,12 +164,12 @@
               value = event.target.value.replace("#", "");
           }
 
-          let itemId = event.target.getAttribute('data-itemid');
+          let key = event.target.getAttribute('data-itemid');
           let property = event.target.getAttribute('data-property');
 
-          let path = '{{ path('update_setting', {'id': 'itemId', 'property': 'property', 'value': 'value'}) }}';
+          let path = '{{ path('update_setting', {'key': 'key', 'property': 'property', 'value': 'value'}) }}';
 
-          var finalPath = path.replace("itemId", itemId);
+          var finalPath = path.replace("key", key);
           finalPath = finalPath.replace("property", property);
           finalPath = finalPath.replace("value", value);
 
@@ -215,7 +215,7 @@
             let property = $("#property").val();
             let value = $("#value").val();
 
-            let path = '{{ path('update_setting', {'id': 'key', 'property': 'property', 'value': 'value'}) }}';
+            let path = '{{ path('update_setting', {'key': 'key', 'property': 'property', 'value': 'value'}) }}';
 
             var finalPath = path.replace("key", key);
             finalPath = finalPath.replace("property", property);

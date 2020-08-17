@@ -201,7 +201,7 @@ api_logout:
     controller: App\Controller\Api\SecurityController::logout
 
 update_setting:
-    path:       /admin/page/updateSetting/{id}/{property}/{value}
+    path:       /admin/page/updateSetting/{key}/{property}/{value}
     controller: App\Controller\SettingsPageController::editSetting
 category_update_order:
     path:       /admin/page/updateOrder/{id}/{newPosition}
