@@ -43,10 +43,10 @@
                         <h2 class="underline">
                             <span class="{{ entrada.class }}">{{ entrada.categoria | nl2br }}</span>
                             {% if entrada.description is defined %}
-                                <div class="categoria-description">{{ entrada.description | nl2br }}</div>
+                                <div class="{{ entrada.class }}">{{ entrada.description | nl2br }}</div>
                             {% endif %}
                             {% if entrada.price is defined %}
-                                <div class="promo-price">{{ entrada.currency }}&nbsp;{{ entrada.price | nl2br }}</div>
+                                <div class="{{ entrada.class }}">{{ entrada.currency }}&nbsp;{{ entrada.price | nl2br }}</div>
                             {% endif %}
                         </h2>
                     </div>
