@@ -64,6 +64,7 @@ class DishService
             if (null !== $dish) {
                 $comboDishArray[] = [
                     'count' => $comboDish['count'],
+                    'class' => 'menu_dish',
                     'label' => $dish->getName(),
                     'descripcion' => $dish->getDescription(),
                     'image' => $dish->getImage(),
