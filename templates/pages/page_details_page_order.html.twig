@@ -38,7 +38,7 @@
         <div class="pagename row pad-lt-15 pad-bt-15">
           <div class="col-sm">
             <h1>
-              {{ pageName }}
+              {{ pageName|trans }}
               <br />
             </h1>
           </div>
@@ -46,7 +46,7 @@
 
           <div class="row font-20" style="margin-bottom:15px">
               <div class="col-sm-10 mb-10">
-                  <h2>Orden de las categorias e imagenes</h2>
+                  <h2>{{ subtitle|trans }}</h2>
               </div>
               <div class="col-sm-10 mb-10">
                   <div class="table-responsive">
@@ -54,6 +54,9 @@
                           <tr>
                               <th>
                                   Item
+                              </th>
+                              <th>
+                                  Tipo
                               </th>
                               <th>
                                   Posicion
@@ -66,6 +69,9 @@
                               <tr>
                                   <td class="left">
                                       {{ category.name }}
+                                  </td>
+                                  <td class="center">
+                                      {{ category.type | trans }}
                                   </td>
                                   <td class="center">
                                       <a href="#" onClick="moveUp({{ category.id }}, {{ category.order }});">

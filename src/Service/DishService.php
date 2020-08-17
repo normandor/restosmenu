@@ -33,6 +33,7 @@ class DishService
         foreach ($dishes as $dish) {
             $dishArray[] = [
                 'label' => $dish->getName(),
+                'class' => 'menu_dish',
                 'descripcion' => $dish->getDescription(),
                 'image' => $dish->getImage(),
                 'icons' => [],

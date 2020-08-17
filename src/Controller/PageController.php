@@ -205,13 +205,15 @@ class PageController extends AbstractController
             $categoriesArray[] = [
                 'id' => $category->getId(),
                 'name' => $category->getName(),
+                'type' => 'category_type.'.$category->getCategoryType(),
                 'order' => $category->getOrderShow(),
                 'enabled' => $category->getEnabled(),
             ];
         }
 
         return $this->render('pages/page_details_page_order.html.twig', [
-            'pageName' => 'Orden de las categorías',
+            'pageName' => 'order_of_categories',
+            'subtitle' => 'order_of_categories_and_images',
             'itemTitle' => 'Categoría',
             'route' => $request->get('_route'),
             'user' => DashboardController::$user,
