@@ -23,13 +23,13 @@
     }
 
     {% for class in properties|keys %}
-    .{{ class }} {
-    {% for property in properties[class].properties|keys %}
-    {% if properties[class].properties[property] != '' %}
-    {{ property }}: {{ properties[class].properties[property]|raw }};
-    {% endif %}
-    {% endfor %}
-    }
+        .{{ class }} {
+            {% for property in properties[class].properties|keys %}
+                {% if properties[class].properties[property] != '' %}
+                    {{ property }}: {{ properties[class].properties[property]|raw }};
+                {% endif %}
+            {% endfor %}
+        }
     {% endfor %}
 
 </style>
