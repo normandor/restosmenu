@@ -16,6 +16,12 @@
         padding: 15px 0px 15px 0px;
     }
 
+    @media only screen and (max-width: 768px) {
+        div.dish {
+            margin-bottom: 45px;
+        }
+    }
+
     {% for class in properties|keys %}
     .{{ class }} {
     {% for property in properties[class].properties|keys %}
@@ -52,7 +58,7 @@
                     </div>
 
                     {% for item in entry.items %}
-                        <div style="margin-top: 20px;" class="col-sm-12 col-md-12">
+                        <div style="margin-top: 20px;" class="dish col-sm-12 col-md-12">
                             <h4 class="{{ item.class }}"><b>
                                     {%  if (item.count is defined) and (item.count != 1) %}{{ item.count}} x {% endif %}
                                     {{ item.label | nl2br }}</b></h4>
