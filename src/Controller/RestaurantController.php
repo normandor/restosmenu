@@ -80,11 +80,11 @@ class RestaurantController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $restaurant = $form->getData();
 
-            $path = 'images/logos/';
+            $path = 'images/logos/'.$restaurantId.'/';
             $uploadedFile = $form['logoUrl']->getData();
 
             if ($uploadedFile) {
-                $uploadedFilename = $fileUploader->upload($uploadedFile, $path ?? '');
+                $uploadedFilename = $fileUploader->upload($uploadedFile, $path ?? '', md5('logos_'.$restaurantId));
                 $restaurant->setLogoUrl($path.$uploadedFilename);
             } else {
                 $restaurant->setLogoUrl($originalImageUri);
@@ -137,5 +137,38 @@ class RestaurantController extends AbstractController
             'status' => $status,
             'message' => $message
         ]);
+    }
+
+    /**
+     * @param $restaurantId
+     *
+     * @return Response
+     */
+    public function removeLogo($restaurantId): Response
+    {
+        /** @var Restaurant $restaurant */
+        $restaurant = $this->getDoctrine()->getRepository(Restaurant::class)->findOneBy(['id' => $restaurantId]);
+
+        if (null === $restaurant->getLogoUrl()) {
+            return new Response(json_encode([
+                'message' => 'success',
+                'detail' => 'Image already empty',
+            ]),200);
+        }
+
+        if (file_exists($restaurant->getLogoUrl())) {
+            unlink($restaurant->getLogoUrl());
+        }
+
+        $restaurant->setLogoUrl(null);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($restaurant);
+        $entityManager->flush();
+
+        return new Response(json_encode([
+            'message' => 'success',
+            'detail' => 'Image removed',
+        ]),200);
     }
 }

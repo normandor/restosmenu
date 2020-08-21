@@ -10,11 +10,13 @@ use Codeception\PHPUnit\Constraint\Page;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Validator\Constraints\File;
 
 class DishType extends AbstractType
 {
@@ -47,7 +49,30 @@ class DishType extends AbstractType
                     'choice_label' => 'name',
                     'label' => 'category',
                 ])
-            ->add('price', NumberType::class, ['label' => 'price']);
+            ->add('price', NumberType::class, ['label' => 'price'])
+            ->add('imageUrl', FileType::class, [
+                'label' => 'Imagen',
+                'data_class' => null,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2048k',
+                        'mimeTypes' => [
+                            'image/gif',
+                            'GIF image',
+                            'image/jpeg',
+                            'JPEG image',
+                            'image/tiff',
+                            'TIFF image',
+                            'image/bmp',
+                            'Bitmap image',
+                            'image/png',
+                            'PNG image',
+                        ],
+                        'mimeTypesMessage' => 'Por favor agregar una imagen válida',
+                    ])
+                ],
+            ]);
 
         $builder->get('categoryId')
             ->addModelTransformer(new CallbackTransformer(

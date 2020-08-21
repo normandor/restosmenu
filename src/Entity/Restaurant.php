@@ -50,9 +50,9 @@ class Restaurant
     /**
      * @var string
      *
-     * @ORM\Column(name="logo_url", type="string", length=255, nullable=false)
+     * @ORM\Column(name="logo_url", type="string", length=255, nullable=true)
      */
-    private $logoUrl = '';
+    private $logoUrl = null;
 
     /**
      * @var string
@@ -106,7 +106,7 @@ class Restaurant
         $this->slug = $slug;
     }
 
-    public function getLogoUrl(): string
+    public function getLogoUrl(): ?string
     {
         return $this->logoUrl;
     }

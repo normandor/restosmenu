@@ -38,9 +38,9 @@ class Dish
     /**
      * @var string|null
      *
-     * @ORM\Column(name="image", type="string", length=250, nullable=true)
+     * @ORM\Column(name="imageUrl", type="string", length=250, nullable=true)
      */
-    private $image;
+    private $imageUrl = null;
 
     /**
      * @var float|null
@@ -116,14 +116,14 @@ class Dish
         $this->price = $price;
     }
 
-    public function getImage()
+    public function getImageUrl()
     {
-        return $this->image;
+        return $this->imageUrl;
     }
 
-    public function setImage($image)
+    public function setImageUrl(?string $imageUrl)
     {
-        $this->image = $image;
+        $this->imageUrl = $imageUrl;
     }
 
     public function getDescription()

@@ -75,8 +75,16 @@
                                           <p>Descargar</p>
                                       </a>
                                   </td>
-                                  <td class="center">
-                                      <img alt="Logo" src="{{ asset(restaurant.logo) }}" class="restaurant-logo"><br />
+                                  <td class="center" style="white-space: nowrap;">
+                                      {% if restaurant.logo is not null %}
+                                        <a href="{{ asset(restaurant.logo) }}" target="_blank">
+                                            <img alt="Logo" src="{{ asset(restaurant.logo) }}" class="restaurant-logo">
+                                        </a>
+                                          <img id="showDeleteRestaurantLogo" class="icon"
+                                               data-itemid="{{ restaurant.id }}"
+                                               src="{{ asset('images/icono_delete.png') }}"
+                                               style="cursor: pointer;" />
+                                      {% endif %}
                                   </td>
                                   <td class="center restaurant-link">
                                       <a href="{{ restaurant.link }}" target="_blank">{{ restaurant.link }}</a>
@@ -104,6 +112,7 @@
     </div>
   </div>
     {{ include('user/modals/modal_confirm.twig') }}
+    {{ include('user/modals/modal_confirm_small.twig') }}
     {{ include('user/modals/modal_general.twig') }}
 {% endblock %}
 
@@ -164,5 +173,44 @@
 
         }
     });
+
+    $('img[id="showDeleteRestaurantLogo"]').on('click', function(e) {
+        $("#modal-confirm-btn-yes").off();
+        $("#modal-confirm-btn-no").off();
+
+        let key = e.target.getAttribute('data-itemid');
+
+        $('#myModalConfirmLabelMessage').html('¿Confirma la eliminacion de la imagen?');
+        $('#confirmModalSmall').modal('show');
+
+        $("#modal-confirm-btn-yes").on('click',function(e){
+            removeLogoFromRestaurant(key);
+            $('#confirmModalSmall').modal('hide');
+        });
+
+        $("#modal-confirm-btn-no").on('click',function(e){
+            $('#confirmModalSmall').modal('hide');
+        });
+    });
+
+    function removeLogoFromRestaurant(restaurantId)
+    {
+        let path = '{{ path('remove_logo_from_restaurant', {'restaurantId': 'restaurantId'}) }}';
+        let finalPath = path.replace("restaurantId", restaurantId);
+
+        $.ajax({
+            url: finalPath,
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                location.reload();
+            },
+            error: function (xhr, status) {
+                console.log(xhr);
+                console.log(status);
+                alert("{{ 'alert.error.processing' | trans }}");
+            }
+        });
+    }
   </script>
 {% endblock %}

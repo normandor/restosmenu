@@ -64,6 +64,9 @@
                                       Descripcion
                                   </th>
                                   <th>
+                                      Imagen
+                                  </th>
+                                  <th>
                                       Precio
                                   </th>
                                   <th>
@@ -81,6 +84,15 @@
                                       </td>
                                       <td class="left">
                                           {{ dish.description|raw }}
+                                      </td>
+                                      <td class="center" style="white-space: nowrap;">
+                                          {% if dish.image is not null %}
+                                            <img src="{{ asset(dish.image) }}" height="80px">
+                                            <img id="showDeleteImage" class="icon"
+                                                 data-itemid="{{ dish.id }}"
+                                               src="{{ asset('images/icono_delete.png') }}"
+                                               style="cursor: pointer;" />
+                                          {% endif %}
                                       </td>
                                       <td class="center">
                                           {{ dish.currency|raw ~ dish.price|raw }}
@@ -135,6 +147,7 @@
     </div>
   </div>
     {{ include('user/modals/modal_confirm.twig') }}
+    {{ include('user/modals/modal_confirm_small.twig') }}
     {{ include('user/modals/modal_general.twig') }}
 {% endblock %}
 
@@ -271,8 +284,52 @@
                 alert("{{ 'alert.error.processing' | trans }}");
             }
         });
-    };
+    }
 
+    function showDeleteImage(theId) {
+        $(".modal-header #userIdDelete").val(theId);
+        $('#myModalLabelMessage').html('¿Confirma la eliminación de la imagen?');
+        $("#confirmModal").modal('show');
+    }
+
+    $('img[id="showDeleteImage"]').on('click', function(e) {
+        $("#modal-confirm-btn-yes").off();
+        $("#modal-confirm-btn-no").off();
+
+        let key = e.target.getAttribute('data-itemid');
+
+        $('#myModalConfirmLabelMessage').html('¿Confirma la eliminacion de la imagen?');
+        $('#confirmModalSmall').modal('show');
+
+        $("#modal-confirm-btn-yes").on('click',function(e){
+            removeImageFromDish(key);
+            $('#confirmModalSmall').modal('hide');
+        });
+
+        $("#modal-confirm-btn-no").on('click',function(e){
+            $('#confirmModalSmall').modal('hide');
+        });
+    });
+
+    function removeImageFromDish(dishId)
+    {
+        let path = '{{ path('remove_image_from_dish', {'dishId': 'dishId'}) }}';
+        let finalPath = path.replace("dishId", dishId);
+
+        $.ajax({
+            url: finalPath,
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                location.reload();
+            },
+            error: function (xhr, status) {
+                console.log(xhr);
+                console.log(status);
+                alert("{{ 'alert.error.processing' | trans }}");
+            }
+        });
+    }
 
   </script>
 {% endblock %}

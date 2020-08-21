@@ -16,9 +16,21 @@
         padding: 15px 0px 15px 0px;
     }
 
+    img.dish-image {
+        width: 40%;
+    }
+
+    div.dish {
+        margin-bottom: 20px;
+    }
+
     @media only screen and (max-width: 768px) {
         div.dish {
             margin-bottom: 45px;
+        }
+
+        img.dish-image {
+            width: 90%;
         }
     }
 
@@ -66,6 +78,13 @@
                             {% if item.price is defined %}
                                 <h4 class="{{ item.class }}">{{ item.currency }}&nbsp;{{ item.price | nl2br }}</h4>
                             {% endif %}
+
+                        {% if item.image is not null %}
+                            <div>
+                                <img class="dish-image" src="{{ asset(item.image) }}">
+                            </div>
+                        {% endif %}
+
                         </div>
                     {% endfor %}
                 {% endif %}

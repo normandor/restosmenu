@@ -175,6 +175,9 @@ submit_add_selected_dish_to_combo:
 remove_restaurant:
     path:       /admin/page/element/removeRestaurant/{id}
     controller: App\Controller\RestaurantController::remove
+remove_image_from_dish:
+    path:       /admin/page/dish/removeImage/{dishId}
+    controller: App\Controller\DishController::removeImageFromDish
 remove_category:
     path:       /admin/page/element/removeCategory/{id}
     controller: App\Controller\CategoryController::remove
@@ -184,6 +187,9 @@ remove_combo:
 remove_dish:
     path:       /admin/page/element/removeDish/{id}
     controller: App\Controller\DishController::remove
+remove_logo_from_restaurant:
+    path:       /admin/page/restaurant/removeLogo/{restaurantId}
+    controller: App\Controller\RestaurantController::removeLogo
 remove_dish_from_combo:
     path:       /admin/page/element/removeDishFromCombo/{comboId}/{dishId}
     controller: App\Controller\ComboDishController::removeDishFromCombo

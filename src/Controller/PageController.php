@@ -254,7 +254,7 @@ class PageController extends AbstractController
                     'currency' => $dish->getCurrency()->getSymbol(),
                     'enabled' => $dish->getEnabled(),
                     'order' => $dish->getOrderShow(),
-                    //'image' => 'xxx',
+                    'image' => $dish->getImageUrl(),
                 ];
             }
 

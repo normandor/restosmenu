@@ -35,7 +35,7 @@ class DishService
                 'label' => $dish->getName(),
                 'class' => 'menu_dish',
                 'descripcion' => $dish->getDescription(),
-                'image' => $dish->getImage(),
+                'image' => $dish->getImageUrl(),
                 'icons' => [],
                 'price' =>  $dish->getPrice(),
                 'currency' =>  $dish->getCurrency()->getSymbol(),
@@ -59,6 +59,7 @@ class DishService
         $comboDishArray = [];
         foreach ($comboDishes as $comboDish) {
             $dishRepository = $this->entityManager->getRepository(Dish::class);
+            /** @var Dish $dish */
             $dish = $dishRepository->findOneBy(['id' => $comboDish['dishId'], 'enabled' => 1]);
 
             if (null !== $dish) {
@@ -67,7 +68,7 @@ class DishService
                     'class' => 'menu_dish',
                     'label' => $dish->getName(),
                     'descripcion' => $dish->getDescription(),
-                    'image' => $dish->getImage(),
+                    'image' => $dish->getImageUrl(),
                     'icons' => [],
                 ];
             }
