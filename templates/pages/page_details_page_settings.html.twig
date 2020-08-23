@@ -46,7 +46,7 @@
 
           <div class="row font-20" style="margin-bottom:15px">
               <div class="col-sm-10 mb-10">
-                  <h2>Apariencia de la carta</h2>
+                  <h2>Apariencia del texto</h2>
               </div>
               <div class="col-sm-10 mb-10">
                   <div class="table-responsive">
@@ -68,7 +68,7 @@
                                   Color de fondo
                               </th>
                           </tr>
-                          {% for key, setting in settings %}
+                          {% for key, setting in settingsPage %}
                               <tr>
                                   <td class="left">
                                       {{ setting.name }}
@@ -109,6 +109,69 @@
                       </table>
                   </div>
               </div>
+
+              <div class="col-sm-10 mb-10">
+                  <hr style="margin: 20px 0px 20px 0px">
+                  <h2>Apariencia de las imágenes</h2>
+              </div>
+
+              <div class="col-sm-10 mb-10">
+                  <div class="table-responsive">
+                      <table>
+                          <tr>
+                              <th>
+                                  Item
+                              </th>
+                              <th>
+                                  Ancho celular
+                              </th>
+                              <th>
+                                  Ancho PC
+                              </th>
+                              <th>
+                                  Visible
+                              </th>
+                          </tr>
+                          {% for key, setting in settingsImage %}
+                              <tr>
+                                  <td class="left">
+                                      {{ setting.name }}
+                                  </td>
+                                  <td class="center">
+                                      <select id="width_mobile_{{ key }}" data-itemid="{{ key }}" data-property="width" data-platform="mobile">
+                                          {% for width in select.width_options %}
+                                              <option value="{{ width }}"
+                                                      {{  (setting.properties["width"]["mobile"] == width) ? 'selected' : '' }}
+                                              >
+                                                  {{ width }}
+                                              </option>
+                                          {% endfor %}
+                                      </select>
+                                  </td>
+                                  <td class="center">
+                                      <select id="width_desktop_{{ key }}" data-itemid="{{ key }}" data-property="width" data-platform="desktop">
+                                          {% for width in select.width_options %}
+                                              <option value="{{ width }}"
+                                                      {{  (setting.properties["width"]["desktop"] == width) ? 'selected' : '' }}
+                                              >
+                                                  {{ width }}
+                                              </option>
+                                          {% endfor %}
+                                      </select>
+                                  </td>
+                                  <td class="center">
+                                      {% set img = (setting.properties["visible"] == 'true') ? 'images/toggle_on.png' : 'images/toggle_off.png' %}
+                                      <img src="{{ asset(img) }}" height="30px" style="cursor: pointer;"
+                                           onclick="updateSettingsViaAjax('image', '{{ key }}', 'visible', !{{ setting.properties["visible"] }}, 'desktop');"
+                                      >
+                                  </td>
+                              </tr>
+
+                          {% endfor %}
+                      </table>
+                  </div>
+              </div>
+
           </div>
       </div>
     </div>
@@ -120,14 +183,14 @@
   {{ parent() }}
   <script type="text/javascript" src="{{ asset('build/js/nativeColorPicker.js') }}"></script>
   <script>
-      {% for key, setting in settings %}
+      {% for key, setting in settingsPage %}
           window.nativeColorPicker.init('color-{{ key }}');
           window.nativeColorPicker.init('backgroundColor-{{ key }}');
       {% endfor %}
       window.addEventListener("load", startup, false);
 
       function startup() {
-          {% for key, setting in settings %}
+          {% for key, setting in settingsPage %}
                 color_{{ key }} = document.querySelector("#color_{{ key }}");
                 if (typeof(color_{{ key }}) != "undefined" && color_{{ key }} != null) {
                     // fontColor.addEventListener("input", updateFirst, false);
@@ -146,6 +209,17 @@
                   fontsize_{{ key }}.addEventListener("change", updateAll, false);
               }
           {% endfor %}
+
+          {% for key, setting in settingsImage %}
+              width_desktop_{{ key }} = document.querySelector("#width_desktop_{{ key }}");
+              if (typeof(width_desktop_{{ key }}) != "undefined" && width_desktop_{{ key }} != null) {
+                  width_desktop_{{ key }}.addEventListener("change", updateImageSettings, false);
+              }
+              width_mobile_{{ key }} = document.querySelector("#width_mobile_{{ key }}");
+              if (typeof(width_mobile_{{ key }}) != "undefined" && width_mobile_{{ key }} != null) {
+                  width_mobile_{{ key }}.addEventListener("change", updateImageSettings, false);
+              }
+          {% endfor %}
       }
 
       function updateFirst(event) {
@@ -157,7 +231,7 @@
       }
 
       function updateAll(event) {
-          var value;
+          let value;
           if (typeof(event.target.selectedIndex) != "undefined") {
               value = event.target.value;
           } else {
@@ -167,11 +241,29 @@
           let key = event.target.getAttribute('data-itemid');
           let property = event.target.getAttribute('data-property');
 
-          let path = '{{ path('update_setting', {'key': 'key', 'property': 'property', 'value': 'value'}) }}';
+          updateSettingsViaAjax('text', key, property, value, 'desktop');
+      }
+
+      function updateSettingsViaAjax(thePath, key, property, value, platform) {
+          let path = '';
+          if (thePath === 'text') {
+              path = '{{ path('update_setting', {'key': 'key', 'property': 'property', 'value': 'value'}) }}';
+          }
+          if (thePath === 'image') {
+              path = '{{ path('update_image_setting', {'key': 'key', 'property': 'property', 'value': 'value', 'platform': 'platform'}) }}';
+          }
+
+          if (path === '') {
+              return false;
+          }
 
           var finalPath = path.replace("key", key);
           finalPath = finalPath.replace("property", property);
-          finalPath = finalPath.replace("value", value);
+          finalPath = finalPath.replace("value", encodeURI(value));
+
+          if (thePath === 'image') {
+              finalPath = finalPath.replace("platform", platform);
+          }
 
           $.ajax({
               url: finalPath,
@@ -186,10 +278,24 @@
           });
       }
 
+      function updateImageSettings(event) {
+          let value;
+          if (typeof (event.target.selectedIndex) != "undefined") {
+              value = event.target.value;
+          } else {
+              value = event.target.value.replace("#", "");
+          }
+
+          let key = event.target.getAttribute('data-itemid');
+          let property = event.target.getAttribute('data-property');
+          let platform = event.target.getAttribute('data-platform');
+
+          updateSettingsViaAjax('image', key, property, value, platform);
+      }
+
     function showFontSelector(id, name) {
         $(".modal-header #key").val(id);
         $(".modal-header #property").val(name);
-        console.log($(".modal-header #key").val());
 
         $('#myModalLabelMessage').load("/admin/page/element/select-font/" + id );
         $('#modal-del-btn-si').html('Aceptar');

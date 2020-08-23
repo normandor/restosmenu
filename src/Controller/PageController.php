@@ -8,6 +8,7 @@ use App\Entity\Dish;
 use App\Entity\Restaurant;
 use App\Entity\SettingsPage;
 use App\Service\PagesService;
+use App\Service\SettingsImageService;
 use App\Service\SettingsPageService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -126,20 +127,24 @@ class PageController extends AbstractController
      *
      * @return Response
      */
-    public function showPageSettings(SettingsPageService $settingsPageService, Request $request)
-    {
-        $settings = $settingsPageService->getPropertiesByRestaurantId($this->getUser()->getRestaurantId());
-
-        $fontSizes = [];
+    public function showPageSettings(
+        SettingsPageService $settingsPageService,
+        SettingsImageService $settingsImageService,
+        Request $request
+    ) {
+        $settingsPage = $settingsPageService->getPropertiesByRestaurantId($this->getUser()->getRestaurantId());
+        $settingsImage = $settingsImageService->getPropertiesByRestaurantId($this->getUser()->getRestaurantId());
 
         return $this->render('pages/page_details_page_settings.html.twig', [
             'pageName' => 'Restaurant',
             'itemTitle' => 'Restaurant',
             'route' => $request->get('_route'),
             'user' => DashboardController::$user,
-            'settings' => $settings,
+            'settingsPage' => $settingsPage,
+            'settingsImage' => $settingsImage,
             'select' => [
                 'font_options' => $this->getAvailableFontSizes(),
+                'width_options' => $this->getAvailableWidthOptions(),
             ],
         ]);
     }
@@ -156,6 +161,20 @@ class PageController extends AbstractController
         }
 
         return $sizes;
+    }
+
+    /**
+     * @return array
+     */
+    private function getAvailableWidthOptions(): array
+    {
+        $widths = [];
+
+        for ($i = 20; $i <= 100; $i += 5) {
+            $widths[] = $i.'%';
+        }
+
+        return $widths;
     }
 
     /**

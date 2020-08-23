@@ -39,16 +39,16 @@ app_logout:
 profile:
     path: /admin/user/profile
     controller: App\Controller\UserController::profileAction
-view_menu_1:
-    path:       /admin/show-menu-preview-1
+view_menu_mobile:
+    path:       /admin/show-preview-mobile
     controller: App\Controller\ViewMenuController::showPreview
     defaults:
-        page:        1
-view_menu_2:
-    path:       /admin/show-menu-preview-2
+        mobile:        true
+view_menu_desktop:
+    path:       /admin/show-preview-desktop
     controller: App\Controller\ViewMenuController::showPreview
     defaults:
-        page:        2
+        mobile:        false
 show_restaurant:
     path:       /admin/restaurants
     controller: App\Controller\PageController::showRestaurants
@@ -209,6 +209,9 @@ api_logout:
 update_setting:
     path:       /admin/page/updateSetting/{key}/{property}/{value}
     controller: App\Controller\SettingsPageController::editSetting
+update_image_setting:
+    path:       /admin/page/updateImageSetting/{key}/{property}/{value}/{platform}
+    controller: App\Controller\SettingsImageController::editSetting
 category_update_order:
     path:       /admin/page/updateOrder/{id}/{newPosition}
     controller: App\Controller\SettingsPageController::updateCategoryOrder

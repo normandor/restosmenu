@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Restaurant;
 use App\Service\DishService;
+use App\Service\SettingsImageService;
 use App\Service\SettingsPageService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,25 +23,30 @@ class ViewMenuController extends AbstractController
     public function showPreview(
         Request $request,
         SettingsPageService $settingsPageService,
-        $page
+        SettingsImageService $settingsImageService,
+        bool $mobile
     ) {
         $restaurantId = $this->getUser()->getRestaurantId();
         $restaurant = $this->getRestaurantByRestaurantId($restaurantId);
         $restoMenu = $this->getRestoMenuByRestaurantId($restaurantId);
 
         $properties = $settingsPageService->getPropertiesByRestaurantId($restaurantId);
+        $imageProperties = $settingsImageService->getPropertiesByRestaurantId($restaurantId);
 
-        return $this->render('view_menu_'.$page.'.html.twig', [
+        return $this->render('view_menu_1_preview.html.twig', [
             'route' => $request->get('_route'),
             'titulo' => ((null !== $restaurant) ? $restaurant->getName() : ''),
             'logo' => $restaurant->getLogoUrl(),
             'properties' => $properties,
+            'imageProperties' => $imageProperties,
             'restoMenu' => $restoMenu,
+            'forceMobileWidth' => $mobile,
         ]);
     }
 
     public function showMenu(
         SettingsPageService $settingsPageService,
+        SettingsImageService $settingsImageService,
         $restaurantSlug
     ) {
         if (0 === $restaurantSlug) {
@@ -57,11 +63,13 @@ class ViewMenuController extends AbstractController
 
         $restoMenu = $this->getRestoMenuByRestaurantId($restaurant->getId());
         $properties = $settingsPageService->getPropertiesByRestaurantId($restaurant->getId());
+        $imageProperties = $settingsImageService->getPropertiesByRestaurantId($restaurant->getId());
 
         return $this->render('view_menu_1_public.html.twig', [
             'titulo' => ((null !== $restaurant) ? $restaurant->getName() : ''),
             'logo' => $restaurant->getLogoUrl(),
             'properties' => $properties,
+            'imageProperties' => $imageProperties,
             'restoMenu' => $restoMenu,
         ]);
     }

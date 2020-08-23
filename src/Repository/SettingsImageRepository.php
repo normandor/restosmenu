@@ -2,21 +2,21 @@
 
 namespace App\Repository;
 
-use App\Entity\SettingsPage;
+use App\Entity\SettingsImage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method SettingsPage|null find($id, $lockMode = null, $lockVersion = null)
- * @method SettingsPage|null findOneBy(array $criteria, array $orderBy = null)
- * @method SettingsPage[]    findAll()
- * @method SettingsPage[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method SettingsImage|null find($id, $lockMode = null, $lockVersion = null)
+ * @method SettingsImage|null findOneBy(array $criteria, array $orderBy = null)
+ * @method SettingsImage[]    findAll()
+ * @method SettingsImage[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SettingsPageRepository extends ServiceEntityRepository
+class SettingsImageRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, SettingsPage::class);
+        parent::__construct($registry, SettingsImage::class);
     }
 
     public function findKeysForRestaurantId(int $restaurantId)

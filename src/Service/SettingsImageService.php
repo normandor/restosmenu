@@ -2,10 +2,10 @@
 
 namespace App\Service;
 
-use App\Entity\SettingsPage;
+use App\Entity\SettingsImage;
 use Doctrine\ORM\EntityManagerInterface;
 
-class SettingsPageService
+class SettingsImageService
 {
     private $entityManager;
 
@@ -21,7 +21,7 @@ class SettingsPageService
      */
     public function getPropertiesByRestaurantId(int $restaurantId) : array
     {
-        $categories = $this->entityManager->getRepository(SettingsPage::class)
+        $categories = $this->entityManager->getRepository(SettingsImage::class)
             ->findKeysForRestaurantId($restaurantId);
 
         $settings = [];
@@ -30,16 +30,23 @@ class SettingsPageService
                 'name' => $category['name'],
             ];
 
-            $properties = $this->entityManager->getRepository(SettingsPage::class)
+            $properties = $this->entityManager->getRepository(SettingsImage::class)
                 ->findBy([
                     'key' => $category['key'],
                     'restaurantId' => $restaurantId,
                 ]);
 
             $newProperties = [];
-            /** @var SettingsPage $property */
+            /** @var SettingsImage $property */
             foreach ($properties as $property) {
-                $newProperties[$property->getProperty()] = $property->getValue();
+                if (null === $property->getValueMobile()) {
+                    $newProperties[$property->getProperty()] = $property->getValue();
+                } else {
+                    $newProperties[$property->getProperty()] = [
+                        'desktop' => $property->getValue(),
+                        'mobile' => $property->getValueMobile(),
+                    ];
+                }
             }
             $newSetting['properties'] = $newProperties;
 

@@ -24,16 +24,6 @@
         margin-bottom: 20px;
     }
 
-    @media only screen and (max-width: 768px) {
-        div.dish {
-            margin-bottom: 45px;
-        }
-
-        img.dish-image {
-            width: 90%;
-        }
-    }
-
     {% for class in properties|keys %}
         .{{ class }} {
             {% for property in properties[class].properties|keys %}
@@ -44,10 +34,48 @@
         }
     {% endfor %}
 
-</style>
-<div class="row-fluid" style="padding-top: 30px">
+    {% for class in imageProperties|keys %}
+        img.{{ class }} {
+            {% for property in imageProperties[class].properties|keys %}
+                {% if imageProperties[class].properties[property] is iterable %}
+                    {{ property }}: {{ imageProperties[class].properties[property]["desktop"] }}
+                {% else %}
+                    {{ property }}: {{ imageProperties[class].properties[property]|raw }};
+                {% endif %}
+            {% endfor %}
+        }
+    {% endfor %}
 
-    <div class="col-xs-12 col-sm-12 text-center">
+    @media only screen and (max-width: 768px) {
+        div.dish {
+            margin-bottom: 45px;
+        }
+
+        {% for class in imageProperties|keys %}
+            {% for property in imageProperties[class].properties|keys %}
+                {% if imageProperties[class].properties[property] is iterable %}
+                    img.{{ class }} {
+                    {{ property }}: {{ imageProperties[class].properties[property]["mobile"] }}
+                    }
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    }
+    .mobile-width {
+        max-width: 720px;
+        border: 1px dashed red;
+        border-radius: 10px;
+        padding-top: 0px;
+    }
+
+    .menu-content {
+        padding-top: 30px;
+    }
+</style>
+<div class="row-fluid">
+    <div class="col-xs-12 col-sm-12 text-center
+        {% if forceMobileWidth is defined and forceMobileWidth == true %} mobile-width {% endif %}
+        menu-content">
         <h1 class="menu_restaurant_title">{{ titulo }}</h1>
         {% if (logo is not null) and (logo != "") %}
             <img class="logo-img" src="{{ asset(logo) }}">
@@ -81,7 +109,11 @@
 
                         {% if item.image is not null %}
                             <div>
-                                <img class="dish-image" src="{{ asset(item.image) }}">
+                                {%  if imageProperties['dish'] is defined
+                                    and imageProperties['dish'].properties['visible'] is defined
+                                    and imageProperties['dish'].properties['visible'] == 'true' %}
+                                    <img class="dish" src="{{ asset(item.image) }}">
+                                {% endif %}
                             </div>
                         {% endif %}
 
