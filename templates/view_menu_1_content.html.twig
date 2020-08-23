@@ -4,8 +4,7 @@
         color: {{ properties.menu_body.properties.color }};
     }
 
-    .logo-img {
-        max-width: 100%;
+    .restaurant_logo, .restaurant_logo-mobile-preview {
         height: auto;
         margin: 30px 0px 30px 0px;
     }
@@ -39,7 +38,7 @@
             {% for property in imageProperties[class].properties|keys %}
                 {% if imageProperties[class].properties[property] is iterable %}
                     {{ property }}: {{ imageProperties[class].properties[property]["desktop"] }}
-                {% else %}
+                {% elseif property != 'visible' %}
                     {{ property }}: {{ imageProperties[class].properties[property]|raw }};
                 {% endif %}
             {% endfor %}
@@ -68,6 +67,16 @@
         padding-top: 0px;
     }
 
+    {% for class in imageProperties|keys %}
+        img.{{ class }}-mobile-preview {
+            {% for property in imageProperties[class].properties|keys %}
+                {% if imageProperties[class].properties[property] is iterable %}
+                    {{ property }}: {{ imageProperties[class].properties[property]["mobile"] }}
+                {% endif %}
+            {% endfor %}
+        }
+    {% endfor %}
+
     .menu-content {
         padding-top: 30px;
     }
@@ -77,8 +86,12 @@
         {% if forceMobileWidth is defined and forceMobileWidth == true %} mobile-width {% endif %}
         menu-content">
         <h1 class="menu_restaurant_title">{{ titulo }}</h1>
-        {% if (logo is not null) and (logo != "") %}
-            <img class="logo-img" src="{{ asset(logo) }}">
+        {%  if imageProperties['restaurant_logo'] is defined
+            and imageProperties['restaurant_logo'].properties['visible'] is defined
+            and imageProperties['restaurant_logo'].properties['visible'] == 'true' %}
+            {% if (logo is not null) and (logo != "") %}
+                <img class="restaurant_logo{% if forceMobileWidth is defined and forceMobileWidth == true %}-mobile-preview {% endif %}" src="{{ asset(logo) }}">
+            {% endif %}
         {% endif %}
 
         <div class="row" style="visibility: visible; position: relative;">
@@ -112,7 +125,10 @@
                                 {%  if imageProperties['dish'] is defined
                                     and imageProperties['dish'].properties['visible'] is defined
                                     and imageProperties['dish'].properties['visible'] == 'true' %}
-                                    <img class="dish" src="{{ asset(item.image) }}">
+                                    <img
+                                            class="dish{% if forceMobileWidth is defined and forceMobileWidth == true %}-mobile-preview {% endif %}"
+                                            src="{{ asset(item.image) }}"
+                                    >
                                 {% endif %}
                             </div>
                         {% endif %}
