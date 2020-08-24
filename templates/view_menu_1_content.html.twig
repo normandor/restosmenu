@@ -85,22 +85,25 @@
     <div class="col-xs-12 col-sm-12 text-center
         {% if forceMobileWidth is defined and forceMobileWidth == true %} mobile-width {% endif %}
         menu-content">
-        <h1 class="menu_restaurant_title">{{ titulo }}</h1>
-        {%  if imageProperties['restaurant_logo'] is defined
-            and imageProperties['restaurant_logo'].properties['visible'] is defined
-            and imageProperties['restaurant_logo'].properties['visible'] == 'true' %}
-            {% if (logo is not null) and (logo != "") %}
-                <img class="restaurant_logo{% if forceMobileWidth is defined and forceMobileWidth == true %}-mobile-preview {% endif %}" src="{{ asset(logo) }}">
-            {% endif %}
-        {% endif %}
-
         <div class="row" style="visibility: visible; position: relative;">
             <br>
             {% for entry in restoMenu %}
-                {% if entry.items | length > 0 %}
+                {% if entry.category_type == 'text' %}
+                    <div style="margin-top: 20px;" class="col-sm-12 col-md-12">
+                        <span class="{{ entry.class }}">{{ entry.label }}</span>
+                    </div>
+                {% elseif entry.category_type == 'image' %}
+                    {%  if imageProperties[entry.category] is defined
+                        and imageProperties[entry.category].properties['visible'] is defined
+                        and imageProperties[entry.category].properties['visible'] == 'true' %}
+                        {% if (entry.link is not null) and (entry.link != "") %}
+                            <img class="restaurant_logo{% if forceMobileWidth is defined and forceMobileWidth == true %}-mobile-preview {% endif %}" src="{{ asset(logo) }}">
+                        {% endif %}
+                    {% endif %}
+                {% elseif entry.items | length > 0 %}
                     <div style="margin-top: 20px;" class="col-sm-12 col-md-12">
                         <h2 class="underline">
-                            <span class="{{ entry.class }}">{{ entry.categoria | nl2br }}</span>
+                            <span class="{{ entry.class }}">{{ entry.category | nl2br }}</span>
                             {% if entry.description is defined %}
                                 <div class="{{ entry.class }}">{{ entry.description | nl2br }}</div>
                             {% endif %}
@@ -136,7 +139,6 @@
                         </div>
                     {% endfor %}
                 {% endif %}
-                <div style="margin-bottom: 20px;">&nbsp;</div>
             {% endfor %}
         </div>
     </div>

@@ -50,13 +50,6 @@ class Restaurant
     /**
      * @var string
      *
-     * @ORM\Column(name="logo_url", type="string", length=255, nullable=true)
-     */
-    private $logoUrl = null;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="qr_url", type="string", length=255, nullable=false)
      */
     private $qrUrl = '';
@@ -104,16 +97,6 @@ class Restaurant
     public function setSlug($slug): void
     {
         $this->slug = $slug;
-    }
-
-    public function getLogoUrl(): ?string
-    {
-        return $this->logoUrl;
-    }
-
-    public function setLogoUrl($logoUrl): void
-    {
-        $this->logoUrl = $logoUrl;
     }
 
     public function getQrUrl(): string

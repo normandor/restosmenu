@@ -68,7 +68,11 @@
                           {% for category in categories %}
                               <tr>
                                   <td class="left">
-                                      {{ category.name }}
+                                      {% if category.type == 'category_type.text' or category.type == 'category_type.image'%}
+                                        {{ category.name | trans }}
+                                      {% else %}
+                                        {{ category.name }}
+                                      {% endif %}
                                   </td>
                                   <td class="center">
                                       {{ category.type | trans }}

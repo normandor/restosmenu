@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\SettingsImage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -49,6 +50,22 @@ class SettingsImageController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($setting);
         $entityManager->flush();
+
+        if ('visibility' === $property) {
+            /** @var Category $category */
+            $category = $this->getDoctrine()->getRepository(Category::class)
+                ->findOneBy([
+                    'restaurantId' => $this->getUser()->getRestaurantId(),
+                    'categoryType' => PageController::CATEGORY_IMAGE,
+                    'name' => $key,
+                ]);
+
+            if (null !== $category) {
+                $category->setEnabled(('true' === $value) ? 1 : 0);
+                $entityManager->persist($category);
+                $entityManager->flush();
+            }
+        }
 
         return new JsonResponse(['message' => 'OK'], 200);
     }

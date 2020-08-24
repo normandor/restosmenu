@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Restaurant;
 use App\Form\Type\RestaurantType;
 use App\Service\FileUploader;
@@ -12,6 +13,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RestaurantController extends AbstractController
 {
+    const LOGO_CATEGORY_TYPE = 'image';
+    const LOGO_CATEGORY_NAME = 'restaurant_logo';
+
     private $targetDirectory;
 
     public function __construct(string $targetDirectory)
@@ -72,7 +76,16 @@ class RestaurantController extends AbstractController
         /** @var Restaurant $restaurant */
         $restaurant = $this->getDoctrine()->getRepository(Restaurant::class)->findOneBy(['id' => $restaurantId]);
 
-        $originalImageUri = $restaurant->getLogoUrl();
+        /** @var Category $category */
+        $category = $this->getDoctrine()->getRepository(Category::class)->findOneBy(
+            [
+                'restaurantId' => $restaurantId,
+                'categoryType' => self::LOGO_CATEGORY_TYPE,
+                'name' => self::LOGO_CATEGORY_NAME,
+            ]
+        );
+
+        $originalImageUri = $category->getImageUrl();
 
         $form = $this->createForm(RestaurantType::class, $restaurant, ['csrf_protection' => false]);
         $form->handleRequest($request);
@@ -85,14 +98,22 @@ class RestaurantController extends AbstractController
 
             if ($uploadedFile) {
                 $uploadedFilename = $fileUploader->upload($uploadedFile, $path ?? '', md5('logos_'.$restaurantId));
-                $restaurant->setLogoUrl($path.$uploadedFilename);
+                $category->setImageUrl($path.$uploadedFilename);
             } else {
-                $restaurant->setLogoUrl($originalImageUri);
+                $category->setImageUrl($originalImageUri);
             }
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($category);
+            $entityManager->flush();
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($restaurant);
             $entityManager->flush();
+        }
+
+        if (!$form->isSubmitted()) {
+            $form->get('logoUrl')->setData($originalImageUri);
         }
 
         return $this->render('pages/edit_restaurant.html.twig', [
@@ -146,24 +167,30 @@ class RestaurantController extends AbstractController
      */
     public function removeLogo($restaurantId): Response
     {
-        /** @var Restaurant $restaurant */
-        $restaurant = $this->getDoctrine()->getRepository(Restaurant::class)->findOneBy(['id' => $restaurantId]);
+        /** @var Category $category */
+        $category = $this->getDoctrine()->getRepository(Category::class)->findOneBy(
+            [
+                'restaurantId' => $restaurantId,
+                'categoryType' => self::LOGO_CATEGORY_TYPE,
+                'name' => self::LOGO_CATEGORY_NAME,
+            ]
+        );
 
-        if (null === $restaurant->getLogoUrl()) {
+        if (null === $category->getImageUrl()) {
             return new Response(json_encode([
                 'message' => 'success',
                 'detail' => 'Image already empty',
             ]),200);
         }
 
-        if (file_exists($restaurant->getLogoUrl())) {
-            unlink($restaurant->getLogoUrl());
+        if (file_exists($category->getImageUrl())) {
+            unlink($category->getImageUrl());
         }
 
-        $restaurant->setLogoUrl(null);
+        $category->setImageUrl(null);
 
         $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($restaurant);
+        $entityManager->persist($category);
         $entityManager->flush();
 
         return new Response(json_encode([

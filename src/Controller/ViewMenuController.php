@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Restaurant;
+use App\Repository\RestaurantRepository;
 use App\Service\DishService;
 use App\Service\SettingsImageService;
 use App\Service\SettingsPageService;
@@ -14,10 +15,17 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ViewMenuController extends AbstractController
 {
     private $dishService;
+    private $restaurantRepository;
 
-    public function __construct(DishService $dishService)
+    public const classMapping = [
+        'restaurant_name' => 'menu_restaurant_title',
+        'restaurant_logo' => 'restaurant_logo',
+    ];
+
+    public function __construct(DishService $dishService, RestaurantRepository $restaurantRepository)
     {
         $this->dishService = $dishService;
+        $this->restaurantRepository = $restaurantRepository;
     }
 
     public function showPreview(
@@ -33,10 +41,19 @@ class ViewMenuController extends AbstractController
         $properties = $settingsPageService->getPropertiesByRestaurantId($restaurantId);
         $imageProperties = $settingsImageService->getPropertiesByRestaurantId($restaurantId);
 
+        /** @var Category $category */
+        $category = $this->getDoctrine()->getRepository(Category::class)->findOneBy(
+            [
+                'restaurantId' => $restaurantId,
+                'categoryType' => RestaurantController::LOGO_CATEGORY_TYPE,
+                'name' => RestaurantController::LOGO_CATEGORY_NAME,
+            ]
+        );
+
         return $this->render('view_menu_1_preview.html.twig', [
             'route' => $request->get('_route'),
             'titulo' => ((null !== $restaurant) ? $restaurant->getName() : ''),
-            'logo' => $restaurant->getLogoUrl(),
+            'logo' => $category->getImageUrl(),
             'properties' => $properties,
             'imageProperties' => $imageProperties,
             'restoMenu' => $restoMenu,
@@ -65,9 +82,18 @@ class ViewMenuController extends AbstractController
         $properties = $settingsPageService->getPropertiesByRestaurantId($restaurant->getId());
         $imageProperties = $settingsImageService->getPropertiesByRestaurantId($restaurant->getId());
 
+        /** @var Category $category */
+        $category = $this->getDoctrine()->getRepository(Category::class)->findOneBy(
+            [
+                'restaurantId' => $restaurantId,
+                'categoryType' => self::LOGO_CATEGORY_TYPE,
+                'name' => self::LOGO_CATEGORY_NAME,
+            ]
+        );
+
         return $this->render('view_menu_1_public.html.twig', [
             'titulo' => ((null !== $restaurant) ? $restaurant->getName() : ''),
-            'logo' => $restaurant->getLogoUrl(),
+            'logo' => $category->getImageUrl(),
             'properties' => $properties,
             'imageProperties' => $imageProperties,
             'restoMenu' => $restoMenu,
@@ -110,19 +136,43 @@ class ViewMenuController extends AbstractController
         foreach ($categories as $category) {
             if (PageController::CATEGORY_BASICO === $category->getCategoryType()) {
                 $restoMenu[] = [
-                    'categoria' => $category->getName(),
+                    'category' => $category->getName(),
+                    'category_type' => $category->getCategoryType(),
                     'class' => 'menu_category',
                     'items' => $this->dishService->getDishesByCategoryId($category->getId()),
                 ];
             }
             if (PageController::CATEGORY_COMBO === $category->getCategoryType()) {
                 $restoMenu[] = [
-                    'categoria' => $category->getName(),
+                    'category' => $category->getName(),
+                    'category_type' => $category->getCategoryType(),
                     'description' => $category->getDescription(),
                     'class' => 'menu_promo_title',
                     'price' => $category->getPrice(),
                     'currency' => $category->getCurrency()->getSymbol(),
                     'items' => $this->dishService->getDishesByComboId($category->getId()),
+                ];
+            }
+            if (PageController::CATEGORY_TEXT === $category->getCategoryType()) {
+                switch ($category->getName()) {
+                    case 'restaurant_name':
+                        $restoMenu[] = [
+                            'category' => $category->getName(),
+                            'category_type' => $category->getCategoryType(),
+                            'class' => self::classMapping[$category->getName()],
+                            'label' => $this->restaurantRepository->findOneBy(['id' => $restaurantId])->getName(),
+                        ];
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (PageController::CATEGORY_IMAGE === $category->getCategoryType()) {
+                $restoMenu[] = [
+                    'category' => $category->getName(),
+                    'category_type' => $category->getCategoryType(),
+                    'class' => self::classMapping[$category->getName()],
+                    'link' => $category->getImageUrl(),
                 ];
             }
         }

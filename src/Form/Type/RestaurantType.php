@@ -17,6 +17,7 @@ class RestaurantType extends AbstractType
         $builder
             ->add('name', TextType::class, ['label' => 'name'])
             ->add('logoUrl', FileType::class, [
+                'mapped' => false,
                 'label' => 'Imagen',
                 'data_class' => null,
                 'required' => false,

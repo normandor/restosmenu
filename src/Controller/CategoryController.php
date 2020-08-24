@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\ComboDish;
 use App\Entity\Currency;
 use App\Entity\Dish;
+use App\Entity\SettingsImage;
 use App\Form\Type\CategoryType;
 use App\Form\Type\ComboType;
 use App\Service\FileUploader;
@@ -281,11 +282,29 @@ class CategoryController extends AbstractController
             ], 404);
         }
 
-        $category->setEnabled((int)!$category->getEnabled());
+        $newVisibility = !$category->getEnabled();
+        $category->setEnabled((int) $newVisibility);
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($category);
         $entityManager->flush();
+
+        if (PageController::CATEGORY_IMAGE === $category->getCategoryType()) {
+            /** @var SettingsImage $settingsImage */
+            $settingsImage = $this->getDoctrine()->getRepository(SettingsImage::class)->findOneBy(
+                [
+                    'key' => $category->getName(),
+                    'restaurantId' => $this->getUser()->getRestaurantId(),
+                    'property' => 'visible',
+                ]
+            );
+
+            if (null !== $settingsImage) {
+                $settingsImage->setValue($newVisibility ? 'true' : 'false');
+                $entityManager->persist($settingsImage);
+                $entityManager->flush();
+            }
+        }
 
         return $this->json([
             'status' => 'success',

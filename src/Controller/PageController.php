@@ -21,6 +21,8 @@ class PageController extends AbstractController
 
     const CATEGORY_BASICO = 'basico';
     const CATEGORY_COMBO = 'combo';
+    const CATEGORY_TEXT = 'text';
+    const CATEGORY_IMAGE = 'image';
 
     /**
      * @param Request $request
@@ -102,11 +104,20 @@ class PageController extends AbstractController
         $restaurantsArray = [];
         /** @var Restaurant $restaurant */
         foreach ($restaurants as $restaurant) {
+            /** @var Category $category */
+            $category = $this->getDoctrine()->getRepository(Category::class)->findOneBy(
+                [
+                    'restaurantId' => $restaurant->getId(),
+                    'categoryType' => RestaurantController::LOGO_CATEGORY_TYPE,
+                    'name' => RestaurantController::LOGO_CATEGORY_NAME,
+                ]
+            );
+
             $restaurantsArray[] = [
                 'id' => $restaurant->getId(),
                 'name' => $restaurant->getName(),
                 'qrUrl' => $restaurant->getQrUrl(),
-                'logo' => $restaurant->getLogoUrl(),
+                'logo' => $category->getImageUrl(),
                 'link' => self::baseUrl.$restaurant->getSlug(),
                 'deeplink' => self::absoluteUrl.$restaurant->getSlug(),
             ];
