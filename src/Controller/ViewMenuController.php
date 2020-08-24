@@ -85,9 +85,9 @@ class ViewMenuController extends AbstractController
         /** @var Category $category */
         $category = $this->getDoctrine()->getRepository(Category::class)->findOneBy(
             [
-                'restaurantId' => $restaurantId,
-                'categoryType' => self::LOGO_CATEGORY_TYPE,
-                'name' => self::LOGO_CATEGORY_NAME,
+                'restaurantId' => $restaurant->getId(),
+                'categoryType' => RestaurantController::LOGO_CATEGORY_TYPE,
+                'name' => RestaurantController::LOGO_CATEGORY_NAME,
             ]
         );
 
