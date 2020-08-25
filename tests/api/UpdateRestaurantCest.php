@@ -16,9 +16,11 @@ class UpdateRestaurantCest
 
     public function canRemoveALogoFromARestaurant(ApiTester $I)
     {
-        $I->haveInDatabase('restaurant',[
-            'id' => 5,
-            'logo_url' => 'image',
+        $I->haveInDatabase('category',[
+            'restaurant_id' => 5,
+            'category_type' => 'image',
+            'name' => 'restaurant_logo',
+            'image_url' => 'restaurant_logo',
         ]);
 
         $I->sendPOST('/admin/page/restaurant/removeLogo/5');
@@ -26,17 +28,21 @@ class UpdateRestaurantCest
         $I->seeResponseIsJson();
         $I->seeResponseContains('"detail":"Image removed"');
 
-        $I->seeInDatabase('restaurant',[
-            'id' => 5,
-            'logo_url' => null,
+        $I->seeInDatabase('category',[
+            'restaurant_id' => 5,
+            'category_type' => 'image',
+            'name' => 'restaurant_logo',
+            'image_url' => null,
         ]);
     }
 
     public function canRemoveAnInexisingLogoFromARestaurant(ApiTester $I)
     {
-        $I->haveInDatabase('restaurant',[
-            'id' => 5,
-            'logo_url' => null,
+        $I->haveInDatabase('category',[
+            'restaurant_id' => 5,
+            'category_type' => 'image',
+            'name' => 'restaurant_logo',
+            'image_url' => null,
         ]);
 
         $I->sendPOST('/admin/page/restaurant/removeLogo/5');
@@ -44,9 +50,11 @@ class UpdateRestaurantCest
         $I->seeResponseIsJson();
         $I->seeResponseContains('"detail":"Image already empty"');
 
-        $I->seeInDatabase('restaurant',[
-            'id' => 5,
-            'logo_url' => null,
+        $I->seeInDatabase('category',[
+            'restaurant_id' => 5,
+            'category_type' => 'image',
+            'name' => 'restaurant_logo',
+            'image_url' => null,
         ]);
     }
 }

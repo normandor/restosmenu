@@ -28,7 +28,7 @@ class UpdateSettingsCest
             'value' => '#664434',
         ]);
 
-        $I->sendPOST('/page/updateSetting/menu_body/color/ffffff');
+        $I->sendPOST('/admin/page/updateSetting/menu_body/color/ffffff');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
         $I->seeResponseIsJson();
 
@@ -53,7 +53,7 @@ class UpdateSettingsCest
             'value' => '#664434',
         ]);
 
-        $I->sendPOST('/page/updateSetting/menu_body/background-color/ffffff');
+        $I->sendPOST('/admin/page/updateSetting/menu_body/background-color/ffffff');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
         $I->seeResponseIsJson();
 
@@ -66,7 +66,7 @@ class UpdateSettingsCest
 
     public function failUpdatingAnUnexistingField(ApiTester $I)
     {
-        $I->sendPOST('/page/updateSetting/menu_body/non-existing/ffffff');
+        $I->sendPOST('/admin/page/updateSetting/menu_body/non-existing/ffffff');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::BAD_REQUEST);
         $I->seeResponseIsJson();
         $I->seeResponseContains('{"message":"Property not found');
@@ -86,7 +86,7 @@ class UpdateSettingsCest
             'value' => '20px',
         ]);
 
-        $I->sendPOST('/page/updateSetting/menu_body/font-size/15px');
+        $I->sendPOST('/admin/page/updateSetting/menu_body/font-size/15px');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
         $I->seeResponseIsJson();
 

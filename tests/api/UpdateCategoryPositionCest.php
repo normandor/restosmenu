@@ -51,7 +51,7 @@ class UpdateCategoryPositionCest
                 'order_show' => 1,
             ]);
 
-        $I->sendPOST('/page/updateOrder/2/1');
+        $I->sendPOST('/admin/page/updateOrder/2/1');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
         $I->seeResponseIsJson();
 
@@ -80,7 +80,7 @@ class UpdateCategoryPositionCest
                 'order_show' => 1,
             ]);
 
-        $I->sendPOST('/page/updateOrder/1/3');
+        $I->sendPOST('/admin/page/updateOrder/1/3');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
         $I->seeResponseIsJson();
 

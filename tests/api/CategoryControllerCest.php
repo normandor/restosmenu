@@ -37,7 +37,7 @@ class CategoryControllerCest
                 'order_show'    => 2,
             ]);
 
-        $I->sendGET('/category/getComboCount/');
+        $I->sendGET('/admin/category/getComboCount/');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
         $I->seeResponseIsJson();
         $I->seeResponseContains('{"count":0}');
@@ -64,7 +64,7 @@ class CategoryControllerCest
                 'order_show'    => 2,
             ]);
 
-        $I->sendGET('/category/getComboCount/');
+        $I->sendGET('/admin/category/getComboCount/');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
         $I->seeResponseIsJson();
         $I->seeResponseContains('{"count":1}');
