@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\ComboDish;
 use App\Entity\Dish;
 use App\Entity\Restaurant;
+use App\Entity\SettingsImage;
 use App\Entity\SettingsPage;
 use App\Service\PagesService;
 use App\Service\SettingsImageService;
@@ -232,12 +233,27 @@ class PageController extends AbstractController
         $categoriesArray = [];
         /** @var Category $category */
         foreach ($categories as $category) {
+            if (PageController::CATEGORY_IMAGE == $category->getCategoryType()) {
+                /** @var SettingsImage $settingsImage */
+                $settingsImage = $this->getDoctrine()->getRepository(SettingsImage::class)->findOneBy(
+                    [
+                        'key' => $category->getName(),
+                        'restaurantId' => $this->getUser()->getRestaurantId(),
+                        'property' => 'visible',
+                    ]
+                );
+                $visible = $settingsImage->getValue() === 'true';
+            }
+
             $categoriesArray[] = [
                 'id' => $category->getId(),
                 'name' => $category->getName(),
                 'type' => 'category_type.'.$category->getCategoryType(),
                 'order' => $category->getOrderShow(),
-                'enabled' => $category->getEnabled(),
+                'enabled' =>
+                    (PageController::CATEGORY_IMAGE == $category->getCategoryType())
+                    ? $visible
+                    : $category->getEnabled(),
             ];
         }
 

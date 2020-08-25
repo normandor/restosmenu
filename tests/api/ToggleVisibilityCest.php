@@ -71,7 +71,7 @@ class ToggleVisibilityCest
                 'enabled' => 1,
             ]);
 
-        $I->sendPOST('/category/toggleVisibility/2');
+        $I->sendPOST('/admin/category/toggleVisibility/2');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::NO_CONTENT);
 
         $I->seeInDatabase('category',
@@ -93,7 +93,7 @@ class ToggleVisibilityCest
 
     public function getErrorForInexistingCategory(ApiTester $I)
     {
-        $I->sendPOST('/category/toggleVisibility/9');
+        $I->sendPOST('/admin/category/toggleVisibility/9');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::NOT_FOUND);
     }
 
@@ -105,7 +105,7 @@ class ToggleVisibilityCest
                 'enabled' => 1,
             ]);
 
-        $I->sendPOST('/dish/toggleVisibility/1');
+        $I->sendPOST('/admin/dish/toggleVisibility/1');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::NO_CONTENT);
 
         $I->seeInDatabase('dish',
@@ -122,8 +122,45 @@ class ToggleVisibilityCest
 
     public function getErrorForInexistingDish(ApiTester $I)
     {
-        $I->sendPOST('/dish/toggleVisibility/9');
+        $I->sendPOST('/admin/dish/toggleVisibility/9');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::NOT_FOUND);
     }
 
+    public function canToggleAnImageVisibility(ApiTester $I)
+    {
+        $I->haveInDatabase('category',
+            [
+                'id'            => 4,
+                'category_type' => 'image',
+                'name'          => 'restaurant_logo',
+                'enabled'       => 1,
+                'restaurant_id' => 1,
+                'currency_id'   => 1,
+                'order_show'    => 3,
+            ]);
+        $I->haveInDatabase('settings_image',
+            [
+                'id'            => 1,
+                'key'           => 'restaurant_logo',
+                'property'      => 'visible',
+                'value'         => 'true',
+                'restaurant_id' => 1,
+            ]);
+
+        $I->sendPOST('/admin/category/toggleVisibility/4');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::NO_CONTENT);
+
+        // must remain enabled
+        $I->seeInDatabase('category',
+            [
+                'id'      => 4,
+                'enabled' => 1,
+            ]);
+        $I->seeInDatabase('settings_image',
+            [
+                'id'       => 1,
+                'property' => 'visible',
+                'value'    => 'false',
+            ]);
+    }
 }

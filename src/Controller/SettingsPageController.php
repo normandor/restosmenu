@@ -4,21 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\ComboDish;
-use App\Entity\Currency;
 use App\Entity\Dish;
 use App\Entity\SettingsPage;
-use App\Form\Type\CategoryType;
-use App\Form\Type\ComboType;
-use App\Service\FileUploader;
-use App\Service\PagesService;
-use App\Service\SettingsPageService;
-use mysql_xdevapi\Exception;
-use PHPUnit\Util\Json;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Doctrine\Common\Util\Inflector;
 
 class SettingsPageController extends AbstractController
 {

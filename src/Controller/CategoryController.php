@@ -282,12 +282,13 @@ class CategoryController extends AbstractController
             ], 404);
         }
 
-        $newVisibility = !$category->getEnabled();
-        $category->setEnabled((int) $newVisibility);
-
         $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($category);
-        $entityManager->flush();
+
+        if (PageController::CATEGORY_IMAGE !== $category->getCategoryType()) {
+            $category->setEnabled((int)!$category->getEnabled());
+            $entityManager->persist($category);
+            $entityManager->flush();
+        }
 
         if (PageController::CATEGORY_IMAGE === $category->getCategoryType()) {
             /** @var SettingsImage $settingsImage */
@@ -300,7 +301,7 @@ class CategoryController extends AbstractController
             );
 
             if (null !== $settingsImage) {
-                $settingsImage->setValue($newVisibility ? 'true' : 'false');
+                $settingsImage->setValue(($settingsImage->getValue() === 'false') ? 'true' : 'false');
                 $entityManager->persist($settingsImage);
                 $entityManager->flush();
             }
