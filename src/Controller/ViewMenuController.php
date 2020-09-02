@@ -7,6 +7,7 @@ use App\Entity\Restaurant;
 use App\Repository\RestaurantRepository;
 use App\Service\DishService;
 use App\Service\SettingsImageService;
+use App\Service\SettingsPagePreviewService;
 use App\Service\SettingsPageService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +31,7 @@ class ViewMenuController extends AbstractController
 
     public function showPreview(
         Request $request,
-        SettingsPageService $settingsPageService,
+        SettingsPagePreviewService $settingsPagePreviewService,
         SettingsImageService $settingsImageService,
         bool $mobile
     ) {
@@ -38,7 +39,7 @@ class ViewMenuController extends AbstractController
         $restaurant = $this->getRestaurantByRestaurantId($restaurantId);
         $restoMenu = $this->getRestoMenuByRestaurantId($restaurantId);
 
-        $properties = $settingsPageService->getPropertiesByRestaurantId($restaurantId);
+        $properties = $settingsPagePreviewService->getPropertiesByRestaurantId($restaurantId);
         $imageProperties = $settingsImageService->getPropertiesByRestaurantId($restaurantId);
 
         /** @var Category $category */

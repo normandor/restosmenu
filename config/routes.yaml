@@ -205,16 +205,21 @@ api_login:
 api_logout:
     path:       /api/logout
     controller: App\Controller\Api\SecurityController::logout
-
 update_setting:
     path:       /admin/page/updateSetting/{key}/{property}/{value}
-    controller: App\Controller\SettingsPageController::editSetting
+    controller: App\Controller\SettingsPagePreviewController::editSetting
 update_image_setting:
     path:       /admin/page/updateImageSetting/{key}/{property}/{value}/{platform}
     controller: App\Controller\SettingsImageController::editSetting
+clear_settings:
+    path:       /admin/page/clearSettings
+    controller: App\Controller\SettingsPagePreviewController::clearSettings
+publish_settings:
+    path:       /admin/page/publishSettings
+    controller: App\Controller\SettingsPagePreviewController::publishSettings
 category_update_order:
     path:       /admin/page/updateOrder/{id}/{newPosition}
-    controller: App\Controller\SettingsPageController::updateCategoryOrder
+    controller: App\Controller\SettingsPagePreviewController::updateCategoryOrder
 category_toggle_visible:
     path:       /admin/category/toggleVisibility/{categoryId}
     controller: App\Controller\CategoryController::toggleVisibility
@@ -226,10 +231,10 @@ dish_toggle_visible:
     controller: App\Controller\DishController::toggleVisibility
 dish_update_order_in_combo:
     path:       /admin/page/updateOrderInCombo/{dishId}/{categoryId}/{newPosition}
-    controller: App\Controller\SettingsPageController::updateDishInComboOrder
+    controller: App\Controller\SettingsPagePreviewController::updateDishInComboOrder
 dish_update_order_in_category:
     path:       /admin/page/updateOrderInCategory/{dishId}/{categoryId}/{newPosition}
-    controller: App\Controller\SettingsPageController::updateDishInCategoryOrder
+    controller: App\Controller\SettingsPagePreviewController::updateDishInCategoryOrder
 homepage:
     path:       /
     controller: App\Controller\DefaultController::index

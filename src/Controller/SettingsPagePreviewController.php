@@ -6,10 +6,11 @@ use App\Entity\Category;
 use App\Entity\ComboDish;
 use App\Entity\Dish;
 use App\Entity\SettingsPage;
+use App\Entity\SettingsPagePreview;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class SettingsPageController extends AbstractController
+class SettingsPagePreviewController extends AbstractController
 {
     /**
      * @param string $key
@@ -20,8 +21,8 @@ class SettingsPageController extends AbstractController
      */
     public function editSetting(string $key, string $property, string $value): JsonResponse
     {
-        /** @var SettingsPage $setting */
-        $setting = $this->getDoctrine()->getRepository(SettingsPage::class)
+        /** @var SettingsPagePreview $setting */
+        $setting = $this->getDoctrine()->getRepository(SettingsPagePreview::class)
             ->findOneBy([
                 'restaurantId' => $this->getUser()->getRestaurantId(),
                 'key' => $key,
@@ -39,6 +40,7 @@ class SettingsPageController extends AbstractController
             $value = '#'.$value;
         }
         $setting->setValue($value);
+        $setting->setIsSynced(0);
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($setting);
@@ -188,6 +190,90 @@ class SettingsPageController extends AbstractController
             $entityManager->persist($dish);
             $entityManager->flush();
         }
+
+        return new JsonResponse(['message' => 'OK'], 200);
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function clearSettings(): JsonResponse
+    {
+        $this->addFlash(
+            'notice',
+            'settings_cleared'
+        );
+
+        /** @var SettingsPagePreview $setting */
+        $settingsPreview = $this->getDoctrine()->getRepository(SettingsPagePreview::class)
+            ->findBy([
+                'restaurantId' => $this->getUser()->getRestaurantId(),
+                'isSynced' => 0,
+            ]);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        /** @var SettingsPagePreview $settingPreview */
+        foreach ($settingsPreview as $settingPreview) {
+            /** @var SettingsPage $setting */
+            $setting = $this->getDoctrine()->getRepository(SettingsPage::class)
+                ->findOneBy([
+                    'restaurantId' => $this->getUser()->getRestaurantId(),
+                    'key' => $settingPreview->getKey(),
+                    'name' => $settingPreview->getName(),
+                    'property' => $settingPreview->getProperty(),
+                ]);
+
+            if (null !== $setting) {
+                $settingPreview->setIsSynced(1);
+                $settingPreview->setValue($setting->getValue());
+                $entityManager->persist($settingPreview);
+            }
+        }
+        $entityManager->flush();
+
+        return new JsonResponse(['message' => 'OK'], 200);
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function publishSettings(): JsonResponse
+    {
+        $this->addFlash(
+            'notice',
+            'settings_published'
+        );
+
+        /** @var SettingsPagePreview $setting */
+        $settingsPreview = $this->getDoctrine()->getRepository(SettingsPagePreview::class)
+            ->findBy([
+                'restaurantId' => $this->getUser()->getRestaurantId(),
+                'isSynced' => 0,
+            ]);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        /** @var SettingsPagePreview $settingPreview */
+        foreach ($settingsPreview as $settingPreview) {
+            /** @var SettingsPage $setting */
+            $setting = $this->getDoctrine()->getRepository(SettingsPage::class)
+                ->findOneBy([
+                    'restaurantId' => $this->getUser()->getRestaurantId(),
+                    'key' => $settingPreview->getKey(),
+                    'name' => $settingPreview->getName(),
+                    'property' => $settingPreview->getProperty(),
+                ]);
+
+            if (null !== $setting) {
+                $settingPreview->setIsSynced(1);
+                $entityManager->persist($settingPreview);
+
+                $setting->setValue($settingPreview->getValue());
+                $entityManager->persist($setting);
+            }
+        }
+        $entityManager->flush();
 
         return new JsonResponse(['message' => 'OK'], 200);
     }

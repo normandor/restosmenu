@@ -7,10 +7,10 @@ use App\Entity\ComboDish;
 use App\Entity\Dish;
 use App\Entity\Restaurant;
 use App\Entity\SettingsImage;
-use App\Entity\SettingsPage;
+use App\Entity\SettingsPagePreview;
 use App\Service\PagesService;
 use App\Service\SettingsImageService;
-use App\Service\SettingsPageService;
+use App\Service\SettingsPagePreviewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -134,18 +134,26 @@ class PageController extends AbstractController
     }
 
     /**
-     * @param PagesService $settingsPageService
-     * @param Request      $request
+     * @param SettingsPagePreviewService $settingsPagePreviewService
+     * @param SettingsImageService       $settingsImageService
+     * @param Request                    $request
      *
      * @return Response
      */
     public function showPageSettings(
-        SettingsPageService $settingsPageService,
+        SettingsPagePreviewService $settingsPagePreviewService,
         SettingsImageService $settingsImageService,
         Request $request
     ) {
-        $settingsPage = $settingsPageService->getPropertiesByRestaurantId($this->getUser()->getRestaurantId());
+        $settingsPage = $settingsPagePreviewService->getPropertiesByRestaurantId($this->getUser()->getRestaurantId());
         $settingsImage = $settingsImageService->getPropertiesByRestaurantId($this->getUser()->getRestaurantId());
+
+        $uncyncedSettings = $this->getDoctrine()->getRepository(SettingsPagePreview::class)
+            ->findBy([
+                'restaurantId' => $this->getUser()->getRestaurantId(),
+                'isSynced' => 0,
+            ]);
+        $settingsToBeSynced = count($uncyncedSettings) > 0;
 
         return $this->render('pages/page_details_page_settings.html.twig', [
             'pageName' => 'Restaurant',
@@ -154,6 +162,7 @@ class PageController extends AbstractController
             'user' => DashboardController::$user,
             'settingsPage' => $settingsPage,
             'settingsImage' => $settingsImage,
+            'changesToSync' => $settingsToBeSynced,
             'select' => [
                 'font_options' => $this->getAvailableFontSizes(),
                 'width_options' => $this->getAvailableWidthOptions(),
@@ -196,8 +205,8 @@ class PageController extends AbstractController
      */
     public function showSelectFont($key)
     {
-        /** @var SettingsPage $selectedFont */
-        $selectedFont = $this->getDoctrine()->getRepository(SettingsPage::class)
+        /** @var SettingsPagePreview $selectedFont */
+        $selectedFont = $this->getDoctrine()->getRepository(SettingsPagePreview::class)
             ->findOneBy(['key' => $key, 'property' => 'font-family', 'restaurantId' => $this->getUser()->getRestaurantId()]);
 
         $fonts = [

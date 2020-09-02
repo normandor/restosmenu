@@ -2,6 +2,13 @@
 
 {% block stylesheets %}
   {{ parent() }}
+    <style>
+        .border-info {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+        }
+    </style>
+
 {% endblock %}
 
 {% block body %}
@@ -43,9 +50,31 @@
             </h1>
           </div>
         </div>
+          <div class="row font-20">
+              <div class="col-sm-10 mb-10">
+                  {% for message in app.flashes('notice') %}
+                      <div class="alert alert-success alert-dismissible " role="alert">
+                          {{ message | trans }}
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                  {% endfor %}
+              </div>
+          </div>
 
+          {% if changesToSync == true %}
+              <div class="row font-20" style="margin: 0px 5px 15px 5px">
+                  <div class="col-sm-10 mb-10 text-center border-info">
+                      <div style="padding-bottom: 10px;">{{ 'changes_to_sync' | trans | raw }}</div>
+                      <button type="button" onclick="revertSettingChanges();" class="btn btn-primary">{{ 'button.undochanges' | trans }}</button>
+                      <button type="button" onclick="publishSettingChanges();" class="btn btn-success">{{ 'button.publishchanges' | trans}}</button>
+                  </div>
+              </div>
+          {% endif %}
           <div class="row font-20" style="margin-bottom:15px">
               <div class="col-sm-10 mb-10">
+
                   <h2>Apariencia del texto</h2>
               </div>
               <div class="col-sm-10 mb-10">
@@ -343,5 +372,34 @@
 
         }
     });
+
+  function revertSettingChanges() {
+    $.ajax({
+      url: "{{ path('clear_settings') }}",
+      type: 'POST',
+      dataType: 'json',
+      success: function (data) {
+          location.reload();
+      },
+      error: function (xhr, status) {
+          alert("{{ 'alert.error.processing' | trans }}");
+      }
+    });
+  }
+
+  function publishSettingChanges() {
+      $.ajax({
+          url: "{{ path('publish_settings') }}",
+          type: 'POST',
+          dataType: 'json',
+          success: function (data) {
+              location.reload();
+          },
+          error: function (xhr, status) {
+              alert("{{ 'alert.error.processing' | trans }}");
+          }
+      });
+  }
+
   </script>
 {% endblock %}
