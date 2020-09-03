@@ -69,13 +69,13 @@
                   <div class="error">
                       {{ form_errors(form) }}
                   </div>
-                  <h4>Datos personales</h4>
+                  <h4>{{ 'personal_data' | trans }}</h4>
                   {{ form_row(form.lastname) }}
                   {{ form_row(form.firstname) }}
                   {{ form_row(form.email) }}
                   {{ form_row(form.username) }}
                   <hr>
-                  <h4>Cambiar contraseña</h4>
+                  <h4>{{ 'change_password' | trans }}</h4>
                   {{ form_row(form.password) }}
               </div>
               <div class="pull-right">

@@ -162,6 +162,8 @@
     }
 
     function showDeleteItem(id, name) {
+        $('.modal-title').html('');
+
         $(".modal-header #sectionId").val(id);
         $('#myModalLabelMessage').html('¿Confirma la eliminacion del plato '+name+'?');
 
@@ -183,8 +185,8 @@
                 $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
                 $('.modal-body-new-user').load('../admin/page/element/addSelectedDishToCombo/' + dishId, function () {
                 });
-                $('.modal-title').html('Agregar plato a combo');
-                $('.modal-subtitle').html('Agregar plato a combo');
+
+                $('.modal-title').html('{{ 'add_dish_to_combo' | trans }}');
                 $("#newItemModal").modal('show');
             },
             error: function (xhr, status) {
@@ -198,7 +200,7 @@
     function showEditDish(id) {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
         $('.modal-body-new-user').load('../admin/page/element/editDish/'+id, function () {});
-        $('.modal-title').html('Editar item');
+        $('.modal-title').html('{{ 'button.edit_item' | trans }}');
         $("#newItemModal").modal('show');
     }
 
@@ -288,7 +290,7 @@
 
     function showDeleteImage(theId) {
         $(".modal-header #userIdDelete").val(theId);
-        $('#myModalLabelMessage').html('¿Confirma la eliminación de la imagen?');
+        $('#myModalLabelMessage').html('{{ 'button.confirm_delete_image' | trans }}');
         $("#confirmModal").modal('show');
     }
 
@@ -298,7 +300,7 @@
 
         let key = e.target.getAttribute('data-itemid');
 
-        $('#myModalConfirmLabelMessage').html('¿Confirma la eliminacion de la imagen?');
+        $('#myModalConfirmLabelMessage').html('{{ 'button.confirm_delete_image' | trans }}');
         $('#confirmModalSmall').modal('show');
 
         $("#modal-confirm-btn-yes").on('click',function(e){

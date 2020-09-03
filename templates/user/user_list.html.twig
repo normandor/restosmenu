@@ -83,7 +83,7 @@
         function showDeleteUser(theId, theName) {
             $(".modal-header #userIdDelete").val(theId);
             $(".modal-header #userNameDelete").html(theName);
-            $('#myModalLabelMessage').html('¿Confirma la eliminación del usuario ' + theName + '?');
+            $('#myModalLabelMessage').html('{{ 'confirm_user_delete' | trans }} ' + theName + '?');
             $("#confirmModal").modal('show');
         }
 
@@ -149,14 +149,14 @@
         function disableButton(theButton) {
             setTimeout(function () {
                 $(theButton).prop('disabled', true);
-                $(theButton).text('Guardando cambios...');
+                $(theButton).text('{{ 'button.saving_changes' | trans }}...');
             }, 100);
         }
 
         function enableButton() {
             setTimeout(function () {
                 $('#data-submit-button').prop('disabled', false);
-                $('#data-submit-button').text('Guardar');
+                $('#data-submit-button').text('{{ 'button.save' | trans }}');
             }, 10);
         }
 
@@ -272,13 +272,13 @@
                     <table id="tableFormularios" class="table table-striped table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Apellido</th>
-                                <th>Nombre</th>
-                                <th>Usuario</th>
-                                <th>Email</th>
-                                <th>Roles</th>
-                                <th>Activo</th>
-                                <th>Acceso al panel</th>
+                                <th>{{ 'user.lastname' | trans }}</th>
+                                <th>{{ 'user.firstname' | trans }}</th>
+                                <th>{{ 'user.user' | trans }}</th>
+                                <th>{{ 'user.email' | trans }}</th>
+                                <th>{{ 'user.roles' | trans }}</th>
+                                <th>{{ 'user.user_active' | trans }}</th>
+                                <th>{{ 'user.access_dashboard' | trans }}</th>
                                 <th></th>
                             </tr>
                         </thead>

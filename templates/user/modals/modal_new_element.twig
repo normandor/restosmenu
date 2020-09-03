@@ -46,7 +46,7 @@
                 }
             },
             error: function (jqXHR, status, err) {
-                alert("Hubo un error al procesar los datos.\nIntente nuevamente más tarde.");
+                alert("{{ 'error.processing' | trans }}");
                 enableButton();
             }
         });
@@ -54,13 +54,13 @@
     function disableButton(theButton) {
         setTimeout(function () {
             $(theButton).prop('disabled', true);
-            $(theButton).text('Guardando...');
+            $(theButton).text('{{ 'button.saving' | trans }}...');
         }, 100);
     }
     function enableButton() {
         setTimeout(function () {
             $('#data-submit-button').prop('disabled', false);
-            $('#data-submit-button').text('Guardar');
+            $('#data-submit-button').text('{{ 'button.save' | trans }}');
         }, 10);
     }
 </script>

@@ -7,6 +7,11 @@
             border: 1px solid #e0e0e0;
             border-radius: 5px;
         }
+        span.icon {
+            margin-right: 10px;
+            font-size: 38px;
+            vertical-align: middle;
+        }
     </style>
 
 {% endblock %}
@@ -66,7 +71,10 @@
           {% if changesToSync == true %}
               <div class="row font-20" style="margin: 0px 5px 15px 5px">
                   <div class="col-sm-10 mb-10 text-center border-info">
-                      <div style="padding-bottom: 10px;">{{ 'changes_to_sync' | trans | raw }}</div>
+                      <div style="padding-bottom: 10px; vertical-align: middle;">
+                          <span class="icon">&#9888;</span>
+                          {{ 'changes_to_sync' | trans | raw }}
+                      </div>
                       <button type="button" onclick="revertSettingChanges();" class="btn btn-primary">{{ 'button.undochanges' | trans }}</button>
                       <button type="button" onclick="publishSettingChanges();" class="btn btn-success">{{ 'button.publishchanges' | trans}}</button>
                   </div>

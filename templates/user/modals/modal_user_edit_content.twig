@@ -1,26 +1,13 @@
 {% block head %}
-    <link rel="stylesheet" href="{{ asset('./build/css/bootstrap-multiselect.css') }}" type="text/css"/>
 {% endblock %}
 
 {% block javascripts %}
     <script type="text/javascript" src="{{ asset('./build/js/bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('./build/js/bootstrap-multiselect.js') }}"></script>
 {% endblock %}
 
 {% block body %}
-    <style>
-        select::-ms-expand {
-            border:none;
-            background:#fff;
-            display: none;
-        }
-        .multiselect-container {
-            position: relative !important;
-        }
-    </style>
     <div class="row" style="margin-right:10px; margin-top:10px" >
         <div class="col-md-12 container-fluid">
-
             <form id="eventForm" class="form-horizontal" role="form">
                 <fieldset>
                     <div class="form-group">
@@ -88,54 +75,4 @@
             </form>
         </div>
     </div>
-
-    <script>
-        $(document).ready(function () {
-            $('#role').multiselect();
-            $('#zonas_asignadas').multiselect();
-        });
-
-        $('#role').multiselect({
-            onChange: function (option, checked, select) {
-                $("#role option:selected").each(function () {
-                    // si la opcion de admin esta seleccionada y selecciono otra, la deselecciono
-                    if (this.value == "readwriteapprove") {
-                        $('#role').multiselect('deselect', "readwriteapprove");
-                    }
-                });
-                if ($(option).val() == "") {
-                    $('#role').multiselect('deselectAll', false);
-                    $('#role').multiselect('select', "");
-                } else {
-                    $('#role').multiselect('deselect', "");
-                    if ($(option).val() == "readwriteapprove") {
-                        $('#role').multiselect('deselectAll', false);
-                        $('#role').multiselect('select', "readwriteapprove");
-                    }
-                    if ($(option).val() == "readanomalies") {
-                        $('#role').multiselect('deselect', "");
-                        $('#role').multiselect('deselect', "readwriteapprove");
-                        $('#role').multiselect('deselect', "readwrite");
-                    }
-                    if ($(option).val() == "readwrite") {
-                        $('#role').multiselect('deselect', "");
-                        $('#role').multiselect('deselect', "readwriteapprove");
-                        $('#role').multiselect('deselect', "readanomalies");
-                    }
-                }
-            }
-        });
-        $('#zonas_asignadas').multiselect({
-            onChange: function (option, checked, select) {
-
-                if ($(option).val() == "0") {
-                    $('#zonas_asignadas').multiselect('deselectAll', false);
-                    $('#zonas_asignadas').multiselect('select', "0");
-                } else {
-                    $('#zonas_asignadas').multiselect('deselect', "0");
-                }
-            }
-        });
-
-    </script>
 {% endblock %}

@@ -30,7 +30,7 @@
           <div id="breadcrumb" class="col-xs-12">
             <a href="#" class="show-sidebar"><i class="fa fa-bars"></i></a>
             <ol class="breadcrumbpanel pull-left">
-              <a href="#">Restaurant</a>
+              <a href="#">{{ 'restaurant' | trans }}</a>
             </ol>
           </div>
         </div>
@@ -51,16 +51,16 @@
                       <table>
                           <tr>
                               <th>
-                                  Restaurant
+                                  {{ 'restaurant' | trans }}
                               </th>
                               <th>
-                                  Codigo QR
+                                  {{ 'qr_code' | trans }}
                               </th>
                               <th>
-                                  Logo
+                                  {{ 'logo' | trans }}
                               </th>
                               <th>
-                                  Link al menu
+                                  {{ 'link_to_menu' | trans }}
                               </th>
                               <th></th>
                           </tr>
@@ -122,13 +122,13 @@
     function showAddRestaurant() {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
         $('.modal-body-new-user').load('../admin/page/element/addRestaurant/', function () {});
-        $('.modal-title').html('Nuevo restaurant');
+        $('.modal-title').html('{{ 'button.new_restaurant' | trans }}');
         $("#newItemModal").modal('show');
     }
 
     function showDeleteItem(id, name) {
         $(".modal-header #sectionId").val(id);
-        $('#myModalLabelMessage').html('¿Confirma la eliminacion de '+name+'?');
+        $('#myModalLabelMessage').html('{{ 'button.confirm_deletion_of' | trans }} '+name+'?');
 
         $("#confirmModal").modal('show');
     }
@@ -136,7 +136,7 @@
     function showEditRestaurant(id) {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
         $('.modal-body-new-user').load('../admin/page/element/editRestaurant/'+id, function () {});
-        $('.modal-title').html('Editar restaurant');
+        $('.modal-title').html('{{ 'button.edit_restaurant' | trans }}');
         $("#newItemModal").modal('show');
     }
 
@@ -180,7 +180,7 @@
 
         let key = e.target.getAttribute('data-itemid');
 
-        $('#myModalConfirmLabelMessage').html('¿Confirma la eliminacion de la imagen?');
+        $('#myModalConfirmLabelMessage').html('{{ 'button.confirm_delete_image' | trans }}');
         $('#confirmModalSmall').modal('show');
 
         $("#modal-confirm-btn-yes").on('click',function(e){
