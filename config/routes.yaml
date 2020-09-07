@@ -99,26 +99,26 @@ table_restaurants:
     defaults:   { _controller: App\Controller\RestaurantController::getTableData, dbuser: '%dbuser%', dbpw: '%dbpw%', dbhost: '%dbhost%', dbname: '%dbname%' }
     methods:    GET
 modal_data_edit_restaurant:
-    path:       /admin/modal/restaurant/edit/{id}
+    path:       /admin/manage/modal/restaurant/edit/{id}
     controller: App\Controller\RestaurantController::modalShowEditRestaurant
 modal_data_add_restaurant:
-    path:       /admin/modal/restaurant/add/
+    path:       /admin/manage/modal/restaurant/add/
     controller: App\Controller\RestaurantController::modalShowAddRestaurant
 
 user_update_user:
-    path:       /admin/user/update-user/
+    path:       /admin/manage/user/update-user/
     controller: App\Controller\UserController::updateUser
 user_delete_user:
-    path:       /admin/user/delete-user/
+    path:       /admin/manage/user/delete-user/
     controller: App\Controller\UserController::deleteUser
 modal_data_edit_user:
-    path:       /admin/modal/user/edit/{id}
+    path:       /admin/manage/modal/user/edit/{id}
     controller: App\Controller\UserController::modalShowEditUser
 modal_data_add_user:
-    path:       /admin/modal/user/add/
+    path:       /admin/manage/modal/user/add/
     controller: App\Controller\UserController::modalShowAddUser
 user_add_user:
-    path:       /admin/user/add-user/
+    path:       /admin/manage/user/add-user/
     controller: App\Controller\UserController::addUser
 show_modal_select_font:
     path:       /admin/page/element/select-font/{key}

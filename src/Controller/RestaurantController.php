@@ -14,9 +14,11 @@ use App\Form\Type\RestaurantType;
 use App\Service\FileUploader;
 use App\Service\PagesService;
 use App\Service\RestaurantService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Zxing\NotFoundException;
 
 class RestaurantController extends AbstractController
 {
@@ -30,6 +32,14 @@ class RestaurantController extends AbstractController
         $this->targetDirectory = $targetDirectory;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @IsGranted("ROLE_ADMIN", statusCode=404, message="Not found")
+     * @IsGranted("ROLE_MANAGER", statusCode=404, message="Not found")
+     */
     public function showRestaurantList(Request $request)
     {
         return $this->render('user/restaurant_list.html.twig', [
@@ -40,6 +50,12 @@ class RestaurantController extends AbstractController
         ]);
     }
 
+    /**
+     * @return Response
+     *
+     * @IsGranted("ROLE_ADMIN", statusCode=404, message="Not found")
+     * @IsGranted("ROLE_MANAGER", statusCode=404, message="Not found")
+     */
     public function modalShowAdd()
     {
         ///////////////////////////////////////
@@ -58,6 +74,9 @@ class RestaurantController extends AbstractController
      * @param $id
      *
      * @return Response
+     *
+     * @IsGranted("ROLE_ADMIN", statusCode=404, message="Not found")
+     * @IsGranted("ROLE_MANAGER", statusCode=404, message="Not found")
      */
     public function remove($id): Response
     {
@@ -85,6 +104,9 @@ class RestaurantController extends AbstractController
      * @param RestaurantService $restaurantService
      *
      * @return Response
+     *
+     * @IsGranted("ROLE_ADMIN", statusCode=404, message="Not found")
+     * @IsGranted("ROLE_MANAGER", statusCode=404, message="Not found")
      */
     public function modalShowEditRestaurant($id, RestaurantService $restaurantService, Request $request): Response
     {
@@ -114,6 +136,9 @@ class RestaurantController extends AbstractController
 
     /**
      * @return Response
+     *
+     * @IsGranted("ROLE_ADMIN", statusCode=404, message="Not found")
+     * @IsGranted("ROLE_MANAGER", statusCode=404, message="Not found")
      */
     public function modalShowAddRestaurant()
     {
@@ -134,9 +159,16 @@ class RestaurantController extends AbstractController
      * @param FileUploader $fileUploader
      *
      * @return Response
+     *
+     * @IsGranted("ROLE_ADMIN", statusCode=404, message="Not found")
+     * @IsGranted("ROLE_MANAGER", statusCode=404, message="Not found")
      */
     public function edit(int $restaurantId, Request $request, FileUploader $fileUploader): Response
     {
+        if ($this->getUser()->getRestaurantId() !== $restaurantId) {
+            throw $this->createNotFoundException();
+        }
+
         /** @var Restaurant $restaurant */
         $restaurant = $this->getDoctrine()->getRepository(Restaurant::class)->findOneBy(['id' => $restaurantId]);
 
@@ -189,6 +221,16 @@ class RestaurantController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request      $request
+     * @param PagesService $pagesService
+     * @param FileUploader $fileUploader
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @IsGranted("ROLE_ADMIN", statusCode=404, message="Not found")
+     * @IsGranted("ROLE_MANAGER", statusCode=404, message="Not found")
+     */
     public function submitForm(Request $request, PagesService $pagesService, FileUploader $fileUploader)
     {
         $restaurant = new Restaurant();
@@ -227,6 +269,12 @@ class RestaurantController extends AbstractController
         ]);
     }
 
+    /**
+     * @param int $restaurantId
+     *
+     * @IsGranted("ROLE_ADMIN", statusCode=404, message="Not found")
+     * @IsGranted("ROLE_MANAGER", statusCode=404, message="Not found")
+     */
     private function addNewRestaurantDefaultSettings(int $restaurantId): void
     {
         $defaultImageValues = [
@@ -329,6 +377,10 @@ class RestaurantController extends AbstractController
      */
     public function removeLogo($restaurantId): Response
     {
+        if ($this->getUser()->getRestaurantId() !== $restaurantId) {
+            throw $this->createNotFoundException();
+        }
+
         /** @var Category $category */
         $category = $this->getDoctrine()->getRepository(Category::class)->findOneBy(
             [
@@ -370,6 +422,9 @@ class RestaurantController extends AbstractController
      * @param RestaurantService $restaurantService
      *
      * @return Response
+     *
+     * @IsGranted("ROLE_ADMIN", statusCode=404, message="Not found")
+     * @IsGranted("ROLE_MANAGER", statusCode=404, message="Not found")
      */
     public function getTableData($dbuser, $dbpw, $dbname, $dbhost, Request $request, RestaurantService $restaurantService)
     {

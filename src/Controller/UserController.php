@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\Type\UserType;
 use App\Service\FileUploader;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,6 +37,14 @@ class UserController extends AbstractController
         return false;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @IsGranted("ROLE_ADMIN", statusCode=404, message="Not found")
+     * @IsGranted("ROLE_MANAGER", statusCode=404, message="Not found")
+     */
     public function show(Request $request)
     {
         return $this->render('user/user_list.html.twig', [
@@ -55,6 +64,9 @@ class UserController extends AbstractController
      * @param UserService $userService
      *
      * @return Response
+     *
+     * @IsGranted("ROLE_ADMIN", statusCode=404, message="Not found")
+     * @IsGranted("ROLE_MANAGER", statusCode=404, message="Not found")
      */
     public function getTableData($dbuser, $dbpw, $dbname, $dbhost, Request $request, UserService $userService)
     {

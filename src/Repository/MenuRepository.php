@@ -83,7 +83,12 @@ class MenuRepository extends ServiceEntityRepository
             // hardcoded, implement rights
             if (
                 !$roles ||
-                ('Personal' === $row['name'] && !in_array('ROLE_MANAGER', $roles, true))
+                (
+                    ('Personal' === $row['name'] ||
+                    'Gestion' === $row['name'] ||
+                    'Restaurants' === $row['name']) &&
+                    !in_array('ROLE_MANAGER', $roles, true)
+                )
             ) {
                 continue;
             }
