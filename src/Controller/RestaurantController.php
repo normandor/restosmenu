@@ -159,9 +159,6 @@ class RestaurantController extends AbstractController
      * @param FileUploader $fileUploader
      *
      * @return Response
-     *
-     * @IsGranted("ROLE_ADMIN", statusCode=404, message="Not found")
-     * @IsGranted("ROLE_MANAGER", statusCode=404, message="Not found")
      */
     public function edit(int $restaurantId, Request $request, FileUploader $fileUploader): Response
     {
