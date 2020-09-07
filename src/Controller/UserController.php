@@ -187,7 +187,10 @@ class UserController extends AbstractController
         ]));
     }
 
-    public function modalShowAddUser(UserService $userService)
+    /**
+     * @return Response
+     */
+    public function modalShowAddUser()
     {
         return $this->render('user/modals/modal_user_new_content.twig', [
                     'label' => 'Gestión de usuarios',

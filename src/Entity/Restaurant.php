@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * @ORM\Table(name="restaurant", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
@@ -54,6 +56,13 @@ class Restaurant
      */
     private $qrUrl = '';
 
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addConstraint(new UniqueEntity([
+            'fields' => 'slug',
+        ]));
+    }
+
     public function getName(): string
     {
         return $this->name;
@@ -67,6 +76,11 @@ class Restaurant
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function setId($id): void
+    {
+        $this->id = $id;
     }
 
     public function getEnabled(): int

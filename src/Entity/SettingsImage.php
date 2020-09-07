@@ -24,7 +24,7 @@ class SettingsImage
     /**
      * @var string
      *
-     * @ORM\Column(name="key", type="string", length=250, nullable=false)
+     * @ORM\Column(name="`key`", type="string", length=250, nullable=false)
      */
     private $key = '';
 
@@ -123,7 +123,7 @@ class SettingsImage
         return $this->valueMobile;
     }
 
-    public function setValueMobile($valueMobile): void
+    public function setValueMobile($valueMobile = null): void
     {
         $this->valueMobile = $valueMobile;
     }

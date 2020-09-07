@@ -24,7 +24,7 @@ class SettingsPagePreview
     /**
      * @var string
      *
-     * @ORM\Column(name="key", type="string", length=250, nullable=false)
+     * @ORM\Column(name="`key`", type="string", length=250, nullable=false)
      */
     private $key = '';
 

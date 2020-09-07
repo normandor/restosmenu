@@ -94,11 +94,6 @@
                                           <img class="icon" src="{{ asset('images/icono_edit.png') }}"
                                                onclick="showEditRestaurant({{ restaurant.id }});"
                                                style="cursor: pointer;" />
-
-    {#                                      <img class="icon"#}
-    {#                                           src="../images/icono_delete.png"#}
-    {#                                           onclick="showDeleteItem('{{ restaurant.id }}', '{{ restaurant.name|raw }}');"#}
-    {#                                           style="cursor: pointer;" />#}
                                       </div>
                                   </td>
                               </tr>
@@ -106,6 +101,9 @@
                           {% endfor %}
                       </table>
                   </div>
+                  {% if is_granted('ROLE_MANAGER') %}
+                      plus
+                  {% endif %}
               </div>
           </div>
       </div>

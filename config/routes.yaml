@@ -79,8 +79,11 @@ list_in_page_update:
     path:       /admin/page/update-list/
     controller: App\Controller\PageController::updateListInPage
 user_list:
-    path:       /admin/users/
+    path:       /admin/manage/users/
     controller: App\Controller\UserController::show
+restaurant_list:
+    path:       /admin/manage/restaurants/
+    controller: App\Controller\RestaurantController::showRestaurantList
 charts_linetot:
     path:       /admin/chartdata/linetotchart
     controller: App\Controller\ChartDataController::getLineTotalData
@@ -88,9 +91,20 @@ charts_line:
     path:       /admin/chartdata/linechart
     controller: App\Controller\ChartDataController::getLineData
 table_users:
-    path:       /admin/tabledata-users/
+    path:       /admin/manage/tabledata-users/
     defaults:   { _controller: App\Controller\UserController::getTableData, dbuser: '%dbuser%', dbpw: '%dbpw%', dbhost: '%dbhost%', dbname: '%dbname%' }
     methods:    GET
+table_restaurants:
+    path:       /admin/manage/tabledata-restaurants/
+    defaults:   { _controller: App\Controller\RestaurantController::getTableData, dbuser: '%dbuser%', dbpw: '%dbpw%', dbhost: '%dbhost%', dbname: '%dbname%' }
+    methods:    GET
+modal_data_edit_restaurant:
+    path:       /admin/modal/restaurant/edit/{id}
+    controller: App\Controller\RestaurantController::modalShowEditRestaurant
+modal_data_add_restaurant:
+    path:       /admin/modal/restaurant/add/
+    controller: App\Controller\RestaurantController::modalShowAddRestaurant
+
 user_update_user:
     path:       /admin/user/update-user/
     controller: App\Controller\UserController::updateUser
