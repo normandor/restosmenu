@@ -372,7 +372,7 @@ class RestaurantController extends AbstractController
      *
      * @return Response
      */
-    public function removeLogo($restaurantId): Response
+    public function removeLogo(int $restaurantId): Response
     {
         if ($this->getUser()->getRestaurantId() !== $restaurantId) {
             throw $this->createNotFoundException();
