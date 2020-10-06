@@ -82,7 +82,12 @@ class ViewMenuController extends AbstractController
             throw new NotFoundHttpException('Restaurant not found');
         }
 
-        $visitLoggerService->logVisit($request->getClientIp(), $request->headers->get('user-agent'), $request->headers->get('referer'), $restaurant->getId());
+        $visitLoggerService->logVisit(
+            (string) $request->getClientIp(),
+            (string) $request->headers->get('user-agent'),
+            (string) $request->headers->get('referer'),
+            $restaurant->getId()
+        );
 
         $restoMenu = $this->getRestoMenuByRestaurantId($restaurant->getId());
         $properties = $settingsPageService->getPropertiesByRestaurantId($restaurant->getId());
