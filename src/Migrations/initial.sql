@@ -214,8 +214,8 @@ CREATE TABLE `page_visits` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ip` varchar(50) NOT NULL,
   `datetime` datetime DEFAULT CURRENT_TIMESTAMP,
-  `country` varchar(3) NOT NULL,
-  `city_region` varchar(150) NOT NULL,
+  `country` varchar(3),
+  `city_region` varchar(150),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

@@ -9,6 +9,7 @@ use App\Service\DishService;
 use App\Service\SettingsImageService;
 use App\Service\SettingsPagePreviewService;
 use App\Service\SettingsPageService;
+use App\Service\VisitLoggerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -65,6 +66,8 @@ class ViewMenuController extends AbstractController
     public function showMenu(
         SettingsPageService $settingsPageService,
         SettingsImageService $settingsImageService,
+        VisitLoggerService $visitLoggerService,
+        Request $request,
         $restaurantSlug
     ) {
         if (0 === $restaurantSlug) {
@@ -78,6 +81,8 @@ class ViewMenuController extends AbstractController
         if (!$restaurant) {
             throw new NotFoundHttpException('Restaurant not found');
         }
+
+        $visitLoggerService->logVisit($request->getClientIp(), $request->headers->get('user-agent'), $request->headers->get('referer'), $restaurant->getId());
 
         $restoMenu = $this->getRestoMenuByRestaurantId($restaurant->getId());
         $properties = $settingsPageService->getPropertiesByRestaurantId($restaurant->getId());

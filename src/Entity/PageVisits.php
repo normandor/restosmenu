@@ -31,21 +31,21 @@ class PageVisits
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="datetime", type="datetime", nullable=true, options={"default"="CURRENT_TIMESTAMP"})
+     * @ORM\Column(name="datetime", type="datetime", nullable=true)
      */
-    private $datetime = 'CURRENT_TIMESTAMP';
+    private $datetime;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="country", type="string", length=3, nullable=false)
+     * @ORM\Column(name="country", type="string", length=3, nullable=true)
      */
     private $country;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="city_region", type="string", length=150, nullable=false)
+     * @ORM\Column(name="city_region", type="string", length=150, nullable=true)
      */
     private $cityRegion;
 
