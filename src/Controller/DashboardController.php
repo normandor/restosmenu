@@ -13,19 +13,31 @@ class DashboardController extends AbstractController
     {
         $user = $this->getUser()->getUsername();
         $roles = $this->getUser()->getRoles();
+
+        if(in_array('ROLE_VIEW_GRAPHS', $roles, true)) {
+            $charts = [
+                [
+                    'divId' => 'chartTotalAnomalias',
+                    'title' => 'Cantidad de visitas a los menús',
+                ],
+                [
+                    'divId' => 'chartVisitsPerRestaurant',
+                    'title' => 'Cantidad de visitas por restaurant',
+                ],
+            ];
+        } else {
+            $charts = [
+                [
+                    'divId' => 'chartTotalRestaurant',
+                    'title' => 'Cantidad de visitas al menú',
+                ],
+            ];
+        }
+
         $lines = [
             [
-                'title' => 'Visitas / Comentarios',
-                'charts' => [
-                    [
-                        'divId' => 'chartTotalAnomalias',
-                        'title' => 'Cantidad de visitas al sitio',
-                    ],
-                    [
-                        'divId' => 'chartPorZonaAnomalias',
-                        'title' => 'Cantidad de comentarios',
-                    ],
-                ]
+                'title' => 'Visitas al sitio',
+                'charts' => $charts
             ],
         ];
 

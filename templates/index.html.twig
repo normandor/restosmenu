@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <h1>{{ 'index.welcomemessage' | trans }} </h1>
-                <h3 style="margin: 30px 0px 30px 0px">{{ 'index.no_data_available' | trans }} </h3>
+
                 <div id="root"></div>
 
                 <div class="row-fluid">
@@ -54,10 +54,12 @@
             </div>
         </div>
     </div>
-{#    <script src="build/js/echarts.min.js"></script>#}
-{#    <script src="build/js/data_line_total.js" type="text/javascript"></script>#}
-{#    <script src="build/js/data_line.js" type="text/javascript"></script>#}
+
+    <script src="{{ asset('build/js/echarts.min.js') }}"></script>
+    {% if 'ROLE_VIEW_GRAPHS' in roles %}
+        <script src="{{ asset('build/js/data_line_total.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('build/js/data_line.js') }}" type="text/javascript"></script>
+    {% else %}
+        <script src="{{ asset('build/js/data_line_for_restaurant.js') }}" type="text/javascript"></script>
+    {% endif %}
 {% endblock %}
-
-
-

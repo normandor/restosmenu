@@ -88,8 +88,11 @@ charts_linetot:
     path:       /admin/chartdata/linetotchart
     controller: App\Controller\ChartDataController::getLineTotalData
 charts_line:
-    path:       /admin/chartdata/linechart
-    controller: App\Controller\ChartDataController::getLineData
+    path:       /admin/chartdata/linechartperrestaurant
+    controller: App\Controller\ChartDataController::getLineDataPerRestaurant
+charts_line_for_restaurant:
+    path:       /admin/chartdata/linechartforrestaurant
+    controller: App\Controller\ChartDataController::getLineTotalDataForRestaurant
 table_users:
     path:       /admin/manage/tabledata-users/
     defaults:   { _controller: App\Controller\UserController::getTableData, dbuser: '%dbuser%', dbpw: '%dbpw%', dbhost: '%dbhost%', dbname: '%dbname%' }
