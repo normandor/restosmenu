@@ -18,7 +18,7 @@ class DashboardController extends AbstractController
             $charts = [
                 [
                     'divId' => 'chartTotalAnomalias',
-                    'title' => 'Cantidad de visitas al sitio',
+                    'title' => 'Cantidad de visitas a los menús',
                 ],
                 [
                     'divId' => 'chartVisitsPerRestaurant',
@@ -29,7 +29,7 @@ class DashboardController extends AbstractController
             $charts = [
                 [
                     'divId' => 'chartTotalRestaurant',
-                    'title' => 'Cantidad de visitas al sitio',
+                    'title' => 'Cantidad de visitas al menú',
                 ],
             ];
         }
