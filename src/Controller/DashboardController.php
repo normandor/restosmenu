@@ -14,7 +14,7 @@ class DashboardController extends AbstractController
         $user = $this->getUser()->getUsername();
         $roles = $this->getUser()->getRoles();
 
-        if(in_array('ROLE_MANAGER', $roles, true)) {
+        if(in_array('ROLE_VIEW_GRAPHS', $roles, true)) {
             $charts = [
                 [
                     'divId' => 'chartTotalAnomalias',

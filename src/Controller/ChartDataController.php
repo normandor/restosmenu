@@ -23,7 +23,7 @@ class ChartDataController extends AbstractController
 
     public function getLineTotalData(ChartsService $chartsService)
     {
-        if (!in_array('ROLE_MANAGER', $this->getUser()->getRoles(), true)) {
+        if (!in_array('ROLE_VIEW_GRAPHS', $this->getUser()->getRoles(), true)) {
             return new Response([]);
         }
 
@@ -34,7 +34,7 @@ class ChartDataController extends AbstractController
 
     public function getLineDataPerRestaurant(ChartsService $chartsService)
     {
-        if (!in_array('ROLE_MANAGER', $this->getUser()->getRoles(), true)) {
+        if (!in_array('ROLE_VIEW_GRAPHS', $this->getUser()->getRoles(), true)) {
             return new Response([]);
         }
 
