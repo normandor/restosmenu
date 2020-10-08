@@ -1,29 +1,5 @@
-function createChartLines(arr) {
-    var myChartTot = echarts.init(document.getElementById('chartVisitsPerRestaurant'));
-
-    var seriesList = [];
-    for (i = 0; i< arr['seriesNameTot'].length; i++) {
-        seriesList.push(
-            {
-                name: arr['seriesNameTot'][i],
-                type: 'line',
-                smooth: false,
-                symbol: 'none',
-                sampling: 'average',
-                itemStyle: {
-                    normal: {
-                        color: arr['seriesLineColorTot'][i]
-                    }
-                },
-                areaStyle: {
-                    normal: {
-                        color: arr['seriesAreaColorTot'][i]
-                    }
-                },
-                data: arr['seriesDataTot'][i]
-            }
-        );
-    }
+function createChartLinesForRestaurant(arr) {
+    var myChartTot = echarts.init(document.getElementById('chartTotalRestaurant'));
 
     optionTot = {
         tooltip: {
@@ -77,17 +53,36 @@ function createChartLines(arr) {
                     shadowOffsetY: 2
                 }
             }],
-        series: seriesList
+        series: [
+            {
+                name: arr['seriesNameTot'],
+                type: 'line',
+                smooth: false,
+                symbol: 'none',
+                sampling: 'average',
+                itemStyle: {
+                    normal: {
+                        color: arr['seriesLineColorTot']
+                    }
+                },
+                areaStyle: {
+                    normal: {
+                        color: arr['seriesAreaColorTot']
+                    }
+                },
+                data: arr['seriesDataTot']
+            }
+        ]
     };
-
     myChartTot.setOption(optionTot);
 }
 
 var request = new XMLHttpRequest();
-request.open('GET', 'chartdata/linechartperrestaurant', true);
+request.open('GET', 'chartdata/linechartforrestaurant', true);
 request.onload = function () {
     var arr = JSON.parse(this.response);
-    createChartLines(arr);
+    createChartLinesForRestaurant(arr);
 };
 
 request.send();
+

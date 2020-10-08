@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * PageVisits
  *
  * @ORM\Table(name="page_visits")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\PageVisitsRepository")
  */
 class PageVisits
 {

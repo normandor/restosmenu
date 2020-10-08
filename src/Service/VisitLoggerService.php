@@ -48,7 +48,7 @@ class VisitLoggerService
      * @param $referer
      * @param $restaurantId
      */
-    public function logVisit($ip, $agent, $referer, $restaurantId)
+    public function logVisit($ip, $agent, $referer, $restaurantId): void
     {
         /** @var PageVisits $pageVisit */
         $pageVisit = new \App\Entity\PageVisits();
