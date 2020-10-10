@@ -59,16 +59,23 @@ class PageVisits
     /**
      * @var string
      *
-     * @ORM\Column(name="referer", type="string", length=255, nullable=false)
+     * @ORM\Column(name="referer", type="string", length=255, nullable=true)
      */
     private $referer;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="agent", type="string", length=255, nullable=false)
+     * @ORM\Column(name="agent", type="string", length=255, nullable=true)
      */
     private $agent;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="site", type="string", length=255, nullable=true)
+     */
+    private $site;
 
     public function getId(): ?int
     {
@@ -155,6 +162,18 @@ class PageVisits
     public function setAgent(string $agent): self
     {
         $this->agent = $agent;
+
+        return $this;
+    }
+
+    public function getSite(): ?string
+    {
+        return $this->site;
+    }
+
+    public function setSite(string $site): self
+    {
+        $this->site = $site;
 
         return $this;
     }

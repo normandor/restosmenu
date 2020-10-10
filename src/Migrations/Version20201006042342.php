@@ -22,8 +22,9 @@ final class Version20201006042342 extends AbstractMigration
         $sql = <<<SQL
             ALTER TABLE `page_visits` 
                 ADD COLUMN `restaurant_id` int(5) DEFAULT NULL,
-                ADD COLUMN `referer` varchar(250) NOT NULL DEFAULT '',
-                ADD COLUMN `agent` varchar(250) NOT NULL DEFAULT '';
+                ADD COLUMN `referer` varchar(250) DEFAULT '',
+                ADD COLUMN `agent` varchar(250) DEFAULT '',
+                ADD COLUMN `site` varchar(250) DEFAULT '';
 SQL;
         $this->addSql($sql);
     }
@@ -34,7 +35,8 @@ SQL;
             ALTER TABLE `page_visits` 
                 DROP COLUMN `restaurant_id`,
                 DROP COLUMN `referer`,
-                DROP COLUMN `agent`;
+                DROP COLUMN `agent`,
+                DROP COLUMN `site`;
 SQL;
         $this->addSql($sql);
     }
