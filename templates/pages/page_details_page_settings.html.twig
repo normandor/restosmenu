@@ -50,7 +50,7 @@
         <div class="pagename row pad-lt-15 pad-bt-15">
           <div class="col-sm">
             <h1>
-              {{ pageName }}
+              {{ pageName | trans }}
               <br />
             </h1>
           </div>
@@ -83,32 +83,32 @@
           <div class="row font-20" style="margin-bottom:15px">
               <div class="col-sm-10 mb-10">
 
-                  <h2>Apariencia del texto</h2>
+                  <h2>{{ 'Text_setup' | trans }}</h2>
               </div>
               <div class="col-sm-10 mb-10">
                   <div class="table-responsive">
                       <table>
                           <tr>
                               <th>
-                                  Item
+                                  {{ 'Item' | trans }}
                               </th>
                               <th>
-                                  Fuente
+                                  {{ 'Font' | trans }}
                               </th>
                               <th>
-                                  Tamano de letra
+                                  {{ 'Font_size' | trans }}
                               </th>
                               <th>
-                                  Color de letra
+                                  {{ 'Font_color' | trans }}
                               </th>
                               <th>
-                                  Color de fondo
+                                  {{ 'Background_color' | trans }}
                               </th>
                           </tr>
                           {% for key, setting in settingsPage %}
                               <tr>
                                   <td class="left">
-                                      {{ setting.name }}
+                                      {{ setting.name | trans }}
                                   </td>
                                   <td class="left">
                                       <span href="#" style="cursor: pointer; font-family: {{ setting.properties["font-family"] }};"
@@ -149,7 +149,7 @@
 
               <div class="col-sm-10 mb-10">
                   <hr style="margin: 20px 0px 20px 0px">
-                  <h2>Apariencia de las imágenes</h2>
+                  <h2>{{ 'Image_appearence' | trans }}</h2>
               </div>
 
               <div class="col-sm-10 mb-10">
@@ -172,7 +172,7 @@
                           {% for key, setting in settingsImage %}
                               <tr>
                                   <td class="left">
-                                      {{ setting.name }}
+                                      {{ setting.name | trans }}
                                   </td>
                                   <td class="center">
                                       <select id="width_mobile_{{ key }}" data-itemid="{{ key }}" data-property="width" data-platform="mobile">

@@ -49,8 +49,8 @@ class PageController extends AbstractController
         }
 
         return $this->render('pages/page_details_categories.html.twig', [
-            'pageName' => 'Categorias',
-            'itemTitle' => 'Categoria',
+            'pageName' => 'Categories',
+            'itemTitle' => 'Category',
             'route' => $request->get('_route'),
             'categories' => $categoriesArray,
             'user' => DashboardController::$user,

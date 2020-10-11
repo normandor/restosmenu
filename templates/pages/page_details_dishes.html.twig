@@ -30,7 +30,7 @@
           <div id="breadcrumb" class="col-xs-12">
             <a href="#" class="show-sidebar"><i class="fa fa-bars"></i></a>
             <ol class="breadcrumbpanel pull-left">
-                <a href="#">Menus</a> / <a href="#">Platos</a>
+                <a href="#">{{ 'Menus' | trans }}</a> / <a href="#">{{ 'Dishes' | trans }}</a>
             </ol>
           </div>
         </div>
@@ -38,7 +38,7 @@
         <div class="pagename row pad-lt-15 pad-bt-15">
           <div class="col-sm">
             <h1>
-              {{ pageName }}
+              {{ pageName | trans }}
               <br />
             </h1>
           </div>
@@ -49,7 +49,7 @@
                   {% for category in categories %}
                       {% if category.dishes|length > 0 %}
                           <h2 style="margin-bottom: 15px;">
-                              {{ category.name }}
+                              {{ category.name | trans }}
                               {% if category.enabled == 0 %}
                                 ({{ 'hidden' | trans}})
                               {% endif %}

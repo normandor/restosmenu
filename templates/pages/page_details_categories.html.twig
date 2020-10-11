@@ -30,7 +30,7 @@
           <div id="breadcrumb" class="col-xs-12">
             <a href="#" class="show-sidebar"><i class="fa fa-bars"></i></a>
             <ol class="breadcrumbpanel pull-left">
-              <a href="#">Menus</a> / <a href="#">Categorías</a>
+              <a href="#">{{ 'Menus' | trans }}</a> / <a href="#">{{ 'Categories' | trans }}</a>
             </ol>
           </div>
         </div>
@@ -38,7 +38,7 @@
         <div class="pagename row pad-lt-15 pad-bt-15">
           <div class="col-sm">
             <h1>
-              {{ pageName }}
+              {{ pageName | trans }}
               <br />
             </h1>
           </div>
@@ -50,7 +50,7 @@
                       <table>
                           <tr>
                               <th>
-                                  Categoria
+                                  {{ 'Category' | trans }}
                               </th>
                               <th style="width: 10%;"></th>
                           </tr>
@@ -96,13 +96,13 @@
     function showAddCategory() {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
         $('.modal-body-new-user').load('../admin/page/element/addCategory/', function () {});
-        $('.modal-title').html('Nueva categoria');
+        $('.modal-title').html('{{ 'button.new_category' | trans }}');
         $("#newItemModal").modal('show');
     }
 
     function showDeleteItem(id, name) {
         $(".modal-header #sectionId").val(id);
-        $('#myModalLabelMessage').html('¿Confirma la eliminacion de la categoria '+name+'?');
+        $('#myModalLabelMessage').html('{{ 'button.confirm_deletion_of' | trans }} '+name+'?');
 
         $("#confirmModal").modal('show');
     }
@@ -110,7 +110,7 @@
     function showEditCategory(id) {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
         $('.modal-body-new-user').load('../admin/page/element/editCategory/'+id, function () {});
-        $('.modal-title').html('Editar categoria');
+        $('.modal-title').html('{{ 'button.edit_category' | trans }}');
         $("#newItemModal").modal('show');
     }
 

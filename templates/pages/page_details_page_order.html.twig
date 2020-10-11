@@ -71,7 +71,7 @@
                                       {% if category.type == 'category_type.text' or category.type == 'category_type.image'%}
                                         {{ category.name | trans }}
                                       {% else %}
-                                        {{ category.name }}
+                                        {{ category.name | trans }}
                                       {% endif %}
                                   </td>
                                   <td class="center">
@@ -96,7 +96,6 @@
                       </table>
                   </div>
               </div>
-              {#                  Restaurant seleccionado: <b>{{ selectedRestaurant }}</b>#}
           </div>
       </div>
     </div>

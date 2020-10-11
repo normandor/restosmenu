@@ -38,7 +38,7 @@
         <div class="pagename row pad-lt-15 pad-bt-15">
           <div class="col-sm">
             <h1>
-              {{ pageName }}
+              {{ pageName | trans }}
               <br />
             </h1>
           </div>
@@ -51,7 +51,7 @@
                   {% endif %}
                   {% for category in categories %}
                       <h2 style="margin-bottom: 5px;">
-                          {{ category.name }}
+                          {{ category.name | trans }}
                           {% if category.enabled == 0 %}
                               ({{ 'hidden' | trans}})
                           {% endif %}
