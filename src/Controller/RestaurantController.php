@@ -275,10 +275,10 @@ class RestaurantController extends AbstractController
     private function addNewRestaurantDefaultSettings(int $restaurantId): void
     {
         $defaultImageValues = [
-            ['key' => 'restaurant_logo', 'name' => 'Logo restaurant', 'property' => 'visible', 'value' => 'false', 'value_mobile' => null, 'restaurant_id' => $restaurantId,],
-            ['key' => 'restaurant_logo', 'name' => 'Logo restaurant', 'property' => 'width', 'value' => '30%', 'value_mobile' => '30%', 'restaurant_id' => $restaurantId,],
-            ['key' => 'dish', 'name' => 'Platos', 'property' => 'visible', 'value' => 'true', 'value_mobile' => null, 'restaurant_id' => $restaurantId,],
-            ['key' => 'dish', 'name' => 'Platos', 'property' => 'width', 'value' => '30%', 'value_mobile' => '30%', 'restaurant_id' => $restaurantId,],
+            ['key' => 'restaurant_logo', 'name' => 'key.restaurant_logo', 'property' => 'visible', 'value' => 'false', 'value_mobile' => null, 'restaurant_id' => $restaurantId,],
+            ['key' => 'restaurant_logo', 'name' => 'key.restaurant_logo', 'property' => 'width', 'value' => '30%', 'value_mobile' => '30%', 'restaurant_id' => $restaurantId,],
+            ['key' => 'dish', 'name' => 'key.dish', 'property' => 'visible', 'value' => 'true', 'value_mobile' => null, 'restaurant_id' => $restaurantId,],
+            ['key' => 'dish', 'name' => 'key.dish', 'property' => 'width', 'value' => '30%', 'value_mobile' => '30%', 'restaurant_id' => $restaurantId,],
         ];
 
         $defaultPageValues = [

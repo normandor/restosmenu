@@ -38,7 +38,7 @@ class ComboDishType extends AbstractType
                             ->orderBy('u.name', 'ASC');
                     },
                     'choice_label' => 'name',
-                    'label' => 'Plato',
+                    'label' => 'Dish',
                 ])
             ->add('comboId',
                 HiddenType::class,

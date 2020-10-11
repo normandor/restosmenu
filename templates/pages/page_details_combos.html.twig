@@ -120,7 +120,7 @@
 
     function showDeleteItem(id, name) {
         $(".modal-header #sectionId").val(id);
-        $('#myModalLabelMessage').html('{{ 'confirm_delete_combo' }}'+name+'?');
+        $('#myModalLabelMessage').html('{{ 'confirm_delete_combo' | trans }}'+name+'?');
 
         $("#confirmModal").modal('show');
     }

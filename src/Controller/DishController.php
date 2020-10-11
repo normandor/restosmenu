@@ -16,6 +16,7 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class DishController extends AbstractController
@@ -188,11 +189,12 @@ class DishController extends AbstractController
     }
 
     /**
-     * @param int $dishId
+     * @param int                 $dishId
+     * @param TranslatorInterface $translator
      *
      * @return JsonResponse
      */
-    public function toggleVisibility(int $dishId)
+    public function toggleVisibility(int $dishId, TranslatorInterface $translator)
     {
         /** @var Dish $dish */
         $dish = $this->getDoctrine()->getRepository(Dish::class)->findOneBy(['id' => $dishId]);
@@ -200,7 +202,7 @@ class DishController extends AbstractController
         if (!$dish) {
             return $this->json([
                 'status'  => 'error',
-                'message' => 'Plato no existente'
+                'message' => $translator->trans('Dish_not_exist'),
             ], 404);
         }
 
@@ -212,7 +214,7 @@ class DishController extends AbstractController
 
         return $this->json([
             'status' => 'success',
-            'message' => 'actualizado'
+            'message' => $translator->trans('updated'),
         ], 204);
     }
 }

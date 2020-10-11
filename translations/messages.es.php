@@ -148,5 +148,13 @@ return array(
     'Usuario' => 'Usuario',
     'Visible' => 'Visible',
     'yes' => 'Si',
+    'Add_dish_to_combo' => 'Agregar plato a combo',
+    'Dishes_in_combos' => 'Platos en combos',
+    'No_combos_created' => 'No se ha creado ningún combo.',
+    'Remove_following_dish_from_combo' => 'Do you want to remove the following dish from this combo: ',
+    'Dish_not_exist' => 'Plato no existente',
+    'updated' => 'actualizado',
+    'combo_has_dishes_cannot_remove' => 'Este combo contiene platos, no puede ser eliminado',
+    'category_has_elements_cannot_remove' => 'Hay elementos en la categoria, no se puede eliminar',
 );
 
