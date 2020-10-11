@@ -322,7 +322,7 @@ class PageController extends AbstractController
         }
 
         return $this->render('pages/page_details_dishes.html.twig', [
-            'pageName' => 'Platos',
+            'pageName' => 'Dishes',
             'route' => $request->get('_route'),
             'categories' => $returnArray,
             'user' => DashboardController::$user,

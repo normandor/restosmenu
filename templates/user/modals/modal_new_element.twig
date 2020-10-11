@@ -5,7 +5,7 @@
             {{ form_errors(form) }}
                 <div class="col-sm-12 col-xs-12">
                     {% if subtitle is defined %}
-                        <h4>{{ subtitle }}</h4><br />
+                        <h4>{{ subtitle | trans(params)}}</h4><br />
                     {% endif %}
                     {{ form_widget(form) }}
                     <div class="error" id="errorMessage">

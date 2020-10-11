@@ -18,7 +18,7 @@ class RestaurantType extends AbstractType
             ->add('name', TextType::class, ['label' => 'name'])
             ->add('logoUrl', FileType::class, [
                 'mapped' => false,
-                'label' => 'Imagen',
+                'label' => 'Image',
                 'data_class' => null,
                 'required' => false,
                 'constraints' => [
@@ -36,7 +36,7 @@ class RestaurantType extends AbstractType
                             'image/png',
                             'PNG image',
                         ],
-                        'mimeTypesMessage' => 'Por favor agregar una imagen válida',
+                        'mimeTypesMessage' => 'Invalid image',
                     ])
                 ],
             ]);

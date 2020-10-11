@@ -30,7 +30,7 @@
           <div id="breadcrumb" class="col-xs-12">
             <a href="#" class="show-sidebar"><i class="fa fa-bars"></i></a>
             <ol class="breadcrumbpanel pull-left">
-              <a href="#">Páginas</a>
+              <a href="#">{{ 'Combos' | trans }}</a>
             </ol>
           </div>
         </div>
@@ -114,13 +114,13 @@
     function showAddCategory() {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
         $('.modal-body-new-user').load('../admin/page/element/addCombo/', function () {});
-        $('.modal-title').html('Nuevo combo');
+        $('.modal-title').html('{{ 'New_combo' | trans }}');
         $("#newItemModal").modal('show');
     }
 
     function showDeleteItem(id, name) {
         $(".modal-header #sectionId").val(id);
-        $('#myModalLabelMessage').html('¿Confirma la eliminacion del combo '+name+'?');
+        $('#myModalLabelMessage').html('{{ 'confirm_delete_combo' }}'+name+'?');
 
         $("#confirmModal").modal('show');
     }
@@ -128,7 +128,7 @@
     function showEditCombo(id) {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
         $('.modal-body-new-user').load('../admin/page/element/editCombo/'+id, function () {});
-        $('.modal-title').html('Editar combo');
+        $('.modal-title').html('{{ 'Edit_combo' | trans }}');
         $("#newItemModal").modal('show');
     }
 

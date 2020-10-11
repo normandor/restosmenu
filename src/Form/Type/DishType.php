@@ -51,7 +51,7 @@ class DishType extends AbstractType
                 ])
             ->add('price', NumberType::class, ['label' => 'price'])
             ->add('imageUrl', FileType::class, [
-                'label' => 'Imagen',
+                'label' => 'Image',
                 'data_class' => null,
                 'required' => false,
                 'constraints' => [
@@ -69,7 +69,7 @@ class DishType extends AbstractType
                             'image/png',
                             'PNG image',
                         ],
-                        'mimeTypesMessage' => 'Por favor agregar una imagen válida',
+                        'mimeTypesMessage' => 'Invalid image',
                     ])
                 ],
             ]);

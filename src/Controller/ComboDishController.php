@@ -162,7 +162,8 @@ class ComboDishController extends AbstractController
 
         return $this->render('user/modals/modal_new_element.twig', [
             'form' => $form->createView(),
-            'subtitle' => 'Agregar "'.$dish->getName().'" a:',
+            'subtitle' => 'add_dish_x_to',
+            'params' => ['%dish%' => $dish->getName()],
             'submitUrl' => $this->generateUrl('submit_add_selected_dish_to_combo'),
         ]);
     }

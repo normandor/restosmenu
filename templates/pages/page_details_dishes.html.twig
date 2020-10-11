@@ -49,7 +49,7 @@
                   {% for category in categories %}
                       {% if category.dishes|length > 0 %}
                           <h2 style="margin-bottom: 15px;">
-                              {{ category.name | trans }}
+                              {{ category.name }}
                               {% if category.enabled == 0 %}
                                 ({{ 'hidden' | trans}})
                               {% endif %}
@@ -58,22 +58,22 @@
                            <table>
                               <tr>
                                   <th>
-                                      Plato
+                                      {{ 'Dish' | trans }}
                                   </th>
                                   <th>
-                                      Descripcion
+                                      {{ 'Description' | trans }}
                                   </th>
                                   <th>
-                                      Imagen
+                                      {{ 'Image' | trans }}
                                   </th>
                                   <th>
-                                      Precio
+                                      {{ 'Price' | trans }}
                                   </th>
                                   <th>
-                                      Visible
+                                      {{ 'Visible' | trans }}
                                   </th>
                                   <th>
-                                      Posición
+                                      {{ 'Position' | trans }}
                                   </th>
                                   <th></th>
                               </tr>
@@ -157,7 +157,7 @@
     function showAddDish() {
         $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
         $('.modal-body-new-user').load('../admin/page/element/addDish/', function () {});
-        $('.modal-title').html('Nuevo plato');
+        $('.modal-title').html('{{ 'New_dish' | trans }}');
         $("#newItemModal").modal('show');
     }
 
@@ -165,7 +165,7 @@
         $('.modal-title').html('');
 
         $(".modal-header #sectionId").val(id);
-        $('#myModalLabelMessage').html('¿Confirma la eliminacion del plato '+name+'?');
+        $('#myModalLabelMessage').html('{{'confirm_delete_dish' | trans }}'+name+'?');
 
         $("#confirmModal").modal('show');
     }
