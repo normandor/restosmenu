@@ -282,30 +282,30 @@ class RestaurantController extends AbstractController
         ];
 
         $defaultPageValues = [
-            ['key' => 'menu_restaurant_title', 'name' => 'Titulo restaurant', 'property' => 'font-family', 'value' => '"Arial Black", Gadget, sans-serif', 'restaurant_id' => $restaurantId,],
-            ['key' => 'menu_restaurant_title', 'name' => 'Titulo restaurant', 'property' => 'font-size', 'value' => '30px', 'restaurant_id' => $restaurantId,],
-            ['key' => 'menu_restaurant_title', 'name' => 'Titulo restaurant', 'property' => 'color', 'value' => '#b86d05', 'restaurant_id' => $restaurantId,],
-            ['key' => 'menu_restaurant_title', 'name' => 'Titulo restaurant', 'property' => 'background-color', 'value' => '', 'restaurant_id' => $restaurantId,],
+            ['key' => 'menu_restaurant_title', 'name' => 'key.restaurant_name', 'property' => 'font-family', 'value' => '"Arial Black", Gadget, sans-serif', 'restaurant_id' => $restaurantId,],
+            ['key' => 'menu_restaurant_title', 'name' => 'key.restaurant_name', 'property' => 'font-size', 'value' => '30px', 'restaurant_id' => $restaurantId,],
+            ['key' => 'menu_restaurant_title', 'name' => 'key.restaurant_name', 'property' => 'color', 'value' => '#b86d05', 'restaurant_id' => $restaurantId,],
+            ['key' => 'menu_restaurant_title', 'name' => 'key.restaurant_name', 'property' => 'background-color', 'value' => '', 'restaurant_id' => $restaurantId,],
 
-            ['key' => 'menu_body', 'name' => 'Cuerpo de la carta', 'property' => 'font-family', 'value' => '', 'restaurant_id' => $restaurantId,],
-            ['key' => 'menu_body', 'name' => 'Cuerpo de la carta', 'property' => 'font-size', 'value' => '', 'restaurant_id' => $restaurantId,],
-            ['key' => 'menu_body', 'name' => 'Cuerpo de la carta', 'property' => 'color', 'value' => '#b86d05', 'restaurant_id' => $restaurantId,],
-            ['key' => 'menu_body', 'name' => 'Cuerpo de la carta', 'property' => 'background-color', 'value' => '#e4d7af', 'restaurant_id' => $restaurantId,],
+            ['key' => 'menu_body', 'name' => 'key.body_of_menu', 'property' => 'font-family', 'value' => '', 'restaurant_id' => $restaurantId,],
+            ['key' => 'menu_body', 'name' => 'key.body_of_menu', 'property' => 'font-size', 'value' => '', 'restaurant_id' => $restaurantId,],
+            ['key' => 'menu_body', 'name' => 'key.body_of_menu', 'property' => 'color', 'value' => '#b86d05', 'restaurant_id' => $restaurantId,],
+            ['key' => 'menu_body', 'name' => 'key.body_of_menu', 'property' => 'background-color', 'value' => '#e4d7af', 'restaurant_id' => $restaurantId,],
 
-            ['key' => 'menu_category', 'name' => 'Categorias', 'property' => 'font-family', 'value' => '"Arial Black", Gadget, sans-serif', 'restaurant_id' => $restaurantId,],
-            ['key' => 'menu_category', 'name' => 'Categorias', 'property' => 'font-size', 'value' => '26px', 'restaurant_id' => $restaurantId,],
-            ['key' => 'menu_category', 'name' => 'Categorias', 'property' => 'color', 'value' => '#b86d05', 'restaurant_id' => $restaurantId,],
-            ['key' => 'menu_category', 'name' => 'Categorias', 'property' => 'background-color', 'value' => '', 'restaurant_id' => $restaurantId,],
+            ['key' => 'menu_category', 'name' => 'key.categories', 'property' => 'font-family', 'value' => '"Arial Black", Gadget, sans-serif', 'restaurant_id' => $restaurantId,],
+            ['key' => 'menu_category', 'name' => 'key.categories', 'property' => 'font-size', 'value' => '26px', 'restaurant_id' => $restaurantId,],
+            ['key' => 'menu_category', 'name' => 'key.categories', 'property' => 'color', 'value' => '#b86d05', 'restaurant_id' => $restaurantId,],
+            ['key' => 'menu_category', 'name' => 'key.categories', 'property' => 'background-color', 'value' => '', 'restaurant_id' => $restaurantId,],
 
-            ['key' => 'menu_promo_title', 'name' => 'Promociones', 'property' => 'font-family', 'value' => '"Arial Black", Gadget, sans-serif', 'restaurant_id' => $restaurantId,],
-            ['key' => 'menu_promo_title', 'name' => 'Promociones', 'property' => 'font-size', 'value' => '26px', 'restaurant_id' => $restaurantId,],
-            ['key' => 'menu_promo_title', 'name' => 'Promociones', 'property' => 'color', 'value' => '#b86d05', 'restaurant_id' => $restaurantId,],
-            ['key' => 'menu_promo_title', 'name' => 'Promociones', 'property' => 'background-color', 'value' => '', 'restaurant_id' => $restaurantId,],
+            ['key' => 'menu_promo_title', 'name' => 'key.promotions', 'property' => 'font-family', 'value' => '"Arial Black", Gadget, sans-serif', 'restaurant_id' => $restaurantId,],
+            ['key' => 'menu_promo_title', 'name' => 'key.promotions', 'property' => 'font-size', 'value' => '26px', 'restaurant_id' => $restaurantId,],
+            ['key' => 'menu_promo_title', 'name' => 'key.promotions', 'property' => 'color', 'value' => '#b86d05', 'restaurant_id' => $restaurantId,],
+            ['key' => 'menu_promo_title', 'name' => 'key.promotions', 'property' => 'background-color', 'value' => '', 'restaurant_id' => $restaurantId,],
 
-            ['key' => 'menu_dish', 'name' => 'Platos', 'property' => 'font-family', 'value' => '"Arial Black", Gadget, sans-serif', 'restaurant_id' => $restaurantId,],
-            ['key' => 'menu_dish', 'name' => 'Platos', 'property' => 'font-size', 'value' => '22px', 'restaurant_id' => $restaurantId,],
-            ['key' => 'menu_dish', 'name' => 'Platos', 'property' => 'color', 'value' => '#b86d05', 'restaurant_id' => $restaurantId,],
-            ['key' => 'menu_dish', 'name' => 'Platos', 'property' => 'background-color', 'value' => '', 'restaurant_id' => $restaurantId,],
+            ['key' => 'menu_dish', 'name' => 'key.dish', 'property' => 'font-family', 'value' => '"Arial Black", Gadget, sans-serif', 'restaurant_id' => $restaurantId,],
+            ['key' => 'menu_dish', 'name' => 'key.dish', 'property' => 'font-size', 'value' => '22px', 'restaurant_id' => $restaurantId,],
+            ['key' => 'menu_dish', 'name' => 'key.dish', 'property' => 'color', 'value' => '#b86d05', 'restaurant_id' => $restaurantId,],
+            ['key' => 'menu_dish', 'name' => 'key.dish', 'property' => 'background-color', 'value' => '', 'restaurant_id' => $restaurantId,],
         ];
 
         $defaultCategoryValues = [
