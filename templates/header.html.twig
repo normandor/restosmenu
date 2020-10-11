@@ -12,6 +12,14 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav pull-right panel-menu">
+                    <li style="vertical-align: middle; height: 100%;">
+                        <div class="user-mini pull-right">
+                            <a class="welcome">
+                                <a href="{{ path('change_language', {'language': 'en'}) }}"> EN </a> |
+                                <a href="{{ path('change_language', {'language': 'es'}) }}"> ES </a>
+                            </a>
+                        </div>
+                    </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle account menutop" data-toggle="dropdown" >
                             <div class="avatar">
@@ -19,7 +27,7 @@
                             </div>
                             <i class="fa fa-angle-down pull-right"></i>
                             <div class="user-mini pull-right">
-                                <span class="welcome">Hola, {{ app.user.firstname }} </span>
+                                <span class="welcome">{{ "hi" | trans }}, {{ app.user.firstname }} </span>
                             </div>
                         </a>
                         <ul class="dropdown-menu">

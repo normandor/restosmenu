@@ -18,25 +18,25 @@ class DashboardController extends AbstractController
             $charts = [
                 [
                     'divId' => 'chartTotalAnomalias',
-                    'title' => 'Cantidad de visitas a los menús',
+                    'title' => 'dashboard.visits_to_menu',
                 ],
                 [
                     'divId' => 'chartVisitsPerRestaurant',
-                    'title' => 'Cantidad de visitas por restaurant',
+                    'title' => 'dashboard.visits_per_restaurant',
                 ],
             ];
         } else {
             $charts = [
                 [
                     'divId' => 'chartTotalRestaurant',
-                    'title' => 'Cantidad de visitas al menú',
+                    'title' => 'dashboard.visits_to_menu',
                 ],
             ];
         }
 
         $lines = [
             [
-                'title' => 'Visitas al sitio',
+                'title' => 'dashboard.visits_to_site',
                 'charts' => $charts
             ],
         ];

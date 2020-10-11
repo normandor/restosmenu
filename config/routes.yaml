@@ -255,3 +255,6 @@ dish_update_order_in_category:
 homepage:
     path:       /
     controller: App\Controller\DefaultController::index
+change_language:
+    path: /admin/user/set-language/{language}
+    controller: App\Controller\UserController::changeLanguageAction

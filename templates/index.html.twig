@@ -39,12 +39,12 @@
                         <div id="dashboard-incidentes" class="row" style="visibility: visible; position: relative;">
                             {% for line in lines %}
                                 <div style="margin-top: 20px;" class="col-sm-12 col-md-12">
-                                    <h4 class="page-header">{{ line.title | nl2br }}</h4>
+                                    <h4 class="page-header">{{ line.title | trans | nl2br }}</h4>
                                 </div>
                                 {% for graph in line.charts %}
                                     <div align="center" class="col-sm-12 col-md-6">
                                         <div id="{{ graph.divId }}" style="width: 600px;height:250px;"></div>
-                                        <div class="h5 text-center">{{ graph.title }}</div>
+                                        <div class="h5 text-center">{{ graph.title | trans}}</div>
                                     </div>
                                 {% endfor %}
                             {% endfor %}
