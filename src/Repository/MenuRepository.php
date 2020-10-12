@@ -68,7 +68,7 @@ class MenuRepository extends ServiceEntityRepository
     public function findChildrenByParentId($parent_id, $roles): array
     {
         $rows = $this->createQueryBuilder('u')
-            ->select('u.id, u.name, u.path, u.icon')
+            ->select('u.id, u.name, u.path, u.icon, u.roles')
             ->andWhere('u.parent = :parent_id')
             ->setParameter('parent_id', $parent_id)
             ->orderBy('u.position')
@@ -80,16 +80,9 @@ class MenuRepository extends ServiceEntityRepository
 
         foreach ($rows as $row)
         {
-            // hardcoded, implement rights
-            if (
-                !$roles ||
-                (
-                    ('Personal' === $row['name'] ||
-                    'Gestion' === $row['name'] ||
-                    'Restaurants' === $row['name']) &&
-                    !in_array('ROLE_MANAGER', $roles, true)
-                )
-            ) {
+            $requiredRoles = explode(',', $row['roles']);
+
+            if ($requiredRoles !== array_intersect($requiredRoles, $roles)) {
                 continue;
             }
 

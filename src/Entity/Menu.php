@@ -63,6 +63,13 @@ class Menu
      */
     private $icon;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="roles", type="string", length=255, nullable=false)
+     */
+    private $roles;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -140,5 +147,15 @@ class Menu
         return $this;
     }
 
+    public function getRoles(): ?string
+    {
+        return $this->roles;
+    }
 
+    public function setRoles(string $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
 }
