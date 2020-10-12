@@ -174,6 +174,7 @@ LOCK TABLES `menu` WRITE;
 
 INSERT INTO `menu` (`id`, `name`, `level`, `parent`, `position`, `path`, `icon`)
 VALUES
+<<<<<<< Updated upstream
 	(1, 'menu.home', 0, 0, 0, 'dashboard', 'fa fa-area-chart'),
 	(2, 'menu.preview', 0, 0, 10, '', 'fa fa-book'),
 	(4, 'menu.management', 0, 0, 80, '', 'fa fa-book'),
