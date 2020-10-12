@@ -63,7 +63,7 @@ return array(
     'Font' => 'Fuente',
     'hi' => 'Hola',
     'hidden' => 'oculto',
-    'image_appearence' => 'Apariencia de las imágenes',
+    'Image_appearence' => 'Apariencia de las imágenes',
     'Image' => 'Imagen',
     'Imagen de perfil' => 'Imagen de perfil',
     'index.no_data_available' => 'No hay datos disponibles aún.',
