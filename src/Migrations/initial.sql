@@ -175,23 +175,23 @@ LOCK TABLES `menu` WRITE;
 
 INSERT INTO `menu` (`id`, `name`, `level`, `parent`, `position`, `path`, `icon`)
 VALUES
-	(1, 'menu.home', 0, 0, 0, 'dashboard', 'fa fa-area-chart'),
-	(2, 'menu.preview', 0, 0, 10, '', 'fa fa-book'),
-	(4, 'menu.management', 0, 0, 80, '', 'fa fa-book'),
-	(5, 'menu.mobile', 1, 2, 10, 'view_menu_mobile', 'fa fa-book'),
-	(7, 'menu.dishes', 1, 3, 30, 'show_dishes', 'fa fa-book'),
-	(6, 'menu.categories', 1, 3, 20, 'show_categories', 'fa fa-book'),
-	(3, 'menu.menus', 0, 0, 20, '', 'fa fa-book'),
-	(40, 'menu.text_and_images', 0, 12, 25, 'show_page_settings', 'fa fa-book'),
-	(8, 'menu.restaurant', 0, 0, 0, 'show_restaurant', 'fa fa-area-chart'),
-	(9, 'menu.promotions', 0, 0, 30, '', 'fa fa-book'),
-	(10, 'menu.combos', 1, 9, 20, 'show_combos', 'fa fa-book'),
-	(11, 'menu.dishes', 1, 9, 30, 'show_dishes_combos', 'fa fa-book'),
-	(12, 'menu.layout', 0, 0, 45, '', 'fa fa-book'),
-	(41, 'menu.order', 0, 12, 25, 'show_page_order', 'fa fa-book'),
-	(43, 'menu.desktop', 1, 2, 20, 'view_menu_desktop', 'fa fa-book'),
-	(44, 'menu.personal', 1, 4, 80, 'user_list', 'fa fa-user'),
-	(45, 'menu.restaurants', 1, 4, 80, 'restaurant_list', 'fa fa-user');
+	(1, 'menu.home', 0, 0, 0, 'dashboard', 'fa fa-area-chart', '["ROLE_ADMIN"]'),
+	(2, 'menu.preview', 0, 0, 10, '', 'fa fa-book', '["ROLE_ADMIN"]'),
+	(4, 'menu.management', 0, 0, 80, '', 'fa fa-book', '["ROLE_ADMIN"]'),
+	(5, 'menu.mobile', 1, 2, 10, 'view_menu_mobile', 'fa fa-book', '["ROLE_ADMIN"]'),
+	(7, 'menu.dishes', 1, 3, 30, 'show_dishes', 'fa fa-book', '["ROLE_ADMIN"]'),
+	(6, 'menu.categories', 1, 3, 20, 'show_categories', 'fa fa-book', '["ROLE_ADMIN"]'),
+	(3, 'menu.menus', 0, 0, 20, '', 'fa fa-book', '["ROLE_ADMIN"]'),
+	(40, 'menu.text_and_images', 0, 12, 25, 'show_page_settings', 'fa fa-book', '["ROLE_ADMIN"]'),
+	(8, 'menu.restaurant', 0, 0, 0, 'show_restaurant', 'fa fa-area-chart', '["ROLE_ADMIN"]'),
+	(9, 'menu.promotions', 0, 0, 30, '', 'fa fa-book', '["ROLE_ADMIN"]'),
+	(10, 'menu.combos', 1, 9, 20, 'show_combos', 'fa fa-book', '["ROLE_ADMIN"]'),
+	(11, 'menu.dishes', 1, 9, 30, 'show_dishes_combos', 'fa fa-book', '["ROLE_ADMIN"]'),
+	(12, 'menu.layout', 0, 0, 45, '', 'fa fa-book', '["ROLE_ADMIN"]'),
+	(41, 'menu.order', 0, 12, 25, 'show_page_order', 'fa fa-book', '["ROLE_ADMIN"]'),
+	(43, 'menu.desktop', 1, 2, 20, 'view_menu_desktop', 'fa fa-book', '["ROLE_ADMIN"]'),
+	(44, 'menu.personal', 1, 4, 80, 'user_list', 'fa fa-user', '["ROLE_ADMIN"]'),
+	(45, 'menu.restaurants', 1, 4, 80, 'restaurant_list', 'fa fa-user', '["ROLE_ADMIN"]'),
 
 /*!40000 ALTER TABLE `menu` ENABLE KEYS */;
 UNLOCK TABLES;
