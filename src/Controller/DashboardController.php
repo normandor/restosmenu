@@ -22,7 +22,7 @@ class DashboardController extends AbstractController
                 ],
                 [
                     'divId' => 'chartVisitsPerRestaurant',
-                    'title' => 'Cantidad de visitas por restaurant',
+                    'title' => 'dashboard.visits_per_restaurant',
                 ],
                 [
                     'divId' => 'chartTotalVisitsByDay',
