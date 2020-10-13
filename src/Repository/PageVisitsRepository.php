@@ -52,4 +52,14 @@ class PageVisitsRepository extends ServiceEntityRepository
 
         return $stmt->fetchColumn(0);
     }
+
+    public function getCountByRestaurantIdAndDay($restaurantId, $day)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = 'SELECT COUNT(*) as cnt FROM page_visits WHERE LEFT(datetime,10) = :laDate AND restaurant_id = :restaurantId';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['laDate' => $day, 'restaurantId' => $restaurantId]);
+
+        return $stmt->fetchColumn(0);
+    }
 }
