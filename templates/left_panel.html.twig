@@ -7,12 +7,12 @@
                 {% if level0.values|default(null) is iterable %}
                     <a href="#" class="dropdown-toggle {{ (level0.id in selectedId)  ? ' active-parent' : '' }} ">
                         <i class="{{ level0.iconclass }}"></i>
-                        <span class="hidden-xs">{{ level0.name }} </span>
+                        <span class="hidden-xs">{{ level0.name | trans }} </span>
                     </a>
                 {% else %}
                     <a href="{{ path( level0.path )}}" class="dropdown-toggle">
                         <i class="{{ level0.iconclass }}"></i>
-                        <span class="hidden-xs">{{ level0.name }}</span>
+                        <span class="hidden-xs">{{ level0.name | trans }}</span>
                     </a>
                 {% endif %}
 
@@ -29,13 +29,13 @@
                             <li class="dropdown">
                                 {% if level1.values|default(null) is iterable %}
                                     <a href="#" class="dropdown-toggle">
-                                        <span class="">{{level1.name}}
+                                        <span class="">{{ level1.name | trans }}
                                     </a>
                                     <ul class="dropdown-menu" >
                                         {% for level2 in level1.values %}
                                             <li class="dropdown ">
                                                 <a href="{{ path( level2.path ) }}" class="dropdown-toggle">
-                                                    <span style="margin-left:10px">{{level2.name}}
+                                                    <span style="margin-left:10px">{{ level2.name | trans}}
                                                     </span>
                                                 </a>
                                             </li>
@@ -44,11 +44,11 @@
                                 {% else %}
                                     {% if level1.noid is defined %}
                                         <a href="{% if level1.path is defined %} {{ path( level1.path )}} {% endif %}" class="dropdown-toggle">
-                                            <span class="">{{level1.name}}
+                                            <span class="">{{ level1.name | trans }}
                                         </a>
                                     {% else %}
                                         <a href="{% if level1.path is defined %} {{ path( level1.path )}} {% endif %}" class="dropdown-toggle">
-                                            <span class="">{{level1.name}}
+                                            <span class="">{{ level1.name | trans }}
                                         </a>
                                     {% endif %}
 

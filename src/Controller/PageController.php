@@ -49,8 +49,8 @@ class PageController extends AbstractController
         }
 
         return $this->render('pages/page_details_categories.html.twig', [
-            'pageName' => 'Categorias',
-            'itemTitle' => 'Categoria',
+            'pageName' => 'Categories',
+            'itemTitle' => 'Category',
             'route' => $request->get('_route'),
             'categories' => $categoriesArray,
             'user' => DashboardController::$user,
@@ -322,7 +322,7 @@ class PageController extends AbstractController
         }
 
         return $this->render('pages/page_details_dishes.html.twig', [
-            'pageName' => 'Platos',
+            'pageName' => 'Dishes',
             'route' => $request->get('_route'),
             'categories' => $returnArray,
             'user' => DashboardController::$user,
@@ -384,7 +384,7 @@ class PageController extends AbstractController
         }
 
         return $this->render('pages/page_details_dishes_combo.html.twig', [
-            'pageName' => 'Platos en combos',
+            'pageName' => 'Dishes_in_combos',
             'route' => $request->get('_route'),
             'categories' => $returnArray,
             'user' => DashboardController::$user,

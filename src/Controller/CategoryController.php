@@ -16,6 +16,7 @@ use mysql_xdevapi\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CategoryController extends AbstractController
 {
@@ -32,11 +33,12 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @param $id
+     * @param                     $id
+     * @param TranslatorInterface $translator
      *
      * @return Response
      */
-    public function remove($id): Response
+    public function remove($id, TranslatorInterface $translator): Response
     {
         /** @var Category $categoryToDelete */
         $categoryToDelete = $this->getDoctrine()->getRepository(Category::class)->findOneBy(['id' => $id]);
@@ -49,7 +51,7 @@ class CategoryController extends AbstractController
             if (count($combosWithDishesSelected) !== 0) {
                 return new Response(json_encode([
                     'status'  => 'nok',
-                    'message' => 'Este combo contiene platos, no puede ser eliminado',
+                    'message' => $translator->trans('combo_has_dishes_cannot_remove'),
                 ]));
             }
         }
@@ -61,7 +63,7 @@ class CategoryController extends AbstractController
             if (null !== $dish) {
                 return new Response(json_encode([
                     'status' => 'nok',
-                    'message' => 'Hay elementos en la categoria, no se puede eliminar',
+                    'message' => $translator->trans('category_has_elements_cannot_remove'),
                 ]));
             }
 

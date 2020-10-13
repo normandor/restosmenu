@@ -34,7 +34,7 @@
           <div id="breadcrumb" class="col-xs-12">
             <a href="#" class="show-sidebar"><i class="fa fa-bars"></i></a>
             <ol class="breadcrumbpanel pull-left">
-              <a href="#">Páginas</a>
+              <a href="#">{{ 'Profile' | trans }}</a>
             </ol>
           </div>
         </div>
@@ -42,7 +42,7 @@
         <div class="pagename row pad-lt-15 pad-bt-15">
           <div class="col-sm">
             <h1>
-              {{ label }}
+              {{ label | trans}}
               <br />
             </h1>
           </div>
@@ -50,7 +50,7 @@
 
       <div class="row pad-lt-15">
         <div class="section-title col-sm">
-          Mi perfil
+            {{ 'My_profile' | trans }}
         </div>
 
           {{ form_start(form) }}

@@ -25,7 +25,7 @@ class ImageType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('imageUrl', FileType::class, [
-                'label' => 'Imagen',
+                'label' => 'Image',
                 'data_class' => null,
                 'required' => false,
                 'constraints' => [

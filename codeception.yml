@@ -10,4 +10,10 @@ extensions:
     enabled:
         - Codeception\Extension\RunFailed
 params:
-    - .env
+    - .env.test
+modules:
+    enabled:
+        - Db:
+              dsn: 'mysql:host=192.168.42.20;dbname=restosTest'
+              user: 'wimi'
+              password: 'gambling'

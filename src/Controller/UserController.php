@@ -262,10 +262,24 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/profile.html.twig', [
-            'label' => 'Perfil',
+            'label' => 'profile',
             'route' => $request->get('_route'),
             'user' => DashboardController::$user,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @param string  $language
+     *
+     * @param Request $request
+     */
+    public function changeLanguageAction(string $language, Request $request)
+    {
+        $request->getSession()->set('_locale', $language);
+
+        // todo: add to database
+
+        return $this->redirect($request->headers->get('referer'));
     }
 }

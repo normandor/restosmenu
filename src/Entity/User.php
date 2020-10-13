@@ -71,6 +71,12 @@ class User implements UserInterface
      */
     private $restaurant_id;
 
+    /**
+     * @var int The user's language
+     * @ORM\Column(type="string")
+     */
+    private $language;
+
     //public function getId(): ?int
     public function getId(): int
     {
@@ -204,6 +210,18 @@ class User implements UserInterface
     public function getRestaurantId(): int
     {
         return $this->restaurant_id;
+    }
+
+    public function setLanguage(string $language): self
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    public function getLanguage(): string
+    {
+        return $this->language;
     }
 
     /**

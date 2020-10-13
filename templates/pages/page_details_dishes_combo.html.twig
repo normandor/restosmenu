@@ -30,7 +30,7 @@
           <div id="breadcrumb" class="col-xs-12">
             <a href="#" class="show-sidebar"><i class="fa fa-bars"></i></a>
             <ol class="breadcrumbpanel pull-left">
-              <a href="#">Páginas</a>
+              <a href="#">{{ 'Combos' | trans }}</a>
             </ol>
           </div>
         </div>
@@ -38,7 +38,7 @@
         <div class="pagename row pad-lt-15 pad-bt-15">
           <div class="col-sm">
             <h1>
-              {{ pageName }}
+              {{ pageName | trans }}
               <br />
             </h1>
           </div>
@@ -47,7 +47,7 @@
           <div class="row font-20" style="margin-bottom:15px;">
               <div class="col-sm-10 mb-10">
                   {% if categories | length == 0 %}
-                    <h2>No se ha creado ningún combo.</h2>
+                    <h2>{{ 'No_combos_created' | trans }}</h2>
                   {% endif %}
                   {% for category in categories %}
                       <h2 style="margin-bottom: 5px;">
@@ -61,13 +61,13 @@
                           <table>
                               <tr>
                                   <th>
-                                      Plato
+                                      {{ 'Dish' | trans }}
                                   </th>
                                   <th>
-                                      Descripcion
+                                      {{ 'Description' | trans }}
                                   </th>
                                   <th>
-                                      Posición
+                                      {{ 'Position' | trans }}
                                   </th>
                                   <th style="width: 10%;"></th>
                               </tr>
@@ -153,14 +153,14 @@
       function showAddDishToCombo(comboId) {
           $('.modal-body-new-user').html('<div align="center"><img height="100" src="{{ asset('images/loading.gif') }}"></div>');
           $('.modal-body-new-user').load('../admin/page/element/addDishToCombo/'+comboId, function () {});
-          $('.modal-title').html('Agregar plato a combo');
+          $('.modal-title').html('{{ 'Add_dish_to_combo' | trans }}');
           $("#newItemModal").modal('show');
       }
 
     function showDeleteItem(id, comboId, name) {
         $(".modal-header #elementId").val(id);
         $(".modal-header #sectionId").val(comboId);
-        $('#myModalLabelMessage').html('¿Desea quitar el plato '+name+' de este combo?');
+        $('#myModalLabelMessage').html('{{ 'Remove_following_dish_from_combo' | trans }}'+name+'?');
 
         $("#confirmModal").modal('show');
     }
