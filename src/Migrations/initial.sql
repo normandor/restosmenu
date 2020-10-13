@@ -165,7 +165,7 @@ CREATE TABLE `menu` (
   `position` int(2) NOT NULL,
   `path` varchar(255) NOT NULL,
   `icon` varchar(255) NOT NULL,
-  `role` varchar(255) NOT NULL,
+  `roles` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;

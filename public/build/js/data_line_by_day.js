@@ -1,5 +1,29 @@
-function createChartLinesTot(arr) {
-    var myChartTot = echarts.init(document.getElementById('chartTotalVisits'));
+function createChartLinesByDay(arr) {
+    var myChartTot = echarts.init(document.getElementById('chartVisitsPerRestaurantByDay'));
+
+    var seriesList = [];
+    for (i = 0; i< arr['seriesNameTot'].length; i++) {
+        seriesList.push(
+            {
+                name: arr['seriesNameTot'][i],
+                type: 'line',
+                smooth: false,
+                symbol: 'none',
+                sampling: 'average',
+                itemStyle: {
+                    normal: {
+                        color: arr['seriesLineColorTot'][i]
+                    }
+                },
+                areaStyle: {
+                    normal: {
+                        color: arr['seriesAreaColorTot'][i]
+                    }
+                },
+                data: arr['seriesDataTot'][i]
+            }
+        );
+    }
 
     optionTot = {
         tooltip: {
@@ -53,36 +77,17 @@ function createChartLinesTot(arr) {
                     shadowOffsetY: 2
                 }
             }],
-        series: [
-            {
-                name: arr['seriesNameTot'],
-                type: 'line',
-                smooth: false,
-                symbol: 'none',
-                sampling: 'average',
-                itemStyle: {
-                    normal: {
-                        color: arr['seriesLineColorTot']
-                    }
-                },
-                areaStyle: {
-                    normal: {
-                        color: arr['seriesAreaColorTot']
-                    }
-                },
-                data: arr['seriesDataTot']
-            }
-        ]
+        series: seriesList
     };
+
     myChartTot.setOption(optionTot);
 }
 
 var request = new XMLHttpRequest();
-request.open('GET', 'chartdata/linetotchart', true);
+request.open('GET', 'chartdata/linechartperrestaurantbyday', true);
 request.onload = function () {
     var arr = JSON.parse(this.response);
-    createChartLinesTot(arr);
+    createChartLinesByDay(arr);
 };
 
 request.send();
-

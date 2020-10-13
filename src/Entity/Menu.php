@@ -154,7 +154,7 @@ class Menu
 
     public function setRoles(string $roles): self
     {
-        $this->role = $roles;
+        $this->roles = $roles;
 
         return $this;
     }

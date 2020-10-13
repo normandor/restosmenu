@@ -14,14 +14,22 @@ class DashboardController extends AbstractController
         $user = $this->getUser()->getUsername();
         $roles = $this->getUser()->getRoles();
 
-        if(in_array('ROLE_VIEW_GRAPHS', $roles, true)) {
+        if (in_array('ROLE_VIEW_GRAPHS', $roles, true)) {
             $charts = [
                 [
-                    'divId' => 'chartTotalAnomalias',
+                    'divId' => 'chartTotalVisits',
                     'title' => 'dashboard.visits_to_menu',
                 ],
                 [
                     'divId' => 'chartVisitsPerRestaurant',
+                    'title' => 'dashboard.visits_per_restaurant',
+                ],
+                [
+                    'divId' => 'chartTotalVisitsByDay',
+                    'title' => 'dashboard.visits_to_menu',
+                ],
+                [
+                    'divId' => 'chartVisitsPerRestaurantByDay',
                     'title' => 'dashboard.visits_per_restaurant',
                 ],
             ];
@@ -29,6 +37,10 @@ class DashboardController extends AbstractController
             $charts = [
                 [
                     'divId' => 'chartTotalRestaurant',
+                    'title' => 'dashboard.visits_to_menu',
+                ],
+                [
+                    'divId' => 'chartTotalRestaurantByDay',
                     'title' => 'dashboard.visits_to_menu',
                 ],
             ];

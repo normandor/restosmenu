@@ -58,8 +58,11 @@
     <script src="{{ asset('build/js/echarts.min.js') }}"></script>
     {% if 'ROLE_VIEW_GRAPHS' in roles %}
         <script src="{{ asset('build/js/data_line_total.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('build/js/data_line_total_by_day.js') }}" type="text/javascript"></script>
         <script src="{{ asset('build/js/data_line.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('build/js/data_line_by_day.js') }}" type="text/javascript"></script>
     {% else %}
         <script src="{{ asset('build/js/data_line_for_restaurant.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('build/js/data_line_for_restaurant_by_day.js') }}" type="text/javascript"></script>
     {% endif %}
 {% endblock %}

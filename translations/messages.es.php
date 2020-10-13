@@ -148,7 +148,6 @@ return array(
     'user.saved_successfuly' => '¡Usuario agregado/modificado con éxito!',
     'user.user' => 'Usuario',
     'yes' => 'Si',
-    'Usuario' => 'Usuario',
     'Visible' => 'Visible',
     'Add_dish_to_combo' => 'Agregar plato a combo',
     'Dishes_in_combos' => 'Platos en combos',
@@ -158,4 +157,7 @@ return array(
     'updated' => 'actualizado',
     'combo_has_dishes_cannot_remove' => 'Este combo contiene platos, no puede ser eliminado',
     'category_has_elements_cannot_remove' => 'Hay elementos en la categoria, no se puede eliminar',
+    'Usuario' => 'Usuario',
+    'dashboard.visits_to_menu' => 'Visitas al menu',
+    'dashboard.visits_per_restaurant' => 'Visitas al menu por restaurant',
 );
