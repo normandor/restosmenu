@@ -99,5 +99,7 @@ return array(
     'select_font.title' => 'Tipo de letra',
     'select_font.select_font' => 'Seleccione el tipo de letra:',
     'select_font.present' => 'Letra actual: ',
+    'dashboard.visits_to_menu' => 'Visitas al menu',
+    'dashboard.visits_per_restaurant' => 'Visitas al menu por restaurant',
 );
 
