@@ -1,5 +1,5 @@
-function createChartLinesTot(arr) {
-    var myChartTot = echarts.init(document.getElementById('chartTotalVisits'));
+function createChartLinesTotByDay(arr) {
+    var myChartTot = echarts.init(document.getElementById('chartTotalVisitsByDay'));
 
     optionTot = {
         tooltip: {
@@ -78,10 +78,10 @@ function createChartLinesTot(arr) {
 }
 
 var request = new XMLHttpRequest();
-request.open('GET', 'chartdata/linetotchart', true);
+request.open('GET', 'chartdata/linetotchartbyday', true);
 request.onload = function () {
     var arr = JSON.parse(this.response);
-    createChartLinesTot(arr);
+    createChartLinesTotByDay(arr);
 };
 
 request.send();
