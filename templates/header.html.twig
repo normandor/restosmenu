@@ -11,16 +11,25 @@
                 <img src="{{ asset('images/logo_header.png') }}" height="44px" alt="Wichisoft" />
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav pull-right panel-menu">
-                    <li style="vertical-align: middle; height: 100%;">
-                        <div class="user-mini pull-right">
-                            <a class="welcome">
-                                <a href="{{ path('change_language', {'language': 'en'}) }}"> EN </a> |
+                <ul class="nav navbar-nav pull-right panel-menu text-center">
+                    <li class="dropdown" style="display:inline-block; vertical-align: top;">
+                        <a href="#" class="dropdown-toggle account menutop" data-toggle="dropdown" >
+                            <div class="avatar">
+                                <img src="{{ asset('images/lang.png') }}" class='img-circle' alt='language' />
+                            </div>
+                            <i class="fa fa-angle-down pull-right"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{{ path('change_language', {'language': 'en'}) }}"> EN </a>
+                            </li>
+                            <li>
                                 <a href="{{ path('change_language', {'language': 'es'}) }}"> ES </a>
-                            </a>
-                        </div>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="dropdown">
+
+                    <li class="dropdown" style="display:inline-block; vertical-align: top;">
                         <a href="#" class="dropdown-toggle account menutop" data-toggle="dropdown" >
                             <div class="avatar">
                                 <img src="{{ asset(app.user.avatarpath) }}" class='img-circle' alt='avatar' />
