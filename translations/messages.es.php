@@ -158,6 +158,5 @@ return array(
     'combo_has_dishes_cannot_remove' => 'Este combo contiene platos, no puede ser eliminado',
     'category_has_elements_cannot_remove' => 'Hay elementos en la categoria, no se puede eliminar',
     'Usuario' => 'Usuario',
-    'dashboard.visits_to_menu' => 'Visitas al menu',
-    'dashboard.visits_per_restaurant' => 'Visitas al menu por restaurant',
+    'Welcome' => 'Bienvenidos',
 );

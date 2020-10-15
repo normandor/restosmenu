@@ -6,6 +6,7 @@ use App\Form\Type\UserType;
 use App\Service\FileUploader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -273,12 +274,14 @@ class UserController extends AbstractController
      * @param string  $language
      *
      * @param Request $request
+     *
+     * @return RedirectResponse
      */
-    public function changeLanguageAction(string $language, Request $request)
+    public function changeLanguageAction(string $language, Request $request): RedirectResponse
     {
         $request->getSession()->set('_locale', $language);
 
-        // todo: add to database
+        // todo: add to database only if user is logged in
 
         return $this->redirect($request->headers->get('referer'));
     }

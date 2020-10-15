@@ -78,9 +78,9 @@ return array(
     'key.restaurant_name' => 'Name of restaurant',
     'link_to_menu' => 'Link to the menu',
     'login.error.loginerror' => 'User or password error',
-    'login.message.connexion' => 'Connection',
+    'login.message.connexion' => 'Login',
     'login.message.password' => 'Password',
-    'login.message.signin' => 'Connect',
+    'login.message.signin' => 'Login',
     'login.message.username' => 'User',
     'logo' => 'Logo',
     'Logout' => 'Log out',
@@ -157,4 +157,5 @@ return array(
     'updated' => 'updated',
     'combo_has_dishes_cannot_remove' => 'This combo contains dishes, it cannot be removed',
     'category_has_elements_cannot_remove' => 'This category has dishes, it cannot be removed',
+    'Welcome' => 'Welcome',
 );

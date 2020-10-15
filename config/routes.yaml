@@ -267,3 +267,6 @@ homepage:
 change_language:
     path: /admin/user/set-language/{language}
     controller: App\Controller\UserController::changeLanguageAction
+change_login_language:
+    path: /login/set-language/{language}
+    controller: App\Controller\SecurityController::changeLoginLanguageAction
