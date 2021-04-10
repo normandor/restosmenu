@@ -7,9 +7,9 @@ Dashboard
 <div>
   <img width="800" alt="Dashboard" src="http://wichisoft.com/restos/images/restos_2_dashboard.jpg">
 </div>
-<br /><br />
-Dishes menu
 <br />
+Dishes menu
+<br /><br />
 <div>
   <img width="800" alt="Dashboard" src="http://wichisoft.com/restos/images/restos_3a_dishes.jpg">
 </div>
@@ -17,15 +17,15 @@ Dishes menu
 <div>
   <img width="800" alt="Dashboard" src="http://wichisoft.com/restos/images/restos_3b_edit_item.jpg">
 </div>
-<br /><br />
-The fonts, colors, order of dishes/categories can be configured 
 <br />
+The fonts, colors, order of dishes/categories can be configured 
+<br /><br />
 <div>
   <img width="800" alt="Dashboard" src="http://wichisoft.com/restos/images/restos_4_fonts_colors.jpg">
 </div>
-<br /><br />
-A preview for both mobile and desktop can be checked before publishing
 <br />
+A preview for both mobile and desktop can be checked before publishing
+<br /><br />
 <div>
   <img width="800" alt="Dashboard" src="http://wichisoft.com/restos/images/restos_5_preview.jpg">
 </div>
