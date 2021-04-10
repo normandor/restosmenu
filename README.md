@@ -18,7 +18,7 @@ Dishes menu
   <img width="800" alt="Dashboard" src="http://wichisoft.com/restos/images/restos_3b_edit_item.jpg">
 </div>
 <br />
-The fonts, colors, order of dishes/categories can be configured 
+The fonts, colors and widths can be configured, as well as the order in which all categories and dishes are shown
 <br /><br />
 <div>
   <img width="800" alt="Dashboard" src="http://wichisoft.com/restos/images/restos_4_fonts_colors.jpg">
